@@ -115,6 +115,110 @@ def student_satisfaction(request):
 def institutional_distinctiveness(request):
     return render(request, "institutional_distinctiveness.html")
 
+#Department
+# def department_list(request):
+#     if 'username' in request.session:
+#         news_articles = News.objects.all().order_by('-id')
+#         return render(request, 'department_list.html', {'news_articles': news_articles})
+#     return redirect('login')
+
+# def create_department(request):
+#     if 'username' in request.session:
+#         if request.method == 'POST':
+#             name = request.POST['name']
+#             description = request.POST['description']
+            
+#             # Create the news article first
+#             news_article = News.objects.create(
+#                 title=title,
+#                 description=description,
+#                 date=d
+#             )
+            
+#             # Process and save each uploaded image
+#             for image_file in request.FILES.getlist('photos'):
+#                 # Compress the image
+#                 compressed_image = compress_image(image_file)
+                
+#                 # Create NewsImage object with compressed image
+#                 NewsImage.objects.create(
+#                     news_article=news_article,
+#                     image=compressed_image
+#                 )
+            
+#             return redirect('news_list')
+        
+#         return render(request, 'create_news.html')
+#     return redirect('login')
+# def update_news(request, pk):
+#     if 'username' in request.session:
+#         article = get_object_or_404(News, pk=pk)
+
+#         if request.method == 'POST':
+#             # Update the text fields (title and description)
+#             article.title = request.POST['title']
+#             article.description = request.POST['description']
+            
+#             # Handle new images
+#             if request.FILES:
+#                 for image_file in request.FILES.getlist('photos'):
+#                     # Compress each new image
+#                     compressed_image = compress_image(image_file)
+                    
+#                     # Create new NewsImage object with compressed image
+#                     NewsImage.objects.create(
+#                         news_article=article,
+#                         image=compressed_image
+#                     )
+            
+#             article.save()
+#             # for image_file in request.FILES.getlist('photos'):
+#             #     NewsImage.objects.create(news_article=article, image=image_file)
+
+#             return redirect('news_list')
+
+#         return render(request, 'update_news.html', {'article': article})
+#     return redirect('login')
+
+# # news/views.py
+
+
+# def delete_news(request, pk):
+#     """
+#     Delete a news article and all its associated images
+#     """
+#     if 'username' in request.session:
+#         try:
+#             # Get the news article
+#             article = get_object_or_404(News, pk=pk)
+            
+#             # Get all associated images before deleting the article
+#             images = NewsImage.objects.filter(news_article=article)
+            
+#             # Delete each image file from storage
+#             for image in images:
+#                 if image.image:
+#                     # Get the full path of the image
+#                     image_path = os.path.join(settings.MEDIA_ROOT, str(image.image))
+#                     try:
+#                         # Check if file exists before attempting deletion
+#                         if os.path.isfile(image_path):
+#                             os.remove(image_path)
+#                     except Exception as e:
+#                         print(f"Error deleting image file {image_path}: {e}")
+            
+#             # Delete the news article (this will also delete associated NewsImage objects
+#             # due to CASCADE deletion in the database)
+#             article.delete()
+            
+#             return redirect('news_list')
+            
+#         except Exception as e:
+#             # Log the error and redirect
+#             print(f"Error deleting news article {pk}: {e}")
+#             return redirect('news_list')
+            
+#     return redirect('login')
 
 #Employee
 def create_employee(request):

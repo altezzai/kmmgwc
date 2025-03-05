@@ -1,0 +1,55 @@
+{% extends "admin_header.html" %} {% block content %} {% load static %}
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>Department List</h2>
+    <a class="btn-add btn" href="{% url 'create_newsdepartmanet' %}"
+      ><img src="{% static 'assets/new.svg' %}" class="img-small" alt="" />New
+    </a>
+  </div>
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Photos</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for department in department %}
+        <tr>
+          <td>{{ department.title }}</td>
+          <td>{{ department.description }}</td>
+          <td>
+            {% for image in department.images.all %}
+            <img
+              src="{{ department.image.url }}"
+              alt="{{ department.title }}"
+              width="100"
+            />
+            {% endfor %}
+          </td>
+          <td>
+            <a
+              class="btn-edit btn"
+              href="{% url 'update_department' department.id %}"
+              >Edit</a
+            >
+            <a
+              class="btn-delete btn"
+              href="{% url 'delete_department' department.id %}"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        {% comment %} {% empty %}
+        <tr>
+          <td colspan="5">No news available.</td>
+        </tr>
+        {% endfor %} {% endcomment %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

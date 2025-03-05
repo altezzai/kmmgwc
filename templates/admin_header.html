@@ -28,6 +28,13 @@
           <div class="close" onclick="closenav()">
             <img src="{% static 'assets/close.svg' %}" alt="" />
           </div>
+          {% comment %}
+          <div class="group flex">
+            <div class="flex">
+              <a href="{% url 'department_list' %}" class="nav">Departments</a>
+            </div>
+          </div>
+          {% endcomment %}
           <div class="group flex">
             <div class="flex">
               <a href="{% url 'employee_list' %}" class="nav">Faculty</a>

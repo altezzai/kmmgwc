@@ -43,6 +43,11 @@ urlpatterns = [
     path('delete_employee/<int:employee_id>/', views.delete_employee, name='delete_employee'),
     path('update_employee/<int:employee_id>/', views.update_employee, name='update_employee'),
 
+    # path('create_department', views.create_department, name='create_department'),
+    # path('department_list', views.department_list, name='department_list'),
+    # path('delete_department/<int:department_id>/', views.delete_department, name='delete_department'),
+    # path('update_department/<int:department_id>/', views.update_department, name='update_department'),
+
     path('event/create/', views.event_create, name='event_create'),
     path('event/<int:event_id>/update/', views.event_update, name='event_update'),
     path('event/<int:event_id>/delete/', views.event_delete, name='event_delete'),
