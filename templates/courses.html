@@ -1,0 +1,131 @@
+{% extends "header.html" %} {% block content %} {% load static %}
+<div class="container banner">
+  <div class="heading">Courses</div>
+</div>
+
+<div class="container">
+  <div class="sec-container">
+    <div class="table-wrapper">
+      <div class="table-heading">Undergraduate</div>
+      <table class="fl-table">
+        <thead>
+          <tr>
+            <th>Title of the Programme</th>
+            <th>Sanctioned Strength</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>B.Sc. Chemistry</td>
+            <td>24</td>
+            <td>6 Semesters</td>
+          </tr>
+          <tr>
+            <td>B.Sc. Mathematics</td>
+            <td>24</td>
+            <td>6 Semesters</td>
+          </tr>
+          <tr>
+            <td>B.Sc. Physics</td>
+            <td>24</td>
+            <td>6 Semesters</td>
+          </tr>
+          <tr>
+            <td>B.A. Economics (Batch A)</td>
+            <td>40</td>
+            <td>6 Semesters</td>
+          </tr>
+          <tr>
+            <td>B.A. Economics (Batch B)</td>
+            <td>30</td>
+            <td>6 Semesters</td>
+          </tr>
+          <tr>
+            <td>B.A. English</td>
+            <td>30</td>
+            <td>6 Semesters</td>
+          </tr>
+          <tr>
+            <td>B.A. History</td>
+            <td>40</td>
+            <td>6 Semesters</td>
+          </tr>
+          <tr>
+            <td>B.A. Malayalam</td>
+            <td>30</td>
+            <td>6 Semesters</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-wrapper">
+      <div class="table-heading">Postgraduate</div>
+      <table class="fl-table">
+        <thead>
+          <tr>
+            <th>Title of the Programme</th>
+            <th>Sanctioned Strength</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>M.Sc. Chemistry (Drug Chemistry as specialisation)</td>
+            <td>12</td>
+            <td>4 Semesters</td>
+          </tr>
+          <tr>
+            <td>M.A. Development Economics</td>
+            <td>15</td>
+            <td>4 Semesters</td>
+          </tr>
+          <tr>
+            <td>M.A. English</td>
+            <td>15</td>
+            <td>4 Semesters</td>
+          </tr>
+        </tbody>
+
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="table-wrapper">
+      <div class="table-heading">Ph.D</div>
+      <table class="fl-table">
+        <thead>
+          <tr>
+            <th>Title of the Programme</th>
+            <th>Sanctioned Strength</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>English Language and Literature</td>
+            <td>6</td>
+            <td>3 to 7 Years</td>
+          </tr>
+        </tbody>
+
+        <tbody></tbody>
+      </table>
+    </div>
+    {% comment %} <div class="table-wrapper">
+      <div class="table-heading">PROGRAMMES OFFERED</div>
+      
+      <a class=" icon-btn" href="{% static 'assets/programmes_offered.pdf'%}">
+        <img
+      src="{% static 'assets/download_black.svg' %}"
+      class="logo"
+      alt=""
+    /><div>Programmes Offered</div>
+      </a>
+
+        <tbody></tbody>
+      </table>
+    </div> {% endcomment %}
+  </div>
+</div>
+
+{% endblock %}

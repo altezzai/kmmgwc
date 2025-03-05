@@ -1,0 +1,174 @@
+{% extends "header.html" %} {% block content %} {% load static %}
+
+<!-- #e70e19 primary -->
+<!-- #fed967 base -->
+<div class="container">
+  <section class="hero">
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/image011.webp' %}"
+      alt=""
+    />
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/image014.webp' %}"
+      alt=""
+    />
+
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/image015.webp' %}"
+      alt=""
+    />
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/slide_001.webp' %}"
+      alt=""
+    />
+
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/slide_four.webp' %}"
+      alt=""
+    />
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/slide_one.webp' %}"
+      alt=""
+    />
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/slide_two.webp' %}"
+      alt=""
+    />
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/image016.webp' %}"
+      alt=""
+    />
+    <img
+      class="mySlides fade"
+      src="{% static 'assets/clg/slide_three.webp' %}"
+      alt=""
+    />
+
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+  </section>
+  <section>
+    <div class="detailsbox aboutbox">
+      <div class="image">
+        <img src="{% static 'assets/about_img.webp' %}" alt="" />
+      </div>
+      <div class="text">
+        <div class="head">Who We Are</div>
+        <div class="mssg">
+          Krishna Menon Memorial Govt.Women's College named after the
+          illustrious son of our country Sri. V.K Krishna Menon is an
+          institution of higher education situated in the ancient town of
+          Kannur, which is the home of looms and lores. The college is
+          affiliated to Kannur University. This institution is primarily meant
+          for the progressive education of young women and it is the only
+          women's college in the northern part of Kerala extending from
+          Kozhikode to Kasargode. Being an institution in the government sector,
+          the college is committed to serve the economically weaker and the less
+          privileged sections of the society. The college is the virtual
+          realization of the long cherished dream of the service oriented, hard
+          working and progressive citizens of Kannur.
+        </div>
+        <div class="readmore flex">
+          <a href="/about" class="moretext"
+            >Read More<img
+              class="arrow"
+              src="{% static 'assets/rightarrow.svg' %}"
+              alt=""
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="detailsbox">
+      <div class="text">
+        <div class="head">Principal's Message</div>
+        <div class="mssg">
+          I am privileged to be a part of this institution which is named after
+          the illustrious son of the nation Sri. V. K. Krishnammenon and share
+          the fabulous achievement with the dedicated faculty, industrious
+          students and the able administrative staff. This exclusive women's
+          college in the Govt sector of Malabar region continues its triumphant
+          forward march by imparting quality education to young women in the
+          higher education sector with a view to mould them into efficient
+          leaders and responsible citizens....
+        </div>
+        <div class="readmore flex">
+          <a href="/principal" class="moretext"
+            >Read More<img
+              class="arrow"
+              src="{% static 'assets/rightarrow.svg' %}"
+              alt=""
+            />
+          </a>
+        </div>
+      </div>
+      <div class="mw image flexnum">
+        <img src="{% static 'assets/principal.webp' %}" al{{
+        article.date|date:"D" }}, {{ article.date }}t="" />
+        <div class="name">Dr. Chandramohanan K T</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="container ncon">
+  <div class="part">
+    <div class="heading">Recent News & Updates</div>
+    <div class="event-group ev">
+      {% for article in news %}
+      <a href="{% url 'news' article.id %}" class="news-box w-600">
+        <div class="text">{{ article.title }}</div>
+        <div class="date-box">{{article.date}}</div>
+      </a>
+      {% endfor %}
+
+      <div class="readmore flex">
+        <a href="{% url 'allnews' %}" class="moretext"
+          >Read All News<img
+            class="arrow"
+            src="{% static 'assets/downarrow.svg' %}"
+            alt=""
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="part">
+    <div class="heading">Upcoming Events</div>
+    <div class="event-group ev">
+      {% for event in events %}
+      <a href="{% url 'events' event.id %}" class="event-box">
+        <div class="date line">
+          <div class="day">{{event.date.day}}</div>
+          <div class="month">{{ event.date|date:"M" }}</div>
+          <div class="year">{{event.date.year}}</div>
+        </div>
+        <div class="info">
+          <div class="headingSmall">{{ event.title }}</div>
+          <div class="otherinfo">
+            <div>{{ event.time }}</div>
+            <div>{{ event.venue }}</div>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+
+      <div class="readmore flex">
+        <a href="{% url 'allevents' %}" class="moretext"
+          >View All Events
+          <img src="{% static 'assets/rightarrow.svg' %}" alt="" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'slides.js' %}" defer></script>
+{% endblock %}
