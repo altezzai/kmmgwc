@@ -171,10 +171,10 @@ thead tr th:first-child {
   border-bottom-left-radius: 5px;
 }
 
-.table-con {
+.table-con table{
   overflow: auto;
   width: 100%;
-}
+} 
 
 .edit-formcon {
   display: flex;

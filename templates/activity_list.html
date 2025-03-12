@@ -1,0 +1,53 @@
+{% extends "admin_header.html" %} {% block content %} {% load static %}
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>Activity List</h2>
+    <a class="btn-add btn" href="{% url 'create_activity' %}"
+      ><img src="{% static 'assets/new.svg' %}" class="img-small" alt="" />New
+    </a>
+  </div>
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>department</th>
+          <th>Photo</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for activity in activities %}
+        <tr>
+          <td>{{ activity.name }}</td>
+          <td>{{ activity.department }}</td>
+          <td>
+            <img
+              src="{{ activity.photo.url }}"
+              alt="{{ activity.name }} Photo"
+              class="photo-list"
+            />
+          </td>
+          <td>
+            <a
+              class="btn-edit btn"
+              href="{% url 'update_activity' activity.id %}"
+              >Edit</a
+            >
+            <a
+              class="btn-delete btn"
+              href="{% url 'delete_activity' activity.id %}"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">No activities available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endblock %}
+  </div>
+</div>

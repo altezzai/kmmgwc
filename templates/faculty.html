@@ -1,5 +1,5 @@
 {% extends "header.html" %} {% block content %} {% load static %}
-<div class="container banner">
+<!-- <div class="container banner">
   <div class="heading">DEPARTMENT OF {{ depart }}</div>
 </div>
 
@@ -46,5 +46,82 @@
     </a>
     {% endfor %}
   </div>
+</div> -->
+<div class="container banner">
+  <div class="heading">DEPARTMENT OF {{ depart|upper }}</div>
+</div>
+<div class="container">
+  <div>
+    <p class="description">{{ description }}</p>
+  </div>
+  <!-- <div class="container banner">
+    <div class="heading">Faculty</div>
+  </div> -->
+  <!-- <div class="sec-container grid"> -->
+  <div class="sec-container">
+    <h3 class="sub-heading">Faculty Members</h2> <!-- New heading above the list -->
+    <div class="grid">
+      {% for employee in employees %}
+      <a href="#" class="news-box facbox">
+        <div class="imgcon">
+          <img
+            src="{{ employee.photo.url }}"
+            alt="{{ employee.name }}"
+            class="news-img"
+          />
+        </div>
+        <div class="bold-head">{{ employee.position }}</div>
+        <div class="date-box">{{ employee.name }}</div>
+        <div class="flex-just-c-sb">
+          <pre>{{ employee.qualification }}</pre>
+        </div>
+      </a>
+      {% empty %}
+        <p>No faculty members found in this department.</p>
+      {% endfor %}
+    </div>
+</div>
+  <!-- <div class="container banner">
+    <div class="heading">Activity</div>
+  </div> -->
+  <!-- <div class="sec-container grid"> -->
+  <!-- <div class="sec-container">
+      <h3 class="sub-heading">Activities</h2> New heading above the list
+    <div class="grid">
+      {% for activity in activities %}
+        <a href="#" class="news-box facbox">
+      <div class="imgcon">
+        <img
+          src="{{ activitiy.photo.url }}"
+          alt="{{ activity.name }}"
+          class="news-img"
+        />
+      </div>
+      <div class="date-box">{{ activity.name }}</div>
+      </a>
+      {% empty %}
+        <p>No faculty members found in this department.</p>
+      {% endfor %}
+    </div>
+  </div> -->
+  <div class="sec-container">
+    <h3 class="sub-heading">Activities</h3> <!-- Fixed heading closing tag -->
+    <div class="grid">
+      {% for activity in activities %}
+        <a href="#" class="news-box facbox">
+          <div class="imgcon">
+            <img
+              src="{{ activity.photo.url }}" 
+              alt="{{ activity.name }}"
+              class="news-img"
+            />
+          </div>
+          <div class="date-box">{{ activity.name }}</div>
+        </a>
+      {% empty %}
+        <p>No activities found in this department.</p> <!-- Fixed the message -->
+      {% endfor %}
+    </div>
+</div>
 </div>
 {% endblock %}

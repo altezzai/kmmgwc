@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect ,get_object_or_404
 from .models import Employee
+from .models import Department
 from .models import Event
 from .models import News,NewsImage
 from .models import Notification
+from .models import Activity
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from datetime import date
@@ -12,9 +14,10 @@ from django.contrib.auth import login, authenticate
 from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.files.storage import default_storage
+from django.conf import settings
 import sys
 import os
-from django.conf import settings
 #home
 def index(request):
     # employees = Employee.objects.all()
@@ -40,10 +43,16 @@ def allevents(request):
     evt = Event.objects.all().order_by('-date')
     return render(request, 'allevents.html',{'events': evt})
 
-def faculty(request,dept):
+# def faculty(request,dept):
+#     employees = Employee.objects.filter(department=dept)
+
+#     # print(type(employees[0].qualification))
+#     return render(request, 'faculty.html',{'employees':employees,'depart':dept})
+def faculty(request, dept):
+    department = get_object_or_404(Department, pk=dept)  # Fetch department by ID
     employees = Employee.objects.filter(department=dept)
-    # print(type(employees[0].qualification))
-    return render(request, 'faculty.html',{'employees':employees,'depart':dept})
+    activities = Activity.objects.filter(department=dept)
+    return render(request, 'faculty.html', {'employees': employees, 'depart': department.name, "description":department.description, 'activities': activities})
 
 def club(request):
     # employees = Employee.objects.all()
@@ -116,109 +125,95 @@ def institutional_distinctiveness(request):
     return render(request, "institutional_distinctiveness.html")
 
 #Department
-# def department_list(request):
-#     if 'username' in request.session:
-#         news_articles = News.objects.all().order_by('-id')
-#         return render(request, 'department_list.html', {'news_articles': news_articles})
-#     return redirect('login')
+def department_list(request):
+    """Display all departments."""
+    if 'username' in request.session:
+        departments = Department.objects.all().order_by('name')
+        return render(request, 'department_list.html', {'departments': departments})
+    return redirect('login')
 
-# def create_department(request):
-#     if 'username' in request.session:
-#         if request.method == 'POST':
-#             name = request.POST['name']
-#             description = request.POST['description']
-            
-#             # Create the news article first
-#             news_article = News.objects.create(
-#                 title=title,
-#                 description=description,
-#                 date=d
-#             )
-            
-#             # Process and save each uploaded image
-#             for image_file in request.FILES.getlist('photos'):
-#                 # Compress the image
-#                 compressed_image = compress_image(image_file)
-                
-#                 # Create NewsImage object with compressed image
-#                 NewsImage.objects.create(
-#                     news_article=news_article,
-#                     image=compressed_image
-#                 )
-            
-#             return redirect('news_list')
-        
-#         return render(request, 'create_news.html')
-#     return redirect('login')
-# def update_news(request, pk):
-#     if 'username' in request.session:
-#         article = get_object_or_404(News, pk=pk)
+def create_department(request):
+    """Create a new department."""
+    if 'username' in request.session:
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            description = request.POST.get('description', '')
+            photo = request.FILES.get('photos', None)
 
-#         if request.method == 'POST':
-#             # Update the text fields (title and description)
-#             article.title = request.POST['title']
-#             article.description = request.POST['description']
-            
-#             # Handle new images
-#             if request.FILES:
-#                 for image_file in request.FILES.getlist('photos'):
-#                     # Compress each new image
-#                     compressed_image = compress_image(image_file)
-                    
-#                     # Create new NewsImage object with compressed image
-#                     NewsImage.objects.create(
-#                         news_article=article,
-#                         image=compressed_image
-#                     )
-            
-#             article.save()
-#             # for image_file in request.FILES.getlist('photos'):
-#             #     NewsImage.objects.create(news_article=article, image=image_file)
+            department = Department(name=name, description=description)
+            #Assign the photo only if it exists
+            if photo:
+                department.photo = photo
+            department.save()
+            departments = Department.objects.all()
+            print("Departments:", departments)
+            return redirect('department_list')
+        return render(request, 'create_department.html')
+    return redirect('login')
 
-#             return redirect('news_list')
+def update_department(request, pk):
+    """Update an existing department."""
+    if 'username' in request.session:
+        department = get_object_or_404(Department, pk=pk)
 
-#         return render(request, 'update_news.html', {'article': article})
-#     return redirect('login')
+        if request.method == 'POST':
+            department.name = request.POST['name']
+            department.description = request.POST.get('description', '')
 
-# # news/views.py
+            # If a new photo is uploaded, delete the old one and update
+            if 'photo' in request.FILES:
+                if department.photo:
+                    default_storage.delete(department.photo.path)  # Delete old photo
+                department.photo = request.FILES['photo']
 
+            department.save()
+            return redirect('department_list')
 
-# def delete_news(request, pk):
-#     """
-#     Delete a news article and all its associated images
-#     """
+        return render(request, 'update_department.html', {'department': department})
+    return redirect('login')
+
+# def delete_department(request, pk):
+#     """Delete a department and its associated image."""
 #     if 'username' in request.session:
 #         try:
-#             # Get the news article
-#             article = get_object_or_404(News, pk=pk)
-            
-#             # Get all associated images before deleting the article
-#             images = NewsImage.objects.filter(news_article=article)
-            
-#             # Delete each image file from storage
-#             for image in images:
-#                 if image.image:
-#                     # Get the full path of the image
-#                     image_path = os.path.join(settings.MEDIA_ROOT, str(image.image))
-#                     try:
-#                         # Check if file exists before attempting deletion
-#                         if os.path.isfile(image_path):
-#                             os.remove(image_path)
-#                     except Exception as e:
-#                         print(f"Error deleting image file {image_path}: {e}")
-            
-#             # Delete the news article (this will also delete associated NewsImage objects
-#             # due to CASCADE deletion in the database)
-#             article.delete()
-            
-#             return redirect('news_list')
-            
+#             department = get_object_or_404(Department, id=pk)
+
+#             # Delete associated photo if it exists
+#             if department.photo:
+#                 photo_path = department.photo.path  # Get the full file path
+#                 if os.path.isfile(photo_path):  # Ensure file exists before deleting
+#                     default_storage.delete(photo_path)
+
+#             department.delete()  # Delete department after removing photo
+#             return redirect('department_list')
+
 #         except Exception as e:
-#             # Log the error and redirect
-#             print(f"Error deleting news article {pk}: {e}")
-#             return redirect('news_list')
-            
+#             print(f"Error deleting department {pk}: {e}")
+#             return redirect('department_list')
+
 #     return redirect('login')
+def delete_department(request, pk):
+    """Delete a department and its associated image."""
+    if 'username' in request.session:
+        if request.method == "POST":  # Only allow deletion via POST
+            try:
+                department = get_object_or_404(Department, id=pk)
+
+                # Delete associated photo if it exists
+                if department.photo:
+                    photo_path = department.photo.path  # Get the full file path
+                    if os.path.isfile(photo_path):  # Ensure file exists before deleting
+                        default_storage.delete(photo_path)
+
+                department.delete()  # Delete department after removing photo
+                return redirect('department_list')
+
+            except Exception as e:
+                print(f"Error deleting department {pk}: {e}")
+
+        return redirect('department_list')  # Redirect if not POST
+
+    return redirect('login')
 
 #Employee
 def create_employee(request):
@@ -264,9 +259,10 @@ def create_employee(request):
             except Exception as e:
                 return render(request, 'create_employee.html', 
                             {'error': f'Error creating employee: {str(e)}'})
-                
-        return render(request, 'create_employee.html')
+        department_list = Department.objects.all()
+        return render(request, 'create_employee.html', {"departments":department_list})
     return redirect('login')
+
 def employee_list(request):
     if 'username' in request.session:
         employees = Employee.objects.all().order_by('-id')
@@ -285,7 +281,7 @@ def delete_old_photo(employee):
 def update_employee(request, employee_id):
     if 'username' in request.session:
         employee = get_object_or_404(Employee, pk=employee_id)
-
+        department_list = Department.objects.all()
         if request.method == 'POST':
             name = request.POST.get('name')
             position = request.POST.get('position')
@@ -321,13 +317,11 @@ def update_employee(request, employee_id):
                             return render(request, 'update_employee.html', 
                                         {'employee': employee, 
                                         'error': f'Error processing photo: {str(e)}'})
-                    
-
             employee.save()
             return redirect('employee_list')
-
-        return render(request, 'update_employee.html', {'employee': employee})
+        return render(request, 'update_employee.html', {'employee': employee, "departments":department_list})
     return redirect('login')
+
 def delete_employee(request, employee_id):
     if 'username' in request.session:
         employee = get_object_or_404(Employee, pk=employee_id)
@@ -335,8 +329,154 @@ def delete_employee(request, employee_id):
         delete_old_photo(employee)
         return redirect('employee_list')
     return redirect('login')
-#Event
 
+#Activity
+# def create_activity(request):
+#     if 'username' in request.session:
+#         if request.method == 'POST':
+#             try:
+#                 # First check if a file was uploaded
+#                 if 'photo' not in request.FILES:
+#                     return render(request, 'create_activity.html', 
+#                                 {'error': 'Please upload a photo'})
+                
+#                 photo = request.FILES['photo']
+                
+#                 # Validate file type
+#                 if not photo.content_type.startswith('image/'):
+#                     return render(request, 'create_activity.html', 
+#                                 {'error': 'Please upload a valid image file'})
+                
+#                 # Check file size (e.g., max 5MB)
+#                 if photo.size > 5 * 1024 * 1024:  # 5MB in bytes
+#                     return render(request, 'create_activity.html', 
+#                                 {'error': 'Photo size should be less than 5MB'})
+                
+#                 # If all checks pass, compress the photo
+#                 try:
+#                     compressed_photo = compress_image(photo)
+#                 except Exception as e:
+#                     return render(request, 'create_activity.html', 
+#                                 {'error': f'Error processing photo: {str(e)}'})
+                
+#                 # Continue with creating employee...
+#                 activity = Activity(
+#                     name=request.POST.get('activity'),
+#                     photo=compressed_photo,
+#                     department=request.POST.get('department')
+#                 )
+#                 activity.save()
+#                 print("Activity saved successfully!")
+#                 return redirect('activity_list')
+                
+#             except Exception as e:
+#                 return render(request, 'create_activity.html', 
+#                             {'error': f'Error creating activity: {str(e)}'})
+#         department_list = Department.objects.all()
+#         return render(request, 'create_activity.html', {"departments":department_list})
+#     return redirect('login')
+def create_activity(request):
+    if 'username' in request.session:
+        if request.method == 'POST':
+            try:
+                # Debugging: Check incoming data
+                print("POST Data:", request.POST)
+                print("FILES Data:", request.FILES)
+
+                # First check if a file was uploaded
+                if 'photo' not in request.FILES:
+                    return render(request, 'create_activity.html', 
+                                  {'error': 'Please upload a photo'})
+                
+                photo = request.FILES['photo']
+                
+                # Validate file type
+                if not photo.content_type.startswith('image/'):
+                    return render(request, 'create_activity.html', 
+                                  {'error': 'Please upload a valid image file'})
+                
+                # Check file size (e.g., max 5MB)
+                if photo.size > 5 * 1024 * 1024:  # 5MB in bytes
+                    return render(request, 'create_activity.html', 
+                                  {'error': 'Photo size should be less than 5MB'})
+                
+                # Compress the photo
+                try:
+                    compressed_photo = compress_image(photo)
+                except Exception as e:
+                    print(f"Error compressing image: {e}")
+                    return render(request, 'create_activity.html', 
+                                  {'error': f'Error processing photo: {str(e)}'})
+
+                # Create Activity object
+                activity = Activity(
+                    name=request.POST.get('name'),  # Ensure this matches your form input
+                    photo=compressed_photo,
+                    department=request.POST.get('department')
+                )
+                activity.save()
+                print("Activity saved successfully!")
+
+                return redirect('activity_list')
+                
+            except Exception as e:
+                print(f"Error creating activity: {e}")
+                return render(request, 'create_activity.html', 
+                              {'error': f'Error creating activity: {str(e)}'})
+        
+        # Load departments for dropdown
+        department_list = Department.objects.all()
+        return render(request, 'create_activity.html', {"departments": department_list})
+    
+    return redirect('login')
+def activity_list(request):
+    if 'username' in request.session:
+        activities = Activity.objects.all()  # Retrieve all activities
+        return render(request, 'activity_list.html', {'activities': activities})
+    return redirect('login')
+def delete_old_photo(activity):
+    """
+    Safely delete the old photo file from storage
+    """
+    if activity.photo:
+        if os.path.isfile(activity.photo.path):
+            try:
+                os.remove(activity.photo.path)
+            except Exception as e:
+                print(f"Error deleting old photo: {e}")
+
+def update_activity(request, pk):  # Make sure pk matches the URL
+    activity = get_object_or_404(Activity, pk=pk)  # Get the activity object
+
+    if request.method == 'POST':
+        activity.name = request.POST.get('name')
+        activity.department = request.POST.get('department')
+        
+        if 'photo' in request.FILES:
+            photo = request.FILES['photo']
+            activity.photo = photo
+        
+        activity.save()
+        return redirect('activity_list')
+
+    department_list = Department.objects.all()
+    return render(request, 'update_activity.html', {'activity': activity, 'departments': department_list})
+
+def delete_activity(request, pk):  # Ensure `pk` is a parameter
+    activity = get_object_or_404(Activity, pk=pk)  # Fetch the activity
+    activity.delete()  # Delete the activity
+    return redirect('activity_list')  # Redirect to the activity list
+
+# def delete_activity(request, activity_id):
+#     if 'username' in request.session:
+#         activity = get_object_or_404(Activity, pk=activity_id)
+#         activity.delete()
+#         delete_old_photo(activity)
+#         return redirect('activity_list')
+#     return redirect('login')
+
+
+#Event
 def compress_image(image_file):
     """
     Compress the input image file while maintaining aspect ratio

@@ -8,7 +8,8 @@ urlpatterns = [
     path('allnews', views.allnews, name='allnews'),
     path('events/<int:ev_id>/', views.events, name='events'),
     path('allevents', views.allevents, name='allevents'),
-    path('faculty/<str:dept>/', views.faculty, name='faculty'),
+    # path('faculty/<str:dept>/', views.faculty, name='faculty'),
+    path('faculty/<int:dept>/', views.faculty, name='faculty'),  # Accept department ID
     path('notification', views.notification, name='notification'),
     path('notification2/<int:noti_id>/', views.notification2, name='notification2'),
     path('notificationfilter/<str:upg>/', views.notificationfilter, name='notificationfilter'),
@@ -43,10 +44,15 @@ urlpatterns = [
     path('delete_employee/<int:employee_id>/', views.delete_employee, name='delete_employee'),
     path('update_employee/<int:employee_id>/', views.update_employee, name='update_employee'),
 
-    # path('create_department', views.create_department, name='create_department'),
-    # path('department_list', views.department_list, name='department_list'),
-    # path('delete_department/<int:department_id>/', views.delete_department, name='delete_department'),
-    # path('update_department/<int:department_id>/', views.update_department, name='update_department'),
+    path('create_department', views.create_department, name='create_department'),
+    path('department_list', views.department_list, name='department_list'),
+    path('delete_department/<int:pk>/', views.delete_department, name='delete_department'),
+    path('update_department/<int:pk>/', views.update_department, name='update_department'),
+
+    path('create_activity', views.create_activity, name='create_activity'),
+    path('activity_list/', views.activity_list, name='activity_list'),
+    path('delete_activity/<int:pk>/', views.delete_activity, name='delete_activity'),
+    path('update_activity/<int:pk>/', views.update_activity, name='update_activity'),
 
     path('event/create/', views.event_create, name='event_create'),
     path('event/<int:event_id>/update/', views.event_update, name='event_update'),

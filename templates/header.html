@@ -108,103 +108,30 @@
               
               </div>
             </div>
-            <div class="group flex">
+            <!-- <div class="group flex">
               <div class="flex" onclick="togglelist(aca,'drop1')">
                 <div class="nav">Departments & Faculties</div>
               </div>
               <div class="dropdown" id="aca">
             
-                <a
-                href="{% url 'faculty' dept='PHYSICS' %}"
-                class="option"
+                
               >
                 <div>DEPARTMENT OF PHYSICS</div>
               </a>
-              <a href="{% url 'faculty' dept='CHEMISTRY' %}" class="option">
-                <div>DEPARTMENT OF CHEMISTRY</div>
-              </a>
              
-                <a
-                href="{% url 'faculty' dept='JOURNALISM' %}"
-                class="option"
-              >
-                <div>DEPARTMENT OF JOURNALISM</div>
-              </a>
-            
-                <a
-                href="{% url 'faculty' dept='STATISTICS' %}"
-                class="option"
-              >
-                <div>DEPARTMENT OF STATISTICS</div>
-              </a>
-              
-                
-              <a
-                href="{% url 'faculty' dept='MATHEMATICS' %}"
-                class="option"
-              >
-                <div>DEPARTMENT OF MATHEMATICS</div>
-              </a>
-              
-            
-              <a
-                href="{% url 'faculty' dept='COMPUTER SCIENCE' %}"
-                class="option"
-              >
-                <div>DEPARTMENT OF COMPUTER SCIENCE</div>
-              </a>
-              <a
-              href="{% url 'faculty' dept='POLITICAL SCIENCE' %}"
-              class="option"
-            >
-              <div>DEPARTMENT OF POLITICAL SCIENCE</div>
-            </a>
-            
-              <a href="{% url 'faculty' dept='ENGLISH' %}" class="option">
-                <div>DEPARTMENT OF ENGLISH</div>
-              </a>
-              <a
-              href="{% url 'faculty' dept='ECONOMICS' %}"
-              class="option"
-            >
-              <div>DEPARTMENT OF ECONOMICS</div>
-            </a>
-              <a
-              href="{% url 'faculty' dept='HISTORY' %}"
-              class="option"
-            >
-              <div>DEPARTMENT OF HISTORY</div>
-            </a>
-            <a href="{% url 'faculty' dept='MALAYALAM' %}" class="option">
-              <div>DEPARTMENT OF MALAYALAM</div>
-            </a>
-            <a href="{% url 'faculty' dept='HINDI' %}" class="option">
-              <div>DEPARTMENT OF HINDI</div>
-            </a>
-            <a
-            href="{% url 'faculty' dept='ARABIC' %}"
-            class="option"
-          >
-            <div>DEPARTMENT OF ARABIC</div>
-          </a>
-          <a
-          href="{% url 'faculty' dept='SANSKRIT' %}"
-          class="option"
-        >
-          <div>DEPARTMENT OF SANSKRIT</div>
-        </a>
-            <a
-              href="{% url 'faculty' dept='PHYSICAL EDUCATION' %}"
-              class="option"
-            >
-              <div>DEPARTMENT OF PHYSICAL EDUCATION</div>
-            </a>
-                  <div class="sec-dropdown" id="fac"></div>
-                  {% comment %}
-                </div>
-                {% endcomment %}
-
-                <!-- #### -->
+            </div> -->
+            <div class="group flex">
+              <div class="flex" onclick="togglelist(aca,'drop1')">
+                <div class="nav">Departments & Faculties</div>
+              </div>
+              <div class="dropdown" id="aca">
+                {% for dept in departments %}
+                  <a href="{% url 'faculty' dept=dept.id %}" class="option">
+                    <div>DEPARTMENT OF {{ dept.name }}</div>
+                  </a>
+                {% empty %}
+                  <div class="option">No Departments Available</div>
+                {% endfor %}
               </div>
             </div>
             <div class="group flex">
