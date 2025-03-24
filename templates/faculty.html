@@ -81,34 +81,11 @@
       {% endfor %}
     </div>
 </div>
-  <!-- <div class="container banner">
-    <div class="heading">Activity</div>
-  </div> -->
-  <!-- <div class="sec-container grid"> -->
-  <!-- <div class="sec-container">
-      <h3 class="sub-heading">Activities</h2> New heading above the list
-    <div class="grid">
-      {% for activity in activities %}
-        <a href="#" class="news-box facbox">
-      <div class="imgcon">
-        <img
-          src="{{ activitiy.photo.url }}"
-          alt="{{ activity.name }}"
-          class="news-img"
-        />
-      </div>
-      <div class="date-box">{{ activity.name }}</div>
-      </a>
-      {% empty %}
-        <p>No faculty members found in this department.</p>
-      {% endfor %}
-    </div>
-  </div> -->
   <div class="sec-container">
     <h3 class="sub-heading">Activities</h3> <!-- Fixed heading closing tag -->
     <div class="grid">
       {% for activity in activities %}
-        <a href="#" class="news-box facbox">
+        <a href="#" class=" facbox act">
           <div class="imgcon">
             <img
               src="{{ activity.photo.url }}" 
@@ -116,7 +93,7 @@
               class="news-img"
             />
           </div>
-          <div class="date-box">{{ activity.name }}</div>
+          <div class="des">{{ activity.name }}</div>
         </a>
       {% empty %}
         <p>No activities found in this department.</p> <!-- Fixed the message -->
@@ -124,4 +101,30 @@
     </div>
 </div>
 </div>
+<!-- <style>
+  .act{
+    position: relative;
+    border: 2px solid black;
+    border-radius:10px;
+    overflow: hidden;;
+  }
+
+  .act .imgcon{
+    margin:0;
+  }
+
+  .act .des{
+    opacity: 0;
+    position: absolute;
+    bottom:0;
+    background-color: rgba(255,255,255,.7);
+    padding: 15px;
+    transition: opacity ease .3s;
+    font-size: .8rem;
+  }
+
+  .act:hover .des{
+    opacity: 1;
+  }
+</style> -->
 {% endblock %}

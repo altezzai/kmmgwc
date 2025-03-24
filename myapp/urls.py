@@ -16,7 +16,44 @@ urlpatterns = [
 
     path('club', views.club, name='club'),
     path('fitness', views.fitness, name='fitness'),
-    path('about', views.about, name='about'),
+    # path('about', views.about, name='about'),
+    path('about-college/', views.about_college, name='about_college'),
+    path('rti/', views.rti, name='rti'),
+    path('cdc/', views.cdc, name='cdc'),
+    path('office/', views.office, name='office'),
+
+    #Facility
+    path('academic/', views.academic_facilities, name='academic_facilities'),
+    path('library/', views.library, name='library'),
+    path('orice/', views.orice, name='orice'),
+    path('procedures-policy/', views.procedures_policy, name='procedures_policy'),
+    path('it-facility/', views.it_facility, name='it_facility'),
+    path('sports/', views.sports_facility, name='sports_facility'),
+    path('amenity-centre/', views.amenity_centre, name='amenity_centre'),
+    path('canteen/', views.canteen, name='canteen'),
+    path('womens-hostel/', views.womens_hostel, name='womens_hostel'),
+    path('auditorium/', views.auditorium_seminar_halls, name='auditorium_seminar_halls'),
+
+    #Research
+    path('research-centre/', views.research_centre, name='research_centre'),
+    path('research-guides/', views.research_guides, name='research_guides'),
+    path('research-scholars/', views.research_scholars, name='research_scholars'),
+    path('research-projects/', views.research_projects, name='research_projects'),
+    path('research-journal/', views.research_journal, name='research_journal'),
+
+    #Student Support
+    path('scholarships/', views.scholarships, name='scholarships'),
+    path('career-guidance/', views.career_guidance, name='career_guidance'),
+    path('yip/', views.yip, name='yip'),
+    path('grievance-redressal/', views.grievance_redressal, name='grievance_redressal'),
+    path('endowments/', views.endowments, name='endowments'),
+    path('feedback/', views.feedback, name='feedback'),
+    path('code-of-conduct/', views.code_of_conduct, name='code_of_conduct'),
+
+    path('pta',views.pta, name='pta'),
+    path('college_union',views.college_union, name='college_union'),
+    path('committies',views.committies, name='committies'),
+    path('clubs',views.clubs, name='clubs'),
     path('alumini', views.alumini, name='alumini'),
     path('courses', views.courses, name='courses'),
     path('FYUGP', views.FYUGP, name='FYUGP'),

@@ -34,3 +34,4 @@ function togglelist(element, cls) {
     if (!element.classList.contains(cls)) element.style.display = "none";
   }, 210);
 }
+

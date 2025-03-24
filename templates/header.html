@@ -65,10 +65,26 @@
                 <a href="{% url 'index' %}" class="nav">Home</a>
               </div>
             </div>
-            <div class="group flex">
-              <div class="flex">
-                <a href="{% url 'about' %}" class="nav">About Us</a>
-              </div>
+            
+              <div class="group flex">
+                <div class="flex" onclick="togglelist(aboutMenu, 'drop1')">
+                    <div class="nav">About Us</div>
+                </div>
+                <div class="dropdown" id="aboutMenu">
+                    <a href="{% url 'about_college' %}" class="option">
+                        <div>About College</div>
+                    </a>
+                    <a href="{% url 'rti' %}" class="option">
+                        <div>RTI</div>
+                    </a>
+                    <a href="{% url 'cdc' %}" class="option">
+                        <div>CDC</div>
+                    </a>
+                    <a href="{% url 'office' %}" class="option">
+                        <div>Office</div>
+                    </a>
+                </div>
+            
             </div>
             <div class="group flex">
               <div class="flex" onclick="togglelist(aca,'drop1')">
@@ -121,10 +137,10 @@
              
             </div> -->
             <div class="group flex">
-              <div class="flex" onclick="togglelist(aca,'drop1')">
+              <div class="flex" onclick="togglelist(departfacilties,'drop1')">
                 <div class="nav">Departments & Faculties</div>
               </div>
-              <div class="dropdown" id="aca">
+              <div class="dropdown" id="departfacilties">
                 {% for dept in departments %}
                   <a href="{% url 'faculty' dept=dept.id %}" class="option">
                     <div>DEPARTMENT OF {{ dept.name }}</div>
@@ -135,17 +151,106 @@
               </div>
             </div>
             <div class="group flex">
-              <div class="flex" onclick="togglelist(club,'drop1')">
+              <div class="flex" onclick="togglelist(facilities, 'drop1')">
+                  <div class="nav">Facilities</div>
+              </div>
+              <div class="dropdown" id="facilities">
+                  <a href="{% url 'academic_facilities' %}" class="option">
+                      <div>Academic Facilities</div>
+                  </a>
+                  <a href="{% url 'library' %}" class="option">
+                      <div>Library</div>
+                  </a>
+                  <a href="{% url 'orice' %}" class="option">
+                      <div>Orice</div>
+                  </a>
+                  <a href="{% url 'procedures_policy' %}" class="option">
+                      <div>Procedures & Policy</div>
+                  </a>
+                  <a href="{% url 'it_facility' %}" class="option">
+                      <div>IT Facility</div>
+                  </a>
+                  <a href="{% url 'sports_facility' %}" class="option">
+                      <div>Sports Facility</div>
+                  </a>
+                  <a href="{% url 'amenity_centre' %}" class="option">
+                      <div>Amenity Centre</div>
+                  </a>
+                  <a href="{% url 'canteen' %}" class="option">
+                      <div>Canteen</div>
+                  </a>
+                  <a href="{% url 'womens_hostel' %}" class="option">
+                      <div>Women's Hostel</div>
+                  </a>
+                  <a href="{% url 'auditorium_seminar_halls' %}" class="option">
+                      <div>Auditorium & Seminar Halls</div>
+                  </a>
+              </div>
+            </div>
+            <div class="group flex">
+              <div class="flex" onclick="togglelist(researchMenu, 'drop1')">
+                  <div class="nav">Research</div>
+              </div>
+              <div class="dropdown" id="researchMenu">
+                <a href="{% url 'research_centre' %}" class="option"><div>Research Centre</div></a>
+                <a href="{% url 'research_guides' %}" class="option"><div>Research Guides</div></a>
+                <a href="{% url 'research_scholars' %}" class="option"><div>Research Scholars</div></a>
+                <a href="{% url 'research_projects' %}" class="option"><div>Research Projects</div></a>
+                <a href="{% url 'research_journal' %}" class="option"><div>Research Journal</div></a>
+            </div>
+            </div>
+            <div class="group flex">
+              <div class="flex" onclick="togglelist(student_support, 'drop1')">
+                  <div class="nav">Student Support</div>
+              </div>
+              <div class="dropdown" id="student_support">
+                  <a href="{% url 'scholarships' %}" class="option">
+                      <div>Scholarships</div>
+                  </a>
+                  <a href="{% url 'career_guidance' %}" class="option">
+                      <div>Career Guidance</div>
+                  </a>
+                  <a href="{% url 'yip' %}" class="option">
+                    <div>YIP</div>
+                  </a>
+                  <a href="{% url 'grievance_redressal' %}" class="option">
+                      <div>Grievance Redressal</div>
+                  </a>
+                  <a href="{% url 'endowments' %}" class="option">
+                      <div>Endowments</div>
+                  </a>
+                  <a href="{% url 'feedback' %}" class="option">
+                      <div>Feedback</div>
+                  </a>
+                  <a href="{% url 'code_of_conduct' %}" class="option">
+                      <div>Code of Conduct</div>
+                  </a>
+              </div>
+            </div>
+            <div class="group flex">
+              <div class="flex" onclick="togglelist(forums,'drop1')">
                 <div class="nav">Forums</div>
               </div>
-              <div class="dropdown" id="club">
+              <div class="dropdown" id="forums">
+                <a href="{% url 'pta' %}" class="option">
+                  <div>PTA</div>
+                </a>
                 <a href="{% url 'club' %}" class="option">
                   <div>National Service Scheme (NSS)</div>
                 </a>
                 <a href="{% url 'alumini' %}" class="option">
                   <div>ALUMNI</div>
                 </a>
-                
+                <a href="{% url 'college_union' %}" class="option">
+                  <div>College Union</div>
+                </a>
+                <a href="{% url 'committies' %}" class="option">
+                  <div>Committies</div>
+                </a>
+                <a href="{% url 'clubs' %}" class="option">
+                  <div>Clubs</div>
+                </a>
+
                 {% comment %} <a href="{% url 'fitness' %}" class="option">
                   <div>COLLEGE FITNESS PROGRAMME</div>
                 </a>

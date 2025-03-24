@@ -1,0 +1,78 @@
+{% extends "header.html" %} {% block content %} {% load static %}
+
+<div style="overflow-x: auto;">
+<div class="container banner">
+    <div class="heading">Office</div>
+  </div>
+  <div class="container">
+<div class="sec-container">
+    <!-- <h3 class="sub-heading">Office</h3> -->
+
+    <!-- Tab Navigation -->
+    <div class="tab-container">
+        <button class="tab-btn active" id="tab-sections" onclick="showSections()">Sections & Services</button>
+        <button class="tab-btn" id="tab-office" onclick="showOfficeStaff()">Office Staff</button>
+    </div>
+
+    <!-- Sections & Services Table (Default Visible) -->
+    <div id="sections-services-section">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Section</th>
+                    <th>Services</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>A1</td><td>PAY BILLS, GPF, SPARK</td></tr>
+                <tr><td>A2</td><td>FEES, SCHOLARSHIP, E-GRANTS</td></tr>
+                <tr><td>A3</td><td>PLAN BILLS, UGC, RUSA, AUDIT</td></tr>
+                <tr><td>B1</td><td>ESTABLISHMENT - TEACHING & NON TEACHING</td></tr>
+                <tr><td>B2</td><td>ADMISSION, EXAMINATIONS</td></tr>
+                <tr><td>B3</td><td>TC, NASS, STATIONERY, PD FUNDS</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Office Staff Section (Hidden by Default) -->
+    <div id="office-staff-section" style="display: none;">
+        <div class="grid">
+            {% for employee in employees %}
+            <a href="#" class="news-box facbox">
+                <div class="imgcon">
+                    <img src="{{ employee.photo.url }}" alt="{{ employee.name }}" class="news-img" />
+                </div>
+                <div class="bold-head">{{ employee.position }}</div>
+                <div class="date-box">{{ employee.name }}</div>
+                <div class="flex-just-c-sb">
+                    <pre>{{ employee.qualification }}</pre>
+                </div>
+            </a>
+            {% empty %}
+                <p>No office staff members found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-- JavaScript to Toggle Tabs & Sections -->
+<script>
+    function showOfficeStaff() {
+        document.getElementById('office-staff-section').style.display = 'block';
+        document.getElementById('sections-services-section').style.display = 'none';
+
+        document.getElementById('tab-office').classList.add('active');
+        document.getElementById('tab-sections').classList.remove('active');
+    }
+
+    function showSections() {
+        document.getElementById('office-staff-section').style.display = 'none';
+        document.getElementById('sections-services-section').style.display = 'block';
+
+        document.getElementById('tab-sections').classList.add('active');
+        document.getElementById('tab-office').classList.remove('active');
+    }
+</script>
+
+{% endblock %}

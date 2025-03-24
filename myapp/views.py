@@ -67,17 +67,115 @@ def courses(request):
     # employees = Employee.objects.all()
     return render(request, 'courses.html')
 
+def committies(request):
+    return render(request, 'committies.html')
+
+def pta(request):
+    return render(request, 'pta.html')
+
+def college_union(request):
+    return render(request, 'college_union.html')
+
+def clubs(request):
+    return render(request, 'clubs.html')
+
 def FYUGP(request):
     return render(request, 'FYUGP.html')
 def iqac(request):
     # employees = Employee.objects.all()
     return render(request, 'iqac.html')
+
 def staffcouncil(request):
     # employees = Employee.objects.all()
     return render(request, 'staffcouncil.html')
-def about(request):
-    # employees = Employee.objects.all()
-    return render(request, 'about.html')
+# def about(request):
+#     # employees = Employee.objects.all()
+#     return render(request, 'about.html')
+
+def about_college(request):
+    return render(request, 'about_college.html')
+
+def rti(request):
+    return render(request, 'rti.html')
+
+def cdc(request):
+    return render(request, 'cdc.html')
+
+def office(request):
+    office_staff = Employee.objects.filter(position="Office Staff")  # Fetch only office staff
+    # return render(request, 'office.html')
+    return render(request, 'office.html', {'employees': office_staff})
+
+#Faclilties
+def academic_facilities(request):
+    return render(request, 'academic_facilities.html')
+
+def library(request):
+    return render(request, 'library.html')
+
+def orice(request):
+    return render(request, 'orice.html')
+
+def procedures_policy(request):
+    return render(request, 'procedures_policy.html')
+
+def it_facility(request):
+    return render(request, 'it_facility.html')
+
+def sports_facility(request):
+    return render(request, 'sports_facility.html')
+
+def amenity_centre(request):
+    return render(request, 'amenity_centre.html')
+
+def canteen(request):
+    return render(request, 'canteen.html')
+
+def womens_hostel(request):
+    return render(request, 'womens_hostel.html')
+
+def auditorium_seminar_halls(request):
+    return render(request, 'auditorium_seminar_halls.html')
+
+#Research
+def research_centre(request):
+    return render(request, 'research_centre.html')
+
+def research_guides(request):
+    return render(request, 'research_guides.html')
+
+def research_scholars(request):
+    return render(request, 'research_scholars.html')
+
+def research_projects(request):
+    return render(request, 'research_projects.html')
+
+def research_journal(request):
+    return render(request, 'research_journal.html')
+
+#Student Support
+def scholarships(request):
+    return render(request, 'scholarships.html')
+
+def career_guidance(request):
+    return render(request, 'career_guidance.html')
+
+def yip(request):
+    return render(request, 'yip.html')
+
+def grievance_redressal(request):
+    return render(request, 'grievance_redressal.html')
+
+def endowments(request):
+    return render(request, 'endowments.html')
+
+def feedback(request):
+    return render(request, 'feedback.html')
+
+def code_of_conduct(request):
+    return render(request, 'code_of_conduct.html')
+
+
 def applicatonforms(request):
     # employees = Employee.objects.all()
     return render(request, 'applicatonforms.html')
@@ -216,51 +314,129 @@ def delete_department(request, pk):
     return redirect('login')
 
 #Employee
+# def create_employee(request):
+#     if 'username' in request.session:
+#         if request.method == 'POST':
+#             try:
+#                 # First check if a file was uploaded
+#                 if 'photo' not in request.FILES:
+#                     return render(request, 'create_employee.html', 
+#                                 {'error': 'Please upload a photo'})
+                
+#                 photo = request.FILES['photo']
+                
+#                 # Validate file type
+#                 if not photo.content_type.startswith('image/'):
+#                     return render(request, 'create_employee.html', 
+#                                 {'error': 'Please upload a valid image file'})
+                
+#                 # Check file size (e.g., max 5MB)
+#                 if photo.size > 5 * 1024 * 1024:  # 5MB in bytes
+#                     return render(request, 'create_employee.html', 
+#                                 {'error': 'Photo size should be less than 5MB'})
+                
+#                 # If all checks pass, compress the photo
+#                 try:
+#                     compressed_photo = compress_image(photo)
+#                 except Exception as e:
+#                     return render(request, 'create_employee.html', 
+#                                 {'error': f'Error processing photo: {str(e)}'})
+                
+#                 # Continue with creating employee...
+#                 employee = Employee(
+#                     name=request.POST.get('name'),
+#                     position=request.POST.get('position'),
+#                     photo=compressed_photo,
+#                     qualification=request.POST.get('qualification'),
+#                     department=request.POST.get('department')
+#                 )
+#                 employee.save()
+                
+#                 return redirect('employee_list')
+                
+#             except Exception as e:
+#                 return render(request, 'create_employee.html', 
+#                             {'error': f'Error creating employee: {str(e)}'})
+#         department_list = Department.objects.all()
+#         return render(request, 'create_employee.html', {"departments":department_list})
+#     return redirect('login')
+# Function to compress image before saving
+def compress_image(image):
+    try:
+        img = Image.open(image)
+        img = img.convert('RGB')  # Ensure it's in RGB mode (not RGBA)
+        img_io = io.BytesIO()
+        img.save(img_io, format='JPEG', quality=70)  # Adjust quality as needed
+        return InMemoryUploadedFile(
+            img_io, None, image.name, 'image/jpeg', img_io.tell, None
+        )
+    except Exception as e:
+        raise Exception(f"Compression error: {str(e)}")
+
+# Employee creation view
 def create_employee(request):
-    if 'username' in request.session:
+    if 'username' in request.session:  # Ensure the user is logged in
         if request.method == 'POST':
             try:
-                # First check if a file was uploaded
+                # Validate name and position fields
+                name = request.POST.get('name', '').strip()
+                position = request.POST.get('position', '').strip()
+                qualification = request.POST.get('qualification', '').strip()
+                department_id = request.POST.get('department')
+
+                if not name or not position or not qualification or not department_id:
+                    return render(request, 'create_employee.html', 
+                                  {'error': 'All fields are required'})
+
+                # Validate department
+                try:
+                    department = Department.objects.get(id=department_id)
+                except ObjectDoesNotExist:
+                    return render(request, 'create_employee.html', 
+                                  {'error': 'Invalid department selected'})
+
+                # Validate and compress photo
                 if 'photo' not in request.FILES:
                     return render(request, 'create_employee.html', 
-                                {'error': 'Please upload a photo'})
-                
+                                  {'error': 'Please upload a photo'})
+
                 photo = request.FILES['photo']
                 
-                # Validate file type
                 if not photo.content_type.startswith('image/'):
                     return render(request, 'create_employee.html', 
-                                {'error': 'Please upload a valid image file'})
-                
-                # Check file size (e.g., max 5MB)
-                if photo.size > 5 * 1024 * 1024:  # 5MB in bytes
+                                  {'error': 'Please upload a valid image file'})
+
+                if photo.size > 5 * 1024 * 1024:  # 5MB size limit
                     return render(request, 'create_employee.html', 
-                                {'error': 'Photo size should be less than 5MB'})
-                
-                # If all checks pass, compress the photo
+                                  {'error': 'Photo size should be less than 5MB'})
+
+                # Compress the photo
                 try:
                     compressed_photo = compress_image(photo)
                 except Exception as e:
                     return render(request, 'create_employee.html', 
-                                {'error': f'Error processing photo: {str(e)}'})
-                
-                # Continue with creating employee...
+                                  {'error': f'Error processing photo: {str(e)}'})
+
+                # Save employee record
                 employee = Employee(
-                    name=request.POST.get('name'),
-                    position=request.POST.get('position'),
+                    name=name,
+                    position=position,
                     photo=compressed_photo,
-                    qualification=request.POST.get('qualification'),
-                    department=request.POST.get('department')
+                    qualification=qualification,
+                    department=department
                 )
                 employee.save()
-                
+
                 return redirect('employee_list')
-                
+
             except Exception as e:
                 return render(request, 'create_employee.html', 
-                            {'error': f'Error creating employee: {str(e)}'})
+                              {'error': f'Error creating employee: {str(e)}'})
+
+        # Fetch departments for dropdown
         department_list = Department.objects.all()
-        return render(request, 'create_employee.html', {"departments":department_list})
+        return render(request, 'create_employee.html', {"departments": department_list})
+
     return redirect('login')
 
 def employee_list(request):
@@ -278,48 +454,122 @@ def delete_old_photo(employee):
                 os.remove(employee.photo.path)
             except Exception as e:
                 print(f"Error deleting old photo: {e}")
+# def update_employee(request, employee_id):
+#     if 'username' in request.session:
+#         employee = get_object_or_404(Employee, pk=employee_id)
+#         department_list = Department.objects.all()
+#         if request.method == 'POST':
+#             name = request.POST.get('name')
+#             position = request.POST.get('position')
+#             photo = request.FILES.get('photo')
+#             qualification = request.POST.get('qualification')
+#             department = request.POST.get('department')
+#             employee.name = name
+#             employee.position = position
+#             employee.department = department
+#             employee.qualification = qualification
+#             if 'photo' in request.FILES:
+#                         photo = request.FILES['photo']
+                        
+#                         # Validate file type
+#                         if not photo.content_type.startswith('image/'):
+#                             return render(request, 'update_employee.html', 
+#                                         {'employee': employee, 
+#                                         'error': 'Please upload a valid image file'})
+                        
+#                         # Check file size (max 5MB)
+#                         if photo.size > 5 * 1024 * 1024:
+#                             return render(request, 'update_employee.html', 
+#                                         {'employee': employee, 
+#                                         'error': 'Photo size should be less than 5MB'})
+                        
+#                         try:
+#                             # Delete old photo first
+#                             delete_old_photo(employee)
+#                             # Compress and save new photo
+#                             compressed_photo = compress_image(photo)
+#                             employee.photo = compressed_photo
+#                         except Exception as e:
+#                             return render(request, 'update_employee.html', 
+#                                         {'employee': employee, 
+#                                         'error': f'Error processing photo: {str(e)}'})
+#             employee.save()
+#             return redirect('employee_list')
+#         return render(request, 'update_employee.html', {'employee': employee, "departments":department_list})
+#     return redirect('login')
+
 def update_employee(request, employee_id):
     if 'username' in request.session:
         employee = get_object_or_404(Employee, pk=employee_id)
         department_list = Department.objects.all()
+
         if request.method == 'POST':
-            name = request.POST.get('name')
-            position = request.POST.get('position')
-            photo = request.FILES.get('photo')
-            qualification = request.POST.get('qualification')
-            department = request.POST.get('department')
-            employee.name = name
-            employee.position = position
-            employee.department = department
-            employee.qualification = qualification
-            if 'photo' in request.FILES:
-                        photo = request.FILES['photo']
-                        
-                        # Validate file type
-                        if not photo.content_type.startswith('image/'):
-                            return render(request, 'update_employee.html', 
-                                        {'employee': employee, 
-                                        'error': 'Please upload a valid image file'})
-                        
-                        # Check file size (max 5MB)
-                        if photo.size > 5 * 1024 * 1024:
-                            return render(request, 'update_employee.html', 
-                                        {'employee': employee, 
-                                        'error': 'Photo size should be less than 5MB'})
-                        
-                        try:
-                            # Delete old photo first
-                            delete_old_photo(employee)
-                            # Compress and save new photo
-                            compressed_photo = compress_image(photo)
-                            employee.photo = compressed_photo
-                        except Exception as e:
-                            return render(request, 'update_employee.html', 
-                                        {'employee': employee, 
-                                        'error': f'Error processing photo: {str(e)}'})
-            employee.save()
-            return redirect('employee_list')
-        return render(request, 'update_employee.html', {'employee': employee, "departments":department_list})
+            try:
+                # Get form data
+                name = request.POST.get('name', '').strip()
+                position = request.POST.get('position', '').strip()
+                qualification = request.POST.get('qualification', '').strip()
+                department_id = request.POST.get('department')
+
+                # Ensure all fields are filled
+                if not name or not position or not qualification or not department_id:
+                    return render(request, 'update_employee.html', 
+                                  {'employee': employee, 'departments': department_list, 
+                                   'error': 'All fields are required'})
+
+                # Convert department_id to Department object
+                try:
+                    department = Department.objects.get(id=department_id)
+                except ObjectDoesNotExist:
+                    return render(request, 'update_employee.html', 
+                                  {'employee': employee, 'departments': department_list, 
+                                   'error': 'Invalid department selected'})
+
+                # Update employee fields
+                employee.name = name
+                employee.position = position
+                employee.qualification = qualification
+                employee.department = department  # ✅ Assign Department object, not ID
+
+                # Handle photo update
+                if 'photo' in request.FILES:
+                    photo = request.FILES['photo']
+                    
+                    # Validate file type
+                    if not photo.content_type.startswith('image/'):
+                        return render(request, 'update_employee.html', 
+                                      {'employee': employee, 'departments': department_list, 
+                                       'error': 'Please upload a valid image file'})
+
+                    # Check file size (max 5MB)
+                    if photo.size > 5 * 1024 * 1024:
+                        return render(request, 'update_employee.html', 
+                                      {'employee': employee, 'departments': department_list, 
+                                       'error': 'Photo size should be less than 5MB'})
+
+                    try:
+                        # Delete old photo first
+                        delete_old_photo(employee)
+                        # Compress and save new photo
+                        compressed_photo = compress_image(photo)
+                        employee.photo = compressed_photo
+                    except Exception as e:
+                        return render(request, 'update_employee.html', 
+                                      {'employee': employee, 'departments': department_list, 
+                                       'error': f'Error processing photo: {str(e)}'})
+
+                # Save updated employee
+                employee.save()
+                return redirect('employee_list')
+
+            except Exception as e:
+                return render(request, 'update_employee.html', 
+                              {'employee': employee, 'departments': department_list, 
+                               'error': f'Error updating employee: {str(e)}'})
+
+        return render(request, 'update_employee.html', 
+                      {'employee': employee, 'departments': department_list})
+
     return redirect('login')
 
 def delete_employee(request, employee_id):
@@ -331,49 +581,59 @@ def delete_employee(request, employee_id):
     return redirect('login')
 
 #Activity
+
 # def create_activity(request):
 #     if 'username' in request.session:
 #         if request.method == 'POST':
 #             try:
+#                 # Debugging: Check incoming data
+#                 print("POST Data:", request.POST)
+#                 print("FILES Data:", request.FILES)
+
 #                 # First check if a file was uploaded
 #                 if 'photo' not in request.FILES:
 #                     return render(request, 'create_activity.html', 
-#                                 {'error': 'Please upload a photo'})
+#                                   {'error': 'Please upload a photo'})
                 
 #                 photo = request.FILES['photo']
                 
 #                 # Validate file type
 #                 if not photo.content_type.startswith('image/'):
 #                     return render(request, 'create_activity.html', 
-#                                 {'error': 'Please upload a valid image file'})
+#                                   {'error': 'Please upload a valid image file'})
                 
 #                 # Check file size (e.g., max 5MB)
 #                 if photo.size > 5 * 1024 * 1024:  # 5MB in bytes
 #                     return render(request, 'create_activity.html', 
-#                                 {'error': 'Photo size should be less than 5MB'})
+#                                   {'error': 'Photo size should be less than 5MB'})
                 
-#                 # If all checks pass, compress the photo
+#                 # Compress the photo
 #                 try:
 #                     compressed_photo = compress_image(photo)
 #                 except Exception as e:
+#                     print(f"Error compressing image: {e}")
 #                     return render(request, 'create_activity.html', 
-#                                 {'error': f'Error processing photo: {str(e)}'})
-                
-#                 # Continue with creating employee...
+#                                   {'error': f'Error processing photo: {str(e)}'})
+
+#                 # Create Activity object
 #                 activity = Activity(
-#                     name=request.POST.get('activity'),
+#                     name=request.POST.get('name'),  # Ensure this matches your form input
 #                     photo=compressed_photo,
 #                     department=request.POST.get('department')
 #                 )
 #                 activity.save()
 #                 print("Activity saved successfully!")
+
 #                 return redirect('activity_list')
                 
 #             except Exception as e:
+#                 print(f"Error creating activity: {e}")
 #                 return render(request, 'create_activity.html', 
-#                             {'error': f'Error creating activity: {str(e)}'})
+#                               {'error': f'Error creating activity: {str(e)}'})
+        
+#         # Load departments for dropdown
 #         department_list = Department.objects.all()
-#         return render(request, 'create_activity.html', {"departments":department_list})
+#         return render(request, 'create_activity.html', {"departments": department_list})
 #     return redirect('login')
 def create_activity(request):
     if 'username' in request.session:
@@ -399,7 +659,7 @@ def create_activity(request):
                 if photo.size > 5 * 1024 * 1024:  # 5MB in bytes
                     return render(request, 'create_activity.html', 
                                   {'error': 'Photo size should be less than 5MB'})
-                
+
                 # Compress the photo
                 try:
                     compressed_photo = compress_image(photo)
@@ -408,17 +668,21 @@ def create_activity(request):
                     return render(request, 'create_activity.html', 
                                   {'error': f'Error processing photo: {str(e)}'})
 
+                # Convert department ID to Department object
+                department_id = request.POST.get('department')
+                department = get_object_or_404(Department, id=department_id)
+
                 # Create Activity object
                 activity = Activity(
                     name=request.POST.get('name'),  # Ensure this matches your form input
                     photo=compressed_photo,
-                    department=request.POST.get('department')
+                    department=department  # ✅ Assign Department object, not ID
                 )
                 activity.save()
                 print("Activity saved successfully!")
 
                 return redirect('activity_list')
-                
+
             except Exception as e:
                 print(f"Error creating activity: {e}")
                 return render(request, 'create_activity.html', 
@@ -427,11 +691,13 @@ def create_activity(request):
         # Load departments for dropdown
         department_list = Department.objects.all()
         return render(request, 'create_activity.html', {"departments": department_list})
-    
+
     return redirect('login')
+
 def activity_list(request):
     if 'username' in request.session:
         activities = Activity.objects.all()  # Retrieve all activities
+        # activities = Activity.objects.select_related('department').all()  # Optimize queries
         return render(request, 'activity_list.html', {'activities': activities})
     return redirect('login')
 def delete_old_photo(activity):

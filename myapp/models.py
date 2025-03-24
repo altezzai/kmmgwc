@@ -10,19 +10,32 @@ class Department(models.Model):
     def __str__(self):
         return self.name
     
+# class Employee(models.Model):
+#     name = models.CharField(max_length=100)
+#     position = models.CharField(max_length=50)
+#     photo = models.ImageField(upload_to='photos/')
+#     qualification = models.TextField()
+#     # department = models.CharField(max_length=100)
+#     department = models.ForeignKey(Department, on_delete=models.CASCADE)
 class Employee(models.Model):
-    name = models.CharField(max_length=100)
-    position = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
     photo = models.ImageField(upload_to='photos/')
+    position = models.CharField(max_length=255)
     qualification = models.TextField()
-    department = models.CharField(max_length=100)
-    # department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey('Department', on_delete=models.CASCADE)
 
+# class Activity(models.Model):
+#     name = models.TextField()
+#     photo = models.ImageField(upload_to='photos/')
+#     department = models.CharField(max_length=100)
+#     # department = models.ForeignKey(Department, on_delete=models.CASCADE)
 class Activity(models.Model):
     name = models.TextField()
     photo = models.ImageField(upload_to='photos/')
-    department = models.CharField(max_length=100)
-    # department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)  # ForeignKey to Department
+
+#     def __str__(self):
+#         return f"{self.name} ({self.department.name})"  # Show department name in admin panel
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
