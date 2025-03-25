@@ -17,24 +17,6 @@
                 <option value="Office Staff" {% if employee.position == "Office Staff" %}selected{% endif %}>Office Staff</option>
             </select>
             <label for="department">Department:</label>
-            <!-- <select class="inp" id="department" name="department">
-            <option value="PHYSICS" {% if employee.department == "PHYSICS" %}selected{% endif %}>PHYSICS</option>
-            <option value="CHEMISTRY" {% if employee.department == "CHEMISTRY" %}selected{% endif %}>CHEMISTRY</option>
-            <option value="MATHEMATICS" {% if employee.department == "MATHEMATICS" %}selected{% endif %}>MATHEMATICS</option>
-            <option value="STATISTICS" {% if employee.department == "STATISTICS" %}selected{% endif %}>STATISTICS</option>
-            <option value="COMPUTER SCIENCE" {% if employee.department == "COMPUTER SCIENCE" %}selected{% endif %}>COMPUTER SCIENCE</option>
-        
-            <option value="ENGLISH" {% if employee.department == "ENGLISH" %}selected{% endif %}>ENGLISH</option>
-            <option value="PHYSICAL EDUCATION" {% if employee.department == "PHYSICAL EDUCATION" %}selected{% endif %}>PHYSICAL EDUCATION</option>
-            <option value="MALAYALAM" {% if employee.department == "MALAYALAM" %}selected{% endif %}>MALAYALAM</option>
-            <option value="HINDI" {% if employee.department == "HINDI" %}selected{% endif %}>HINDI</option>
-            <option value="ECONOMICS" {% if employee.department == "ECONOMICS" %}selected{% endif %}>HINDI</option>
-            <option value="HISTORY" {% if employee.department == "HISTORY" %}selected{% endif %}>HISTORY</option>
-            <option value="ARABIC" {% if employee.department == "ARABIC" %}selected{% endif %}>ARABIC</option>
-            <option value="JOURNALISM" {% if employee.department == "JOURNALISM" %}selected{% endif %}>JOURNALISM</option>
-            <option value="POLITICAL SCIENCE" {% if employee.department == "POLITICAL SCIENCE" %}selected{% endif %}>POLITICAL SCIENCE</option>
-            <option value="SANSKRIT" {% if employee.department == "SANSKRIT" %}selected{% endif %}>SANSKRIT</option>
-            </select> -->
             <select class="inp" id="department" name="department">
                 {% for dept in departments %}
                     <option value="{{ dept.id }}">{{ dept.name }}</option>
@@ -52,7 +34,7 @@
             <label for="qualification">Qualification:</label>
             <textarea  class="tarea inp" id="qualification" name="qualification" rows="4" required>{{ employee.qualification }}</textarea>
 
-            <button type="Submit" value="Submit">Submit</button>
+            <button type="Submit" value="Submit">Update</button>
         </form>
         <a href="{% url 'employee_list' %}" class="btn-edit btn">Back to Employee List</a>
 

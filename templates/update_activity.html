@@ -6,8 +6,8 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="name">Name:</label>
-            <!-- <input class="inp" type="text" id="name" name="name" value="{{ employee.name }}" required /> -->
-            <textarea  class="tarea inp" id="name" name="name" required>{{ activity.name }}</textarea>
+            <input type="text" name="name" id="name" value="{{ activity.name }}" required>
+            <!-- <textarea  class="tarea inp" id="name" name="name" required>{{ activity.name }}</textarea> -->
             <label for="department">Department:</label>
             <!-- <select class="inp" id="department" name="department">
             <option value="PHYSICS" {% if employee.department == "PHYSICS" %}selected{% endif %}>PHYSICS</option>
@@ -40,7 +40,7 @@
             <img class="imgpreview" src="{{ activity.photo.url }}" alt="{{ activity.name }} Photo" width="100">
             <input class="inp" type="file" id="photo" name="photo" accept="image/*" />
 
-            <button type="Submit" value="Submit">Submit</button>
+            <button type="Submit" value="Submit">Update</button>
         </form>
         <a href="{% url 'activity_list' %}" class="btn-edit btn">Back to Activity List</a>
 

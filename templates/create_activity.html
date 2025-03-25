@@ -5,34 +5,7 @@
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <label for="name">Activity:</label>
-      <textarea
-        id="name"
-        name="name"
-        required
-        class="inp tarea"></textarea>
-      <!-- <label for="department">Department:</label>
-      <select class="inp" id="department" name="department">
-        <option value="PHYSICS">PHYSICS</option>
-        <option value="CHEMISTRY">CHEMISTRY</option>
-        <option value="MATHEMATICS">MATHEMATICS</option>
-        <option value="STATISTICS">STATISTICS</option>
-        <option value="COMPUTER SCIENCE">COMPUTER SCIENCE</option>
-        <option value="ENGLISH">ENGLISH</option>
-        <option value="PHYSICAL EDUCATION">PHYSICAL EDUCATION</option>
-        <option value="MALAYALAM">MALAYALAM</option>
-        <option value="HINDI">HINDI</option>
-        <option value="ECONOMICS">ECONOMICS</option>
-        <option value="HISTORY">HISTORY</option>
-        <option value="ARABIC">ARABIC</option>
-        <option value="JOURNALISM">JOURNALISM</option>
-        <option value="POLITICAL SCIENCE">POLITICAL SCIENCE</option>
-        <option value="SANSKRIT">SANSKRIT</option>
-      </select> -->
-      <!-- <select class="inp" id="department" name="department">
-        {% for department in departments %}
-          <option value="{{ department.name }}">{{ department.name }}</option>
-        {% endfor %}
-      </select> -->
+      <input type="text" name="name" id="name" value="{{ activity.name }}" required>
       <label for="department">Department:</label> 
       <select class="inp" id="department" name="department">
         {% for dept in departments %}
@@ -50,7 +23,7 @@
         accept="image/*"
         required
       />
-      <button type="Submit" value="Submit">Submit</button>
+      <button type="Submit" value="Submit">Create</button>
     </form>
     <a href="{% url 'activity_list' %}" class="btn-edit btn">Back to List</a>
   </div>

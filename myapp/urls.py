@@ -56,6 +56,11 @@ urlpatterns = [
     path('clubs',views.clubs, name='clubs'),
     path('alumini', views.alumini, name='alumini'),
     path('courses', views.courses, name='courses'),
+    path('admission/', views.admission, name='admission'),
+    path('academic_calendar/', views.academic_calendar, name='academic_calendar'),
+    path('exam-calendar/', views.exam_calendar, name='exam_calendar'),
+    path('academic-results/', views.academic_results, name='academic_results'),
+
     path('FYUGP', views.FYUGP, name='FYUGP'),
     path('placement', views.placement, name='placement'),
     path('scholarship', views.scholarship, name='scholarship'),
@@ -89,7 +94,7 @@ urlpatterns = [
     path('create_activity', views.create_activity, name='create_activity'),
     path('activity_list/', views.activity_list, name='activity_list'),
     path('delete_activity/<int:pk>/', views.delete_activity, name='delete_activity'),
-    path('update_activity/<int:pk>/', views.update_activity, name='update_activity'),
+    path('update_activity/<int:activity_id>/', views.update_activity, name='update_activity'),
 
     path('event/create/', views.event_create, name='event_create'),
     path('event/<int:event_id>/update/', views.event_update, name='event_update'),
