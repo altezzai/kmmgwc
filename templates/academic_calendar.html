@@ -1,27 +1,64 @@
 {% extends "header.html" %} {% block content %} {% load static %}
 <div class="container banner">
-    <div class="heading">Academic Calender</div>
+    <div class="heading">Academic Calender Downloads</div>
   </div>
   
   <div class="container">
-    <div class="sec-container column-flex">
-      <div class="flex gap full">
-        <div class="small-container flex-just-start">
-          <div class="head-big">ACADEMIC CALENDAR-DOWNLOADS</div>
+    <div class="sec-container">
+      <div class="small-container flex list">
+        <div class="flex">
+          <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+          <div class="c">ACADEMIC CALENDAR 2023-24</div>
         </div>
+        <a
+          href="{% static 'assets/form/Academic calendar 2023-24.pdf'%}"
+          class="btn outline"
+          download
+        >
+          <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
+        </a>
       </div>
-      <div class="small-container">
-   
-        <ul class="list-3">
+      <div class="small-container flex list">
+        <div class="flex">
+          <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+          <div class="c">ACADEMIC CALENDAR 2020-21</div>
+        </div>
+        <a
+          href="{% static 'assets/form/LEAVE_FORM.pdf'%}"
+          class="btn outline"
+          download
+        >
+          <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
+        </a>
+      </div>
+      <div class="small-container flex list">
+        <div class="flex">
+          <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+          <div class="c">ACADEMIC-CALENDAR-2019-20</div>
+        </div>
+        <a href="{% static 'assets/form/TC.pdf'%}" class="btn outline" download>
+          <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
+        </a>
+      </div>
+      <div class="small-container flex list">
+        <div class="flex">
+          <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+          <div class="c">ACADEMIC-CALENDAR-2018-19</div>
+        </div>
+        <a href="{% static 'assets/form/PM.pdf'%}" class="btn outline" download>
+          <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
+        </a>
+      </div>
+     
+      </div>
+    </div>
+  </div>
+        <!-- <ul class="list-3">
           <li>  
             <a target="_blank" href="kmmadmin/calender/Academic%20Calendar%202020-21.pdf">ACADEMIC CALENDAR 2020-21</a>
           </li><li>
             <a target="_blank" href="kmmadmin/calender/ACADEMIC-CALENDAR-2019-20.pdf">ACADEMIC-CALENDAR-2019-20</a>
           </li><li>
             <a target="_blank" href="kmmadmin/calender/ACADEMIC-CALENDAR-2018-19.pdf">ACADEMIC-CALENDAR-2018-19</a>
-          </li>          </ul> 
-        </div>
-    </div>
-</div>
-</div>
+          </li>          </ul>  -->
 {% endblock %}

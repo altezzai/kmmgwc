@@ -1,4 +1,4 @@
-{% extends "header.html" %}{% block content %}
+{% extends "header.html" %}{% block content %}{% load static %}
 <div class="container banner">
     <div class="heading">Library</div>
   </div>
@@ -182,12 +182,20 @@
                 </p>
             </li>
         </ul>
+        </div>
         <div class="flex gap full">
             <div class="small-container flex-just-start">
               <div class="head-big">Photo Gallary</div>
             </div>
           </div>
-          <div class="small-container">
+          <div class="small-container imgbox">
+            <img src="{% static 'assets/library/library1.jpg' %}" alt="Lib Img" />
+            <img src="{% static 'assets/library/library2.jpg' %}" alt="Lib Img" />
+            <img src="{% static 'assets/library/library3.jpeg' %}" alt="Lib Img" />
+            <img src="{% static 'assets/library/library4.jpeg' %}" alt="Lib Img" />
+            <img src="{% static 'assets/library/library5.jpeg' %}" alt="Lib Img" />
+            <img src="{% static 'assets/library/library6.jpeg' %}" alt="Lib Img" />
+            <img src="{% static 'assets/library/library7.jpeg' %}" alt="Lib Img" />
           </div>
 </div>
 </div>

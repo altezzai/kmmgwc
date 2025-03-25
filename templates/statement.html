@@ -5,17 +5,23 @@
 
 <div class="container">
   <div class="sec-container">
+    <div class="small-container">
     <div class="small-container flex list">
       <div class="flex">
         <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
         <div class="c">Statement Compliance</div>
       </div>
-      <a
+      <!-- <a
         href="{% static 'assets/form/LEAVE_FORM.pdf'%}"
         class="btn outline"
         download
+      > -->
+      <a
+        href="kmmadmin/statement/IQAC-Statement%20Compliance.html"
+        class="btn outline"
+        download
       >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Form
+        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
       </a>
     </div>
     {% comment %} <div class="small-container flex list">
@@ -37,6 +43,8 @@
       </a>
     </div> {% endcomment %}
    
+    
+  </div>
     </div>
   </div>
 </div>
