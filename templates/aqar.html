@@ -5,12 +5,29 @@
 
 <div class="container">
   <div class="sec-container">
-    <div class="small-container flex list">
+    <!-- <div class="small-container flex list">
       <div class="flex">
         <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
         <div class="c">ACADEMIC CALENDAR 2023-24</div>
+      </div> -->
+      {% for aqar in aqar_list %}
+    <div class="small-container flex list">
+      <div class="flex">
+        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+        <div class="c">{{ aqar.name }}</div>
       </div>
-      <a
+      <div class="button-style">
+        <a href="{{ aqar.pdf.url }}" class="btn outline" target="_blank">View</a>
+        <a href="{{ aqar.pdf.url }}" class="btn outline" download>
+          <img src="{% static 'assets/download_black.svg' %}" alt="" /> Download
+        </a>
+      </div>
+    </div>
+    {% empty %}
+    <p>No AQAR available.</p>
+    {% endfor %}
+  </div>
+      <!-- <a
         href="{% static 'assets/form/Academic calendar 2023-24.pdf'%}"
         class="btn outline"
         download
@@ -245,7 +262,7 @@
       >
         <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
       </a>
-    </div>
+    </div> -->
     </div>
   </div>
 </div>
@@ -255,91 +272,22 @@
 </div>
 <div class="container">
   <div class="sec-container">
+    {% for aqar_report in aqar_reports %}
     <div class="small-container flex list">
       <div class="flex">
         <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-        <div class="c">AQAR 2023-24</div>
+        <div class="c">{{ aqar_report.name }}</div>
       </div>
-      <a
-        href="{% static '\assets\form\AQAR 2023-24.pdf'%}"
-        class="btn outline"
-        download
-      >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-      </a>
-    </div>
-    <div class="small-container flex list">
-      <div class="flex">
-        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-        <div class="c">AQAR-2021-22</div>
+      <div class="button-style">
+        <a href="{{ aqar_report.pdf.url }}" class="btn outline" target="_blank">View</a>
+        <a href="{{ aqar_report.pdf.url }}" class="btn outline" download>
+          <img src="{% static 'assets/download_black.svg' %}" alt="" /> Download
+        </a>
       </div>
-      <a
-        href="{% static 'aqar/KMMGWC-AQAR-2021-22.pdf'%}"
-        class="btn outline" target="_blank"
-              >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-      </a>
     </div>
-    <div class="small-container flex list">
-      <div class="flex">
-        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-        <div class="c">AQAR-2019-20</div>
-      </div>
-      <a
-        href="{% static 'aqar/KMMGWC-AQAR-2019-20.pdf'%}"
-        class="btn outline" target="_blank" 
-              >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-      </a>
-    </div>
-    <div class="small-container flex list">
-      <div class="flex">
-        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-        <div class="c">AQAR-2018-19</div>
-      </div>
-      <a
-        href="{% static 'aqar/KMMGWC-AQAR-2018-19.pdf'%}"
-        class="btn outline" target="_blank" 
-              >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-      </a>
-    </div>
-    <div class="small-container flex list">
-      <div class="flex">
-        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-        <div class="c">AQAR-2017-18</div>
-      </div>
-      <a
-        href="{% static 'aqar/AQAR 2017-18.pdf'%}"
-        class="btn outline" target="_blank"
-              >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-      </a>
-    </div>
-    <div class="small-container flex list">
-      <div class="flex">
-        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-        <div class="c">AQAR-2016-17</div>
-      </div>
-      <a
-        href="{% static 'aqar/AQAR-2016-17.pdf'%}"
-        class="btn outline" target="_blank"
-              >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-      </a>
-    </div>
-    <div class="small-container flex list">
-      <div class="flex">
-        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-        <div class="c">AQAR-2015-16</div>
-      </div>
-      <a
-        href="{% static 'aqar/AQAR-2015-16.pdf'%}"
-        class="btn outline" target="_blank"
-              >
-        <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-      </a>
-    </div>
+    {% empty %}
+    <p>No AQAR Reports available.</p>
+    {% endfor %}
    
     </div>
   </div>

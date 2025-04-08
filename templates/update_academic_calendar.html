@@ -1,0 +1,24 @@
+{% extends "admin_header.html" %}
+{% block content %}
+{% load static %}
+
+<body class="edit-body">
+  <div class="edit-formcon">
+    <h2>Edit Academic Calendar</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="name">Name:</label>
+      <input class="inp" type="text" id="name" name="name" value="{{ calendar.name }}" required />
+
+      <label for="pdf">Upload PDF:</label>
+      <input class="inp" type="file" id="pdf" name="pdf" accept="application/pdf" />
+
+      <button type="submit">Update</button>
+    </form>
+
+    <a href="{% url 'academic_calendar_list' %}" class="btn-edit btn">Back to List</a>
+  </div>
+</body>
+
+{% endblock %}

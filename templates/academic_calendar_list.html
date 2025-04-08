@@ -1,0 +1,40 @@
+{% extends "admin_header.html" %}
+{% block content %}
+{% load static %}
+
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>Academic Calendar</h2>
+    <a class="btn-add btn" href="{% url 'create_academic_calendar' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>PDF</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for calendar in calendars %}
+        <tr>
+          <td>{{ calendar.name }}</td>
+          <td><a href="{{ calendar.pdf.url }}" target="_blank">View PDF</a></td>
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_academic_calendar' calendar.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_academic_calendar' calendar.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No academic calendar available.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

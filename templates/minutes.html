@@ -1,11 +1,37 @@
-{% extends "header.html" %} {% block content %} {% load static %}
+{% extends "header.html" %}{% block content %}{% load static %}
+
 <div class="container banner">
   <div class="heading">Minutes</div>
 </div>
 
 <div class="container">
   <div class="sec-container">
+    {% for minute in minutes %}
     <div class="small-container flex list">
+      <div class="flex">
+        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+        <div class="c">{{ minute.name }}</div>
+      </div>
+      <div class="button-style">
+        
+      <!-- View Button -->
+      <a href="{{ minute.pdf.url }}" class="btn outline" target="_blank">
+         View
+      </a>
+
+      <!-- Download Button -->
+      <a href="{{ minute.pdf.url }}" class="btn outline" download>
+        <img src="{% static 'assets/download_black.svg' %}" alt="" /> Download
+      </a>
+    </div>
+    </div>
+    {% empty %}
+    <p>No IQAC Minutes available.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+    <!-- <div class="small-container flex list">
       <div class="flex">
         <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
         <div class="c">IQAC MINUTES 2020-2021.pdf</div>
@@ -35,7 +61,7 @@
       <a href="{% static 'assets/form/PM.pdf'%}" class="btn outline" download>
         <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
       </a>
-    </div>
+    </div> -->
       <!-- <ul class="list-3">
         <li>
           <a href="kmmadmin/minutss/IQAC%20MINUTES%202020-2021.pdf" target="_blank">IQAC MINUTES 2020-2021.pdf</a>
@@ -48,7 +74,4 @@
         </li>
      </ul> -->
     
-  </div>
-</div>
 
-{% endblock %}

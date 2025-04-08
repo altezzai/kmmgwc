@@ -1,0 +1,46 @@
+{% extends "admin_header.html" %} 
+{% block content %} 
+{% load static %}
+
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>Student Satisfaction</h2>
+    <a class="btn-add btn" href="{% url 'create_student_satisfaction' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new Student Satisfaction" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>PDF</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for satisfaction in student_satisfactions %}
+        <tr>
+          <td>{{ satisfaction.name }}</td>
+          <td>
+            <a href="{{ satisfaction.pdf.url }}" target="_blank" class="view-link">
+              View PDF
+            </a>
+          </td>
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_student_satisfaction' satisfaction.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_student_satisfaction' satisfaction.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No Student Satisfaction records available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

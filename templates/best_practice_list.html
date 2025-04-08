@@ -1,0 +1,44 @@
+{% extends "admin_header.html" %} 
+{% block content %} 
+{% load static %}
+
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>Best Practices</h2>
+    <a class="btn-add btn" href="{% url 'create_best_practice' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new Best Practice" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>PDF</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for best_practice in best_practices %}
+        <tr>
+          <td>{{ best_practice.name }}</td>
+          <td>
+            <a href="{{ best_practice.pdf.url }}" target="_blank" class="view-link">View PDF</a>
+          </td>
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_best_practice' best_practice.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_best_practice' best_practice.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No Best Practices available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

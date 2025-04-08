@@ -21,6 +21,11 @@
   --conPadSmall: 15px;
 }
 
+.button-style{
+  display: flex;
+  gap: 10px;
+}
+
 .flex {
   display: flex;
   align-items: center;
@@ -967,7 +972,15 @@ navbar {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  place-content: center;
+}
+
+.faculty-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 items per row */
   gap: 20px;
   place-content: center;
 }
@@ -1041,6 +1054,16 @@ navbar {
   align-items: center;
 }
 
+.table-con td {
+  text-align: center; /* Centers text and inline elements */
+  vertical-align: middle; /* Ensures vertical centering */
+}
+
+.table-con td:last-child {
+  display: flex;
+  justify-content: center; /* Centers buttons horizontally */
+  gap: 10px; /* Adds spacing between buttons */
+}
 
 
 pre {
@@ -1190,8 +1213,51 @@ pre {
 }
 
 /* Responsive */
-
+@media (max-width: 1150px){
+  .grid {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    place-content: center;
+  }
+}
+@media (max-width: 1000px){
+  .grid {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 20px;
+    place-content: center;
+  }
+  .allnews {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px;
+    place-content: center;
+  }
+  .faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 4 items per row */
+    gap: 20px;
+    place-content: center;
+  }
+}
 @media (max-width: 767px) {
+  .faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); /* 4 items per row */
+    gap: 20px;
+    place-content: center;
+  }
+  .allnews {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 20px;
+    place-content: center;
+  }
   .fl-table {
     display: block;
     width: 100%;
@@ -1257,3 +1323,4 @@ pre {
     text-align: center;
   }
 }
+

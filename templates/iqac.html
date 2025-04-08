@@ -1,5 +1,5 @@
 {% extends "header.html" %} {% block content %} {% load static %}
-<div class="container banner">
+<!-- <div class="container banner">
   <div class="heading">IQAC (Internal Quality Assurance Cell)</div>
 </div>
 
@@ -29,7 +29,7 @@
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
       <div class="c">Dr. Francis. O.S</div>
-      <!-- <div class="light">Dept of Chemistry (Member)</div> -->
+      
     </div>
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
@@ -39,7 +39,7 @@
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
       <div class="c">Dr. Shanavas. P H</div>
-      <!-- <div class="light">Dept of Hindi (Member)</div> -->
+      
     </div>
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
@@ -54,12 +54,12 @@
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
       <div class="c">Dr.Binu.P.J</div>
-      <!-- <div class="light">Dept of Psychology (Member)</div> -->
+      
     </div>
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
       <div class="c">Dr.Vipin Chandran.K.P</div>
-      <!-- <div class="light">Dept of Commerce (Member)</div> -->
+      
     </div>
 
     <div class="small-container flex-just-start flex-c list">
@@ -70,7 +70,7 @@
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
       <div class="c">Dr.Riyas P</div>
-      <!-- <div class="light">Alumne Representative</div> -->
+      
     </div>
     <div class="small-container flex-just-start flex-c list">
       <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
@@ -87,6 +87,23 @@
       <div class="c">College Union chairman</div>
       <div class="light">Student Representative</div>
     </div>
+  </div>
+</div> -->
+<div class="container banner">
+  <div class="heading">IQAC (Internal Quality Assurance Cell)</div>
+</div>
+
+<div class="container">
+  <div class="sec-container">
+    {% for member in iqac_members %}
+    <div class="small-container flex-just-start flex-c list">
+      <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
+      <div class="c">{{ member.name }}</div>
+      <div class="light">{{ member.position }}</div>
+    </div>
+    {% empty %}
+    <p>No IQAC members found.</p>
+    {% endfor %}
   </div>
 </div>
 

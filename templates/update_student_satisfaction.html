@@ -1,0 +1,29 @@
+{% extends "admin_header.html" %}
+{% block content %}
+
+<div class="form-container">
+  <h2>Edit Student Satisfaction</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" value="{{ student_satisfaction.name }}" required />
+
+    <label for="pdf">Current PDF:</label>
+    {% if student_satisfaction.pdf %}
+      <div class="current-file">
+        <a href="{{ student_satisfaction.pdf.url }}" target="_blank" class="btn outline">View Current PDF</a>
+      </div>
+    {% else %}
+      <p class="no-file">No PDF uploaded</p>
+    {% endif %}
+
+    <label for="pdf">Upload New PDF (Optional):</label>
+    <input type="file" name="pdf" id="pdf" accept="application/pdf" />
+
+    <button type="submit" class="btn-submit">Update</button>
+  </form>
+  <a href="{% url 'student_satisfaction_list' %}" class="btn-back">Back to List</a>
+</div>
+
+{% endblock %}

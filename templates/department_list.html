@@ -1,47 +1,5 @@
 {% extends "admin_header.html" %} {% block content %} {% load static %}
-<!-- <div class="admin-container">
-  <div class="admin-title">
-    <h2>Department List</h2>
-    <a class="btn-add btn" href="{% url 'create_department' %}">
-      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="" />New
-    </a>
-  </div>
-  <div class="table-con">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Photos</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for department in departments %}
-        <tr>
-          <td>{{ department.name }}</td>
-          <td>{{ department.description }}</td>
-          <td>
-            {% if department.photo %}
-            <img src="{{ department.photo.url }}" alt="{{ department.title }}" width="100"/>
-            {% else %}
-            no image
-            {% endif %}
-          </td>
-          <td>
-            <a class="btn-edit btn" href="{% url 'update_department' department.pk %}">Edit</a>
-            <a class="btn-delete btn" href="{% url 'delete_department' department.pk %}">Delete</a>
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="5">No information available.</td>
-        </tr>
-        {% endfor %} 
-      </tbody>
-    </table>
-  </div>
-</div> --><div class="admin-container">
+<div class="admin-container">
   <div class="admin-title">
     <h2>Department List</h2>
     <a class="btn-add btn" href="{% url 'create_department' %}">

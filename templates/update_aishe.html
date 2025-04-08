@@ -1,0 +1,31 @@
+{% extends "admin_header.html" %}
+{% block content %}
+{% load static %}
+
+<div class="edit-formcon">
+  <h2>Edit AISHE Record</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="name">Name:</label>
+    <input class="inp" type="text" id="name" name="name" value="{{ aishe_record.name }}" required />
+
+    <label for="pdf">Current PDF:</label>
+    {% if aishe_record.pdf %}
+      <div class="current-file">
+        <a href="{{ aishe_record.pdf.url }}" target="_blank" class="btn outline">View Current PDF</a>
+      </div>
+    {% else %}
+      <p class="no-file">No PDF uploaded</p>
+    {% endif %}
+
+    <label for="pdf">Upload New PDF (Optional):</label>
+    <input class="inp" type="file" id="pdf" name="pdf" accept="application/pdf" />
+
+    <button type="submit">Update</button>
+  </form>
+
+  <a href="{% url 'aishe_list' %}" class="btn-edit btn">Back to List</a>
+</div>
+
+{% endblock %}

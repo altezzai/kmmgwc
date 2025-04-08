@@ -1,0 +1,38 @@
+{% extends "admin_header.html" %} {% block content %} {% load static %}
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>IQAC Members</h2>
+    <a class="btn-add btn" href="{% url 'create_iqac_member' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new IQAC member" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in iqac_members %}
+        <tr>
+          <td>{{ member.name }}</td>
+          <td>{{ member.position|default:"-" }}</td> <!-- Display '-' if position is empty -->
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_iqac_member' member.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_iqac_member' member.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No IQAC members available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

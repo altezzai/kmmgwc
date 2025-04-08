@@ -10,7 +10,29 @@
         The chief objective of AISHE is to portray the status of higher education in the India. The Ministry of Education has endeavoured to conduct an annual web-based All India Survey on Higher Education (AISHE) since 2010-11. The institution has obtained the unique AISHE id viz. C-43857. The survey covers all the Institutions in the country engaged in imparting of higher education. Data is being collected on several parameters such as teachers, student enrolment, programmes, examination results, education finance, infrastructure and the like. Indicators of educational development such as Institution Density, Gross Enrolment Ratio, Pupil-Teacher ratio, Gender Parity Index, Per Student Expenditure will also be calculated from the data collected through AISHE. These are useful in making informed policy decisions and research for development of education sector.
       </article>
     </div>
+    {% for record in aishe_records %}
     <div class="small-container flex list">
+      <div class="flex">
+        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+        <div class="c">{{ record.name }}</div>
+      </div>
+      <div class="button-style">
+        
+      <!-- View Button -->
+      <a href="{{ record.pdf.url }}" class="btn outline" target="_blank">
+         View
+      </a>
+
+      <!-- Download Button -->
+      <a href="{{ record.pdf.url }}" class="btn outline" download>
+        <img src="{% static 'assets/download_black.svg' %}" alt="" /> Download
+      </a>
+    </div>
+    </div>
+    {% empty %}
+    <p>No AISHE records available.</p>
+    {% endfor %}
+    <!-- <div class="small-container flex list">
       <div class="flex">
         <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
         <div class="c">Certificate--2019-20</div>
@@ -58,7 +80,7 @@
       <a href="{% static 'assets/form/PM.pdf'%}" class="btn outline" download>
         <img src="{% static 'assets/download_black.svg'%}" alt="" /> Dowmload
       </a>
-    </div>
+    </div> -->
    
     </div>
   </div>

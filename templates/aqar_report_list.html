@@ -1,0 +1,46 @@
+{% extends "admin_header.html" %}
+{% block content %}
+{% load static %}
+
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>AQAR Reports</h2>
+    <a class="btn-add btn" href="{% url 'create_aqar_report' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new AQAR Report" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>PDF</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in aqar_reports %}
+        <tr>
+          <td>{{ report.name }}</td>
+          <td>
+            <a href="{{ report.pdf.url }}" target="_blank" class="view-link">
+              View PDF
+            </a>
+          </td>
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_aqar_report' report.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_aqar_report' report.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No AQAR reports available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "admin_header.html" %} 
+{% block content %} 
+{% load static %}
+
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>IQAC Minutes</h2>
+    <a class="btn-add btn" href="{% url 'create_iqac_minute' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new IQAC Minute" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>PDF</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for minute in iqac_minutes %}
+        <tr>
+          <td>{{ minute.name }}</td>
+          <td>
+            <a href="{{ minute.pdf.url }}" target="_blank" class="view-link">
+              View PDF
+            </a>
+          </td>
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_iqac_minute' minute.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_iqac_minute' minute.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No IQAC minutes available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

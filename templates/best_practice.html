@@ -152,7 +152,7 @@
       </p>
     </div>
     <!-- <a href="kmmadmin/Best-Practice/Best%20Practice-2020-21.pdf" target="_blank">Best Practice-2020-21</a> -->
-      <div class="small-container flex list">
+      <!-- <div class="small-container flex list">
         <div class="flex">
           <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
           <div class="c">Best Practice-2020-21</div>
@@ -164,7 +164,23 @@
         >
           <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
         </a>
+      </div> -->
+      {% for best_practice in best_practices %}
+    <div class="small-container flex list">
+      <div class="flex">
+        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+        <div class="c">{{ best_practice.name }}</div>
       </div>
+      <div class="button-style">
+        <a href="{{ best_practice.pdf.url }}" class="btn outline" target="_blank">View</a>
+        <a href="{{ best_practice.pdf.url }}" class="btn outline" download>
+          <img src="{% static 'assets/download_black.svg' %}" alt="" /> Download
+        </a>
+      </div>
+    </div>
+    {% empty %}
+    <p>No Best Practices available.</p>
+    {% endfor %}
       </div>
   </div>
 </div>

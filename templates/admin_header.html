@@ -62,6 +62,49 @@
           </div>
           <div class="group flex">
             <div class="flex">
+              <a href="{% url 'academic_calendar_list' %}" class="nav">
+                <div>Academic Calendar</div>
+              </a>
+            </div>
+          </div>
+          <!-- <div class="group flex">
+            <div class="flex dropdown">
+              <a href="{% url 'iqac_member_list' %}" class="nav">IQAC Member</a>
+            </div>
+          </div> -->
+          <div class="group flex">
+            <div class="flex" onclick="togglelist(iqacDropdown, 'drop1')">
+              <div class="nav">IQAC</div>
+            </div>
+            <div class="dropdown" id="iqacDropdown">
+              <a href="{% url 'iqac_member_list' %}" class="option">
+                <div>IQAC Members</div>
+              </a>
+              <a href="{% url 'iqac_minutes_list' %}" class="option">
+                <div>IQAC Minutes</div>
+              </a>
+              <a href="{% url 'statement_compliance_list' %}" class="option">
+                <div>Statement Compliance</div>
+              </a>
+              <a href="{% url 'best_practice_list' %}" class="option">
+                <div>Best Practice</div>
+              </a>
+              <a href="{% url 'student_satisfaction_list' %}" class="option">
+                <div>Student Satisfaction</div>
+              </a>
+              <a href="{% url 'aishe_list' %}" class="option">
+                <div>AISHE</div>
+              </a>
+              <a href="{% url 'aqar_list' %}" class="option">
+                <div>AQAR</div>
+              </a>
+              <a href="{% url 'aqar_report_list' %}" class="option">
+                <div>AQAR Report</div>
+              </a>
+            </div>
+          </div>
+          <div class="group flex">
+            <div class="flex">
               <a href="{% url 'logout' %}" class="nav">Logout</a>
             </div>
           </div>

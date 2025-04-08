@@ -1,0 +1,33 @@
+{% extends "admin_header.html" %}
+{% block content %}
+{% load static %}
+
+<body class="edit-body">
+  <div class="edit-formcon">
+    <h2>Edit AQAR</h2>
+    <form id="aqarForm" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <label for="name">Name:</label>
+      <input class="inp" type="text" id="name" name="name" value="{{ aqar.name }}" required />
+
+      <label for="pdf">Current PDF:</label>
+      {% if aqar.pdf %}
+        <div class="current-file">
+          <a href="{{ aqar.pdf.url }}" target="_blank" class="btn outline">View Current PDF</a>
+        </div>
+      {% else %}
+        <p class="no-file">No PDF uploaded</p>
+      {% endif %}
+
+      <label for="pdf">Upload New PDF (Optional):</label>
+      <input class="inp" type="file" id="pdf" name="pdf" accept="application/pdf" />
+
+      <button type="submit">Update</button>
+    </form>
+
+    <a href="{% url 'aqar_list' %}" class="btn-edit btn">Back to List</a>
+  </div>
+</body>
+
+{% endblock %}

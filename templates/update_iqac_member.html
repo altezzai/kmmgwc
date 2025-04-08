@@ -1,0 +1,36 @@
+{% extends "admin_header.html" %} 
+{% block content %} 
+{% load static %}
+
+<body class="edit-body">
+  <div class="edit-formcon">
+    <h2>Edit IQAC Member</h2>
+    <form method="post">
+      {% csrf_token %}
+
+      <label for="name">Name:</label>
+      <input
+        class="inp"
+        type="text"
+        id="name"
+        name="name"
+        value="{{ member.name }}"
+        required
+      />
+
+      <label for="position">Position:</label>
+      <input
+        class="inp"
+        type="text"
+        id="position"
+        name="position"
+        value="{{ member.position }}"
+      />
+
+      <button type="submit">Update</button>
+    </form>
+    <a href="{% url 'iqac_member_list' %}" class="btn-edit btn">Back to List</a>
+  </div>
+</body>
+
+{% endblock %}

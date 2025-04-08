@@ -1,0 +1,46 @@
+{% extends "admin_header.html" %} 
+{% block content %} 
+{% load static %}
+
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>AISHE Records</h2>
+    <a class="btn-add btn" href="{% url 'create_aishe' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new AISHE" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>PDF</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in aishe_records %}
+        <tr>
+          <td>{{ record.name }}</td>
+          <td>
+            <a href="{{ record.pdf.url }}" target="_blank" class="view-link">
+              View PDF
+            </a>
+          </td>
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_aishe' record.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_aishe' record.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No AISHE records available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

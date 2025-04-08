@@ -106,6 +106,53 @@ urlpatterns = [
     path('news/update/<int:pk>/', views.update_news, name='update_news'),
     path('news/delete/<int:pk>/', views.delete_news, name='delete_news'),
 
+    path('academic_calendar/list/', views.academic_calendar_list, name="academic_calendar_list"),
+    path('academic_calendar/create/', views.create_academic_calendar, name="create_academic_calendar"),
+    path('academic_calendar/edit/<int:id>/', views.update_academic_calendar, name="update_academic_calendar"),
+    path('academic_calendar/delete/<int:id>/', views.delete_academic_calendar, name="delete_academic_calendar"),
+
+
+    path("iqac_members/", views.iqac_member_list, name="iqac_member_list"),
+    path("iqac_members/new/", views.create_iqac_member, name="create_iqac_member"),
+    path("iqac_members/edit/<int:id>/", views.update_iqac_member, name="update_iqac_member"),
+    path("iqac_members/delete/<int:id>/", views.delete_iqac_member, name="delete_iqac_member"),
+
+    path("iqac_minutes/", views.iqac_minutes_list, name="iqac_minutes_list"),
+    path("iqac_minutes/new/", views.create_iqac_minute, name="create_iqac_minute"),
+    path("iqac_minutes/edit/<int:id>/", views.update_iqac_minute, name="update_iqac_minute"),
+    path("iqac_minutes/delete/<int:id>/", views.delete_iqac_minute, name="delete_iqac_minute"),
+
+    path("statement_compliance/", views.statement_compliance_list, name="statement_compliance_list"),
+    path("statement_compliance/new/", views.create_statement_compliance, name="create_statement_compliance"),
+    path("statement_compliance/edit/<int:id>/", views.update_statement_compliance, name="update_statement_compliance"),
+    path("statement_compliance/delete/<int:id>/", views.delete_statement_compliance, name="delete_statement_compliance"),
+
+    path('aqar_list/', views.aqar_list, name="aqar_list"),
+    path('aqar/new/', views.create_aqar, name="create_aqar"),
+    path('aqar/edit/<int:id>/', views.update_aqar, name="update_aqar"),
+    path('aqar/delete/<int:id>/', views.delete_aqar, name="delete_aqar"),
+
+    path('aqar_report_list/', views.aqar_report_list, name="aqar_report_list"),
+    path('aqar_report/new/', views.create_aqar_report, name="create_aqar_report"),
+    path('aqar_report/edit/<int:id>/', views.update_aqar_report, name="update_aqar_report"),
+    path('aqar_report/delete/<int:id>/', views.delete_aqar_report, name="delete_aqar_report"),
+
+    path("aishe/list/", views.aishe_list, name="aishe_list"),
+    path("aishe/new/", views.create_aishe, name="create_aishe"),
+    path("aishe/edit/<int:id>/", views.update_aishe, name="update_aishe"),
+    path("aishe/delete/<int:id>/", views.delete_aishe, name="delete_aishe"),
+
+    path('best_practice/list/', views.best_practice_list, name="best_practice_list"),
+    path('best_practice/new/', views.create_best_practice, name="create_best_practice"),
+    path('best_practice/edit/<int:id>/', views.update_best_practice, name="update_best_practice"),
+    path('best_practice/delete/<int:id>/', views.delete_best_practice, name="delete_best_practice"),
+
+    path("student_satisfaction/list/", views.student_satisfaction_list, name="student_satisfaction_list"),
+    path("student_satisfaction/new/", views.create_student_satisfaction, name="create_student_satisfaction"),
+    path("student_satisfaction/edit/<int:id>/", views.update_student_satisfaction, name="update_student_satisfaction"),
+    path("student_satisfaction/delete/<int:id>/", views.delete_student_satisfaction, name="delete_student_satisfaction"),
+
+
     path('create_notification/', views.create_notification, name='create_notification'),
     path('update_notification/<int:notification_id>/', views.update_notification, name='update_notification'),
     path('delete_notification/<int:notification_id>/', views.delete_notification, name='delete_notification'),

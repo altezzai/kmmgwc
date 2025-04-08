@@ -1,5 +1,31 @@
 {% extends "header.html" %} {% block content %} {% load static %}
+
 <div class="container banner">
+  <div class="heading">Academic Calendar Downloads</div>
+</div>
+
+<div class="container">
+  <div class="sec-container">
+    {% for calendar in calendars %}
+    <div class="small-container flex list">
+      <div class="flex">
+        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+        <div class="c">{{ calendar.name }}</div>
+      </div>
+      <div class="button-style">
+        <a href="{{ calendar.pdf.url }}" class="btn outline" target="_blank">View
+        </a>
+        <a href="{{ calendar.pdf.url }}" class="btn outline" download>
+          <img src="{% static 'assets/download_black.svg' %}" alt="" /> Download
+        </a>
+      </div>
+    </div>
+    {% empty %}
+    <p>No academic calendars found.</p>
+    {% endfor %}
+  </div>
+</div>
+<!-- <div class="container banner">
     <div class="heading">Academic Calender Downloads</div>
   </div>
   
@@ -52,7 +78,7 @@
      
       </div>
     </div>
-  </div>
+  </div> -->
         <!-- <ul class="list-3">
           <li>  
             <a target="_blank" href="kmmadmin/calender/Academic%20Calendar%202020-21.pdf">ACADEMIC CALENDAR 2020-21</a>

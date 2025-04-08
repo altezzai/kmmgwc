@@ -1,0 +1,44 @@
+{% extends "admin_header.html" %} 
+{% block content %} 
+{% load static %}
+
+<div class="admin-container">
+  <div class="admin-title">
+    <h2>Statement Compliance</h2>
+    <a class="btn-add btn" href="{% url 'create_statement_compliance' %}">
+      <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new compliance" /> New
+    </a>
+  </div>
+
+  <div class="table-con">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>File</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for statement in statements %}
+        <tr>
+          <td>{{ statement.name }}</td>
+          <td>
+            <a href="{{ statement.file.url }}" target="_blank">View</a>
+          </td>
+          <td>
+            <a class="btn-edit btn" href="{% url 'update_statement_compliance' statement.id %}">Edit</a>
+            <a class="btn-delete btn" href="{% url 'delete_statement_compliance' statement.id %}">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No statement compliance records available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
