@@ -62,11 +62,16 @@
           </div>
           <div class="group flex">
             <div class="flex">
+              <a href="{% url 'feedback_list' %}" class="nav">Feedback</a>
+            </div>
+          </div>          
+          <!-- <div class="group flex">
+            <div class="flex">
               <a href="{% url 'academic_calendar_list' %}" class="nav">
                 <div>Academic Calendar</div>
               </a>
             </div>
-          </div>
+          </div> -->
           <!-- <div class="group flex">
             <div class="flex dropdown">
               <a href="{% url 'iqac_member_list' %}" class="nav">IQAC Member</a>
@@ -88,6 +93,9 @@
               </a>
               <a href="{% url 'best_practice_list' %}" class="option">
                 <div>Best Practice</div>
+              </a>
+              <a href="{% url 'academic_calendar_list' %}" class="option">
+                <div>Academic Calendar</div>
               </a>
               <a href="{% url 'student_satisfaction_list' %}" class="option">
                 <div>Student Satisfaction</div>

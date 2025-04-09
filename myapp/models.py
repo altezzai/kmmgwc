@@ -127,3 +127,10 @@ class AcademicCalendar(models.Model):
 
     def __str__(self):
         return self.name
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=255)
+    pdf = models.FileField(upload_to='feedback/')
+
+    def __str__(self):
+        return self.name

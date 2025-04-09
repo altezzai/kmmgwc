@@ -13,6 +13,7 @@ from .models import AISHE
 from .models import BestPractice
 from .models import StudentSatisfaction
 from .models import AcademicCalendar
+from .models import Feedback
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from datetime import date
@@ -215,7 +216,8 @@ def endowments(request):
     return render(request, 'endowments.html')
 
 def feedback(request):
-    return render(request, 'feedback.html')
+    feedbacks = Feedback.objects.all().order_by('-id')
+    return render(request, 'feedback.html', {'feedbacks': feedbacks})
 
 def code_of_conduct(request):
     return render(request, 'code_of_conduct.html')
@@ -1210,6 +1212,43 @@ def delete_student_satisfaction(request, id):
     student_satisfaction.delete()
     return redirect("student_satisfaction_list")
 
+#Feedback
+
+
+def feedback_list(request):
+    if 'username' in request.session:
+        feedbacks = Feedback.objects.all().order_by('-id')
+        return render(request, 'feedback_list.html', {'feedbacks': feedbacks})
+    return redirect('login')
+
+def create_feedback(request):
+    if 'username' in request.session:
+        if request.method == 'POST':
+            name = request.POST['name']
+            pdf = request.FILES['pdf']
+            Feedback.objects.create(name=name, pdf=pdf)
+            return redirect('feedback_list')
+        return render(request, 'create_feedback.html')
+    return redirect('login')
+
+def update_feedback(request, pk):
+    if 'username' in request.session:
+        feedback = get_object_or_404(Feedback, pk=pk)
+        if request.method == 'POST':
+            feedback.name = request.POST['name']
+            if 'pdf' in request.FILES:
+                feedback.pdf = request.FILES['pdf']
+            feedback.save()
+            return redirect('feedback_list')
+        return render(request, 'update_feedback.html', {'feedback': feedback})
+    return redirect('login')
+
+def delete_feedback(request, pk):
+    if 'username' in request.session:
+        feedback = get_object_or_404(Feedback, pk=pk)
+        feedback.delete()
+        return redirect('feedback_list')
+    return redirect('login')
 #Notificationreturn redirect('news_list')
 
 def create_notification(request):

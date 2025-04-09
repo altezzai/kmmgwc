@@ -50,6 +50,12 @@ urlpatterns = [
     path('feedback/', views.feedback, name='feedback'),
     path('code-of-conduct/', views.code_of_conduct, name='code_of_conduct'),
 
+    #Feedback admin
+    path('feedback_admin/', views.feedback_list, name='feedback_list'),  # Admin list
+    path('feedback_admin/new/', views.create_feedback, name='create_feedback'),
+    path('feedback_admin/update/<int:pk>/', views.update_feedback, name='update_feedback'),
+    path('feedback_admin/delete/<int:pk>/', views.delete_feedback, name='delete_feedback'),
+
     path('pta',views.pta, name='pta'),
     path('college_union',views.college_union, name='college_union'),
     path('committies',views.committies, name='committies'),

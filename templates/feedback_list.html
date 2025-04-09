@@ -1,0 +1,46 @@
+{% extends "admin_header.html" %}
+{% block content %}
+{% load static %}
+
+<div class="admin-container">
+    <div class="admin-title">
+        <h2>Feedback</h2>
+        <a class="btn-add btn" href="{% url 'create_feedback' %}">
+            <img src="{% static 'assets/new.svg' %}" class="img-small" alt="Add new Feedback" /> New
+        </a>
+    </div>
+
+    <div class="table-con">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>File</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for feedback in feedbacks %}
+                <tr>
+                    <td>{{ feedback.name }}</td>
+                    <td>
+                        <a href="{{ feedback.pdf.url }}" target="_blank" class="view-link">
+                            View File
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn-edit btn" href="{% url 'update_feedback' feedback.id %}">Edit</a>
+                        <a class="btn-delete btn" href="{% url 'delete_feedback' feedback.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No feedback documents available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

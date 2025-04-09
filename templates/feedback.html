@@ -1,45 +1,36 @@
-{% extends "header.html" %} {% block content %} {% load static %}
+
+{% extends "header.html" %} 
+{% block content %} 
+{% load static %}
+
 <div class="container banner">
-    <div class="heading">Feedback</div>
-  </div>
-  
-  <div class="container">
-    <!-- <div class="sec-container column-flex">
-      <div class="small-container">  
-        <ul class="list-3">
-            <li>
-                <a href="kmmadmin/feedback/Feedback%202020-21.pdf" target="_blank">Feedback 2020-21</a>
-            </li>
-            <li><a href="kmmadmin/feedback/Feedback%20Action%20taken%20Reports.pdf" target="_blank">Feedback Action taken Reports</a>
-            </li>                                                         
-     </ul>
-      </div> -->
-      <div class="sec-container column-flex">
-      <div class="small-container flex list">
-        <div class="flex">
-          <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-          <div class="c">Feedback 2020-21</div>
-        </div>
-        <a
-          href="{% static 'aqar/1.1.2_Academic_Calendar_2022-23.pdf'%}"
-          class="btn outline" target="_blank"
-                >
-          <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
-        </a>
+  <div class="heading">Feedback</div>
+</div>
+
+<div class="container">
+  <div class="sec-container">
+    {% for feedback in feedbacks %}
+    <div class="small-container flex list">
+      <div class="flex">
+        <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
+        <div class="c">{{ feedback.name }}</div>
       </div>
-      <div class="small-container flex list">
-        <div class="flex">
-          <img class="img-small" src="{% static 'assets/courses.svg' %}" alt="" />
-          <div class="c">Feedback Action taken Reports</div>
-        </div>
-        <a
-          href="{% static 'aqar/1.1.2_Academic_Calendar_2022-23.pdf'%}"
-          class="btn outline" target="_blank"
-                >
-          <img src="{% static 'assets/download_black.svg'%}" alt="" /> Download
+      <div class="button-style">
+        <!-- View Button -->
+        <a href="{{ feedback.pdf.url }}" class="btn outline" target="_blank">
+          View
+        </a>
+
+        <!-- Download Button -->
+        <a href="{{ feedback.pdf.url }}" class="btn outline" download>
+          <img src="{% static 'assets/download_black.svg' %}" alt="" /> Download
         </a>
       </div>
     </div>
+    {% empty %}
+    <p>No Feedback available.</p>
+    {% endfor %}
+  </div>
 </div>
 
 {% endblock %}
