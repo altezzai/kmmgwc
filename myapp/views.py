@@ -997,7 +997,7 @@ def create_statement_compliance(request):
         if request.method == 'POST':
             name = request.POST['name']
             pdf = request.FILES['pdf']
-            StatementCompliance.objects.create(name=name, file=pdf)
+            StatementCompliance.objects.create(name=name, pdf=pdf)
             return redirect('statement_compliance_list')
         return render(request, 'create_statement_compliance.html')
     return redirect('login')
