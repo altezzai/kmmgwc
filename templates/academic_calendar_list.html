@@ -26,7 +26,7 @@
           <td><a href="{{ calendar.pdf.url }}" target="_blank">View PDF</a></td>
           <td>
             <a class="btn-edit btn" href="{% url 'update_academic_calendar' calendar.id %}">Edit</a>
-            <a class="btn-delete btn" href="{% url 'delete_academic_calendar' calendar.id %}">Delete</a>
+            <a class="btn-delete btn" href="{% url 'delete_academic_calendar' calendar.id %}" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
           </td>
         </tr>
         {% empty %}

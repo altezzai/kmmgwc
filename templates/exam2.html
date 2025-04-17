@@ -1,0 +1,31 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+
+<div class="container banner">
+  <div class="heading">Exams</div>
+</div>
+
+<div class="container">
+  <div class="sec-container">
+    <div class="filter">
+      <div class="filterCon">
+        <a href="{% url 'exam' %}" {% if cat == 'all' %}class="selected"{% endif %}>ALL</a>
+        <a href="{% url 'examfilter' upg='ug' %}" {% if cat == 'ug' %}class="selected"{% endif %}>UG</a>
+        <a href="{% url 'examfilter' upg='pg' %}" {% if cat == 'pg' %}class="selected"{% endif %}>PG</a>
+        <a href="{% url 'examfilter' upg='both' %}" {% if cat == 'both' %}class="selected"{% endif %}>BOTH</a>
+      </div>
+    </div>
+
+    {% for exam in exams %}
+    <a href="{% url 'exam2' exam.id %}" class="small-container flex-just-start list">
+      <img class="img-small" src="{% static 'assets/bell.svg' %}" alt="" />
+      {{ exam.title }}
+    </a>
+    {% empty %}
+    <p>No exam notifications available.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

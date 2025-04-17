@@ -14,6 +14,18 @@ urlpatterns = [
     path('notification2/<int:noti_id>/', views.notification2, name='notification2'),
     path('notificationfilter/<str:upg>/', views.notificationfilter, name='notificationfilter'),
 
+    #exam
+    path('exam', views.exam, name='exam'),
+    path('examfilter/<str:upg>/', views.examfilter, name='examfilter'),
+    path('exam2/<int:exam_id>/', views.exam2, name='exam2'),
+
+
+    # Admin exam
+    path('exams/list/', views.list_exams, name='list_exams'),
+    path('exams/create/', views.create_exam, name='create_exam'),
+    path('exams/update/<int:exam_id>/', views.update_exam, name='update_exam'),
+    path('exams/delete/<int:exam_id>/', views.delete_exam, name='delete_exam'),
+
     path('club', views.club, name='club'),
     path('fitness', views.fitness, name='fitness'),
     # path('about', views.about, name='about'),

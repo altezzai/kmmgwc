@@ -4,6 +4,7 @@ from .models import Department
 from .models import Event
 from .models import News,NewsImage
 from .models import Notification
+from .models import Exam
 from .models import Activity
 from .models import IQACMember
 from .models import IQACMinute
@@ -1249,6 +1250,65 @@ def delete_feedback(request, pk):
         feedback.delete()
         return redirect('feedback_list')
     return redirect('login')
+
+#Exam
+def create_exam(request):
+    if 'username' in request.session:
+        if request.method == 'POST':
+            category = request.POST.get('category')
+            title = request.POST.get('title')
+            # time = request.POST.get('time')
+            # date = request.POST.get('date')
+            description = request.POST.get('description')
+            file = request.FILES.get('file')
+
+            Exam.objects.create(category=category, title=title, description=description, file=file)
+            return redirect('list_exams')
+        return render(request, 'exam_create.html')
+    return redirect('login')
+
+def update_exam(request, exam_id):
+    if 'username' in request.session:
+        exam = get_object_or_404(Exam, pk=exam_id)
+        if request.method == 'POST':
+            exam.category = request.POST.get('category')
+            exam.title = request.POST.get('title')
+            # exam.time = request.POST.get('time')
+            # exam.date = request.POST.get('date')
+            exam.description = request.POST.get('description')
+            if 'file' in request.FILES:
+                exam.file = request.FILES['file']
+            exam.save()
+            return redirect('list_exams')
+        return render(request, 'exam_update.html', {'exam': exam})
+    return redirect('login')
+
+def delete_exam(request, exam_id):
+    if 'username' in request.session:
+        exam = get_object_or_404(Exam, pk=exam_id)
+        exam.delete()
+        return redirect('list_exams')
+    return redirect('login')
+
+def list_exams(request):
+    if 'username' in request.session:
+        exams = Exam.objects.all().order_by('-id')
+        return render(request, 'exam_list.html', {'exams': exams})
+    return redirect('login')
+
+# Frontend
+def exam(request):
+    exams = Exam.objects.all().order_by('-id')
+    return render(request, 'exam2.html', {'exams': exams, 'cat': 'all'})
+
+def examfilter(request, upg):
+    exams = Exam.objects.filter(category=upg).order_by('-id')
+    return render(request, 'exam2.html', {'exams': exams, 'cat': upg})
+
+def exam2(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id)
+    return render(request, 'exam.html', {'exam': exam})
+
 #Notificationreturn redirect('news_list')
 
 def create_notification(request):

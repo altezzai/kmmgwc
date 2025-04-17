@@ -65,6 +65,15 @@ class Notification(models.Model):
     def __str__(self):
         return self.title
 
+class Exam(models.Model):
+    category = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    file = models.FileField(upload_to='exams/', null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
 class IQACMember(models.Model):
     name = models.CharField(max_length=255)
     position = models.CharField(max_length=255, blank=True, null=True)  # Optional field

@@ -30,7 +30,7 @@
           </td>
           <td>
             <a class="btn-edit btn" href="{% url 'update_aishe' record.id %}">Edit</a>
-            <a class="btn-delete btn" href="{% url 'delete_aishe' record.id %}">Delete</a>
+            <a class="btn-delete btn" href="{% url 'delete_aishe' record.id %}" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
           </td>
         </tr>
         {% empty %}

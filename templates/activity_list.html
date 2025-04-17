@@ -34,11 +34,14 @@
               href="{% url 'update_activity' activity.id %}"
               >Edit</a
             >
-            <a
+            <!-- <a
               class="btn-delete btn"
               href="{% url 'delete_activity' activity.id %}"
               >Delete</a
-            >
+            > -->
+            <form action="{% url 'delete_activity' activity.id %}" method="POST" onsubmit="return confirm('Are you sure you want to delete? This action cannot be undone.')">
+              {% csrf_token %}
+              <button type="submit" class="btn-delete btn">Delete</button>
           </td>
         </tr>
         {% empty %}

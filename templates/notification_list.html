@@ -42,7 +42,7 @@
             >
             <a
               class="btn-delete btn"
-              href="{% url 'delete_notification' notification.id %}"
+              href="{% url 'delete_notification' notification.id %}" onclick="return confirm('Are you sure you want to delete this item?')"
               >Delete</a
             >
           </td>
