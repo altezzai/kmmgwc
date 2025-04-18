@@ -69,6 +69,8 @@ class Exam(models.Model):
     category = models.CharField(max_length=50)
     title = models.CharField(max_length=100)
     description = models.TextField()
+    # time = models.TimeField()
+    # date = models.DateField()
     file = models.FileField(upload_to='exams/', null=True, blank=True)
 
     def __str__(self):
