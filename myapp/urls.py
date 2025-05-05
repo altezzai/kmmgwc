@@ -69,6 +69,7 @@ urlpatterns = [
     path('feedback_admin/delete/<int:pk>/', views.delete_feedback, name='delete_feedback'),
 
     path('pta',views.pta, name='pta'),
+    path('rusa',views.rusa, name='rusa'),
     path('college_union',views.college_union, name='college_union'),
     path('committies',views.committies, name='committies'),
     path('clubs',views.clubs, name='clubs'),

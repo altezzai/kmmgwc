@@ -42,9 +42,6 @@
             >
               <div>LMS</div>
             </a>
-            <a class="btn hidden-on-mobile " href="{% static 'assets/NIRF.pdf'%}">
-              <div>NIRF</div>
-            </a>
           </div>
         </navbar>
       </div>
@@ -245,6 +242,9 @@
                 <a href="{% url 'pta' %}" class="option">
                   <div>PTA</div>
                 </a>
+                <a href="{% url 'rusa' %}" class="option">
+                  <div>RUSA</div>
+                </a>
                 <a href="{% url 'club' %}" class="option">
                   <div>National Service Scheme (NSS)</div>
                 </a>
@@ -319,6 +319,19 @@
                   />
                 </a> {% endcomment %}
                 <!-- #### -->
+              </div>
+            </div>
+            <div class="group flex">
+              <div class="flex" onclick="togglelist(nirf,'drop1')">
+                <div class="nav">NIRF</div>
+              </div>
+              <div class="dropdown" id="forums">
+                <a href="{% static 'assets/NIRF.pdf'%}" class="option">
+                  <div>College</div>
+                </a>
+                <a href="{% static 'assets/NIRF.pdf'%}" class="option">
+                  <div>Overall</div>
+                </a>
               </div>
             </div>
             <div class="group flex">

@@ -120,6 +120,9 @@ def committies(request):
 def pta(request):
     return render(request, 'pta.html')
 
+def rusa(request):
+    return render(request, 'rusa.html')
+
 def college_union(request):
     return render(request, 'college_union.html')
 
