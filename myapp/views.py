@@ -213,6 +213,9 @@ def career_guidance(request):
 def yip(request):
     return render(request, 'yip.html')
 
+def ewyl(request):
+    return render(request, 'ewyl.html')
+
 def grievance_redressal(request):
     return render(request, 'grievance_redressal.html')
 

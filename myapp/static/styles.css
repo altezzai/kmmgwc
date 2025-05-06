@@ -782,6 +782,12 @@ navbar {
   border-radius: 30px;
   padding: 20px;
 }
+.description{
+  margin-bottom: 2rem;
+  text-align: justify;
+  font-weight: 200;
+  font-size: 14px;
+}
 
 .small-container {
   width: 100%;

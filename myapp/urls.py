@@ -57,6 +57,7 @@ urlpatterns = [
     path('scholarships/', views.scholarships, name='scholarships'),
     path('career-guidance/', views.career_guidance, name='career_guidance'),
     path('yip/', views.yip, name='yip'),
+    path('ewyl/', views.ewyl, name='ewyl'),
     path('grievance-redressal/', views.grievance_redressal, name='grievance_redressal'),
     path('endowments/', views.endowments, name='endowments'),
     path('feedback/', views.feedback, name='feedback'),
