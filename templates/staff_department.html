@@ -14,9 +14,9 @@
           <tr>
             <td style="width:30%;">
               <div class="header_staff">
-                <div class="tbl_image">
+                <div class="tbl_image" style="align-items: center;">
                   {% if employee.photo %}
-                    <img src="{{ employee.photo.url }}" class="img-fluid img-radius profile" alt="{{ employee.name }}">
+                    <img src="{{ employee.photo.url }}" class="img-fluid img-radius profile" alt="{{ employee.name }}" width="200" height="300" style="object-fit: cover; border-radius: 5px; ">
                   {% else %}
                     <img src="{% static 'assets/dummy_employee.jpeg' %}" class="img-fluid img-radius profile" alt="No Photo">
                   {% endif %}

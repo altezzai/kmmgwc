@@ -716,6 +716,17 @@ navbar {
   color: white;
 }
 
+/*staff department*/
+.staff_tbl{
+  width: 100%;
+  background-color: #fff0c0;
+  border:9px solid #ffeaa8;
+  border-right: 9px solid #ffeaa8;
+}
+
+.staff_tbl tbody tr:nth-child(odd) {
+  background: #fff7ddd1;
+}
 /* news page */
 
 .pad-top {
