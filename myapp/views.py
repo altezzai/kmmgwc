@@ -68,12 +68,13 @@ def faculty(request, dept):
 
     # Define custom order for positions
     position_order = {
-        "Head Of Department": 1,
-        "Professor": 2,
-        "Associate Professor": 3,
-        "Assistant Professor": 4,
-        "Visiting Faculty": 5,
-        "Office Staff": 6,
+        "Head Of Department & Professor": 1,
+        "Head of the Department & Associate Professor":2,
+        "Professor": 3,
+        "Associate Professor": 4,
+        "Assistant Professor": 5,
+        "Guest Lecturer": 6,
+        "Office Staff": 7,
     }
 
     # Get all employees and sort based on custom order
@@ -88,6 +89,10 @@ def faculty(request, dept):
         'description': department.description,
         'activities': activities
     })
+
+def staff_detail(request, employee_id):
+    employee = get_object_or_404(Employee, id=employee_id)
+    return render(request, 'staff_department.html', {'employee': employee})
 
 def club(request):
     # employees = Employee.objects.all()
@@ -373,66 +378,163 @@ def compress_image(image):
         raise Exception(f"Compression error: {str(e)}")
 
 # Employee creation view
+# def create_employee(request):
+#     if 'username' in request.session:  # Ensure the user is logged in
+#         if request.method == 'POST':
+#             try:
+#                 # Validate name and position fields
+#                 name = request.POST.get('name', '').strip()
+#                 position = request.POST.get('position', '').strip()
+#                 qualification = request.POST.get('qualification', '').strip()
+#                 department_id = request.POST.get('department')
+
+#                 if not name or not position or not qualification or not department_id:
+#                     return render(request, 'create_employee.html', 
+#                                   {'error': 'All fields are required'})
+
+#                 # Validate department
+#                 try:
+#                     department = Department.objects.get(id=department_id)
+#                 except ObjectDoesNotExist:
+#                     return render(request, 'create_employee.html', 
+#                                   {'error': 'Invalid department selected'})
+
+#                 # Validate and compress photo
+#                 if 'photo' not in request.FILES:
+#                     return render(request, 'create_employee.html', 
+#                                   {'error': 'Please upload a photo'})
+
+#                 photo = request.FILES['photo']
+                
+#                 if not photo.content_type.startswith('image/'):
+#                     return render(request, 'create_employee.html', 
+#                                   {'error': 'Please upload a valid image file'})
+
+#                 if photo.size > 5 * 1024 * 1024:  # 5MB size limit
+#                     return render(request, 'create_employee.html', 
+#                                   {'error': 'Photo size should be less than 5MB'})
+
+#                 # Compress the photo
+#                 try:
+#                     compressed_photo = compress_image(photo)
+#                 except Exception as e:
+#                     return render(request, 'create_employee.html', 
+#                                   {'error': f'Error processing photo: {str(e)}'})
+
+#                 # Save employee record
+#                 employee = Employee(
+#                     name=name,
+#                     position=position,
+#                     photo=compressed_photo,
+#                     qualification=qualification,
+#                     department=department
+#                 )
+#                 employee.save()
+
+#                 return redirect('employee_list')
+
+#             except Exception as e:
+#                 return render(request, 'create_employee.html', 
+#                               {'error': f'Error creating employee: {str(e)}'})
+
+#         # Fetch departments for dropdown
+#         department_list = Department.objects.all()
+#         return render(request, 'create_employee.html', {"departments": department_list})
+
+#     return redirect('login')
 def create_employee(request):
     if 'username' in request.session:  # Ensure the user is logged in
         if request.method == 'POST':
             try:
-                # Validate name and position fields
+                # Required fields
                 name = request.POST.get('name', '').strip()
                 position = request.POST.get('position', '').strip()
                 qualification = request.POST.get('qualification', '').strip()
-                department_id = request.POST.get('department')
 
-                if not name or not position or not qualification or not department_id:
-                    return render(request, 'create_employee.html', 
-                                  {'error': 'All fields are required'})
+                # Optional fields
+                department_id = request.POST.get('department', None)
+                total_work_experience = request.POST.get('total_work_experience', '').strip()
+                seminars_conferences_organised = request.POST.get('seminars_conferences_organised', '').strip()
+                publications = request.POST.get('publications', '').strip()
+                books_published = request.POST.get('books_published', '').strip()
+                papers_presented = request.POST.get('papers_presented', '').strip()
+                awards_honours = request.POST.get('awards_honours', '').strip()
+                personal_webpage = request.POST.get('personal_webpage', '').strip()  or None
+                additional_responsibilities = request.POST.get('additional_responsibilities', '').strip()
+                phd_mphil_projects_guided = request.POST.get('phd_mphil_projects_guided', '').strip()
+                major_minor_projects = request.POST.get('major_minor_projects', '').strip()
 
-                # Validate department
-                try:
-                    department = Department.objects.get(id=department_id)
-                except ObjectDoesNotExist:
-                    return render(request, 'create_employee.html', 
-                                  {'error': 'Invalid department selected'})
+                # Validate required fields
+                if not name or not position or not qualification:
+                    department_list = Department.objects.all()
+                    return render(request, 'create_employee.html', {
+                        'departments': department_list,
+                        'error': 'Name, Position, and Qualification are required.'
+                    })
 
-                # Validate and compress photo
-                if 'photo' not in request.FILES:
-                    return render(request, 'create_employee.html', 
-                                  {'error': 'Please upload a photo'})
+                # Optional department
+                department = None
+                if department_id:
+                    try:
+                        department = Department.objects.get(id=department_id)
+                    except ObjectDoesNotExist:
+                        return render(request, 'create_employee.html', {
+                            'error': 'Invalid department selected',
+                            'departments': Department.objects.all()
+                        })
 
-                photo = request.FILES['photo']
-                
-                if not photo.content_type.startswith('image/'):
-                    return render(request, 'create_employee.html', 
-                                  {'error': 'Please upload a valid image file'})
+                # Optional photo
+                photo = None
+                if 'photo' in request.FILES:
+                    uploaded_photo = request.FILES['photo']
+                    if not uploaded_photo.content_type.startswith('image/'):
+                        return render(request, 'create_employee.html', {
+                            'error': 'Please upload a valid image file',
+                            'departments': Department.objects.all()
+                        })
+                    if uploaded_photo.size > 5 * 1024 * 1024:
+                        return render(request, 'create_employee.html', {
+                            'error': 'Photo size should be less than 5MB',
+                            'departments': Department.objects.all()
+                        })
 
-                if photo.size > 5 * 1024 * 1024:  # 5MB size limit
-                    return render(request, 'create_employee.html', 
-                                  {'error': 'Photo size should be less than 5MB'})
+                    try:
+                        photo = compress_image(uploaded_photo)
+                    except Exception as e:
+                        return render(request, 'create_employee.html', {
+                            'error': f'Error processing photo: {str(e)}',
+                            'departments': Department.objects.all()
+                        })
 
-                # Compress the photo
-                try:
-                    compressed_photo = compress_image(photo)
-                except Exception as e:
-                    return render(request, 'create_employee.html', 
-                                  {'error': f'Error processing photo: {str(e)}'})
-
-                # Save employee record
+                # Save Employee
                 employee = Employee(
                     name=name,
                     position=position,
-                    photo=compressed_photo,
+                    photo=photo,
                     qualification=qualification,
-                    department=department
+                    department=department,
+                    total_work_experience=total_work_experience,
+                    seminars_conferences_organised=seminars_conferences_organised,
+                    publications=publications,
+                    books_published=books_published,
+                    papers_presented=papers_presented,
+                    awards_honours=awards_honours,
+                    personal_webpage=personal_webpage,
+                    additional_responsibilities=additional_responsibilities,
+                    phd_mphil_projects_guided=phd_mphil_projects_guided,
+                    major_minor_projects=major_minor_projects,
                 )
                 employee.save()
 
                 return redirect('employee_list')
 
             except Exception as e:
-                return render(request, 'create_employee.html', 
-                              {'error': f'Error creating employee: {str(e)}'})
+                return render(request, 'create_employee.html', {
+                    'error': f'Error creating employee: {str(e)}',
+                    'departments': Department.objects.all()
+                })
 
-        # Fetch departments for dropdown
+        # GET method: show form
         department_list = Department.objects.all()
         return render(request, 'create_employee.html', {"departments": department_list})
 
@@ -454,7 +556,6 @@ def delete_old_photo(employee):
             except Exception as e:
                 print(f"Error deleting old photo: {e}")
 
-
 def update_employee(request, employee_id):
     if 'username' in request.session:
         employee = get_object_or_404(Employee, pk=employee_id)
@@ -462,72 +563,174 @@ def update_employee(request, employee_id):
 
         if request.method == 'POST':
             try:
-                # Get form data
+                # Basic required fields
                 name = request.POST.get('name', '').strip()
                 position = request.POST.get('position', '').strip()
                 qualification = request.POST.get('qualification', '').strip()
-                department_id = request.POST.get('department')
 
-                # Ensure all fields are filled
-                if not name or not position or not qualification or not department_id:
-                    return render(request, 'update_employee.html', 
-                                  {'employee': employee, 'departments': department_list, 
-                                   'error': 'All fields are required'})
-
-                # Convert department_id to Department object
-                try:
-                    department = Department.objects.get(id=department_id)
-                except ObjectDoesNotExist:
-                    return render(request, 'update_employee.html', 
-                                  {'employee': employee, 'departments': department_list, 
-                                   'error': 'Invalid department selected'})
+                if not name or not position or not qualification:
+                    return render(request, 'update_employee.html', {
+                        'employee': employee,
+                        'departments': department_list,
+                        'error': 'Name, Position, and Qualification are required.'
+                    })
 
                 # Update employee fields
                 employee.name = name
                 employee.position = position
                 employee.qualification = qualification
-                employee.department = department  # ✅ Assign Department object, not ID
 
-                # Handle photo update
+                # Department (optional)
+                department_id = request.POST.get('department')
+                if department_id:
+                    try:
+                        employee.department = Department.objects.get(id=department_id)
+                    except ObjectDoesNotExist:
+                        return render(request, 'update_employee.html', {
+                            'employee': employee,
+                            'departments': department_list,
+                            'error': 'Invalid department selected'
+                        })
+                else:
+                    employee.department = None
+
+                # Photo (optional)
                 if 'photo' in request.FILES:
                     photo = request.FILES['photo']
-                    
-                    # Validate file type
                     if not photo.content_type.startswith('image/'):
-                        return render(request, 'update_employee.html', 
-                                      {'employee': employee, 'departments': department_list, 
-                                       'error': 'Please upload a valid image file'})
-
-                    # Check file size (max 5MB)
+                        return render(request, 'update_employee.html', {
+                            'employee': employee,
+                            'departments': department_list,
+                            'error': 'Please upload a valid image file'
+                        })
                     if photo.size > 5 * 1024 * 1024:
-                        return render(request, 'update_employee.html', 
-                                      {'employee': employee, 'departments': department_list, 
-                                       'error': 'Photo size should be less than 5MB'})
-
+                        return render(request, 'update_employee.html', {
+                            'employee': employee,
+                            'departments': department_list,
+                            'error': 'Photo size should be less than 5MB'
+                        })
                     try:
-                        # Delete old photo first
                         delete_old_photo(employee)
-                        # Compress and save new photo
                         compressed_photo = compress_image(photo)
                         employee.photo = compressed_photo
                     except Exception as e:
-                        return render(request, 'update_employee.html', 
-                                      {'employee': employee, 'departments': department_list, 
-                                       'error': f'Error processing photo: {str(e)}'})
+                        return render(request, 'update_employee.html', {
+                            'employee': employee,
+                            'departments': department_list,
+                            'error': f'Error processing photo: {str(e)}'
+                        })
+                elif not employee.photo:  # If no photo uploaded and no photo exists
+                    from django.core.files import File
+                    import os
 
-                # Save updated employee
+                    dummy_path = os.path.join(settings.BASE_DIR, 'static/assets/dummy_employee.jpeg')
+                    if os.path.exists(dummy_path):
+                        with open(dummy_path, 'rb') as f:
+                            employee.photo.save('default_photo.jpeg', File(f), save=False)
+
+                # Optional fields
+                employee.total_work_experience = request.POST.get('total_work_experience', '').strip() or None
+                employee.seminars_conferences_organised = request.POST.get('seminars_conferences_organised', '').strip() or None
+                employee.publications = request.POST.get('publications', '').strip() or None
+                employee.books_published = request.POST.get('books_published', '').strip() or None
+                employee.papers_presented = request.POST.get('papers_presented', '').strip() or None
+                employee.awards_honours = request.POST.get('awards_honours', '').strip() or None
+                employee.personal_webpage = request.POST.get('personal_webpage', '').strip() or None
+                employee.additional_responsibilities = request.POST.get('additional_responsibilities', '').strip() or None
+                employee.phd_mphil_projects_guided = request.POST.get('phd_mphil_projects_guided', '').strip() or None
+                employee.major_minor_projects = request.POST.get('major_minor_projects', '').strip() or None
+
+                # Save the employee record
                 employee.save()
+
                 return redirect('employee_list')
 
             except Exception as e:
-                return render(request, 'update_employee.html', 
-                              {'employee': employee, 'departments': department_list, 
-                               'error': f'Error updating employee: {str(e)}'})
+                return render(request, 'update_employee.html', {
+                    'employee': employee,
+                    'departments': department_list,
+                    'error': f'Error updating employee: {str(e)}'
+                })
 
-        return render(request, 'update_employee.html', 
-                      {'employee': employee, 'departments': department_list})
+        return render(request, 'update_employee.html', {
+            'employee': employee,
+            'departments': department_list
+        })
 
     return redirect('login')
+# def update_employee(request, employee_id):
+#     if 'username' in request.session:
+#         employee = get_object_or_404(Employee, pk=employee_id)
+#         department_list = Department.objects.all()
+
+#         if request.method == 'POST':
+#             try:
+#                 # Get form data
+#                 name = request.POST.get('name', '').strip()
+#                 position = request.POST.get('position', '').strip()
+#                 qualification = request.POST.get('qualification', '').strip()
+#                 department_id = request.POST.get('department')
+
+#                 # Ensure all fields are filled
+#                 if not name or not position or not qualification or not department_id:
+#                     return render(request, 'update_employee.html', 
+#                                   {'employee': employee, 'departments': department_list, 
+#                                    'error': 'All fields are required'})
+
+#                 # Convert department_id to Department object
+#                 try:
+#                     department = Department.objects.get(id=department_id)
+#                 except ObjectDoesNotExist:
+#                     return render(request, 'update_employee.html', 
+#                                   {'employee': employee, 'departments': department_list, 
+#                                    'error': 'Invalid department selected'})
+
+#                 # Update employee fields
+#                 employee.name = name
+#                 employee.position = position
+#                 employee.qualification = qualification
+#                 employee.department = department  # ✅ Assign Department object, not ID
+
+#                 # Handle photo update
+#                 if 'photo' in request.FILES:
+#                     photo = request.FILES['photo']
+                    
+#                     # Validate file type
+#                     if not photo.content_type.startswith('image/'):
+#                         return render(request, 'update_employee.html', 
+#                                       {'employee': employee, 'departments': department_list, 
+#                                        'error': 'Please upload a valid image file'})
+
+#                     # Check file size (max 5MB)
+#                     if photo.size > 5 * 1024 * 1024:
+#                         return render(request, 'update_employee.html', 
+#                                       {'employee': employee, 'departments': department_list, 
+#                                        'error': 'Photo size should be less than 5MB'})
+
+#                     try:
+#                         # Delete old photo first
+#                         delete_old_photo(employee)
+#                         # Compress and save new photo
+#                         compressed_photo = compress_image(photo)
+#                         employee.photo = compressed_photo
+#                     except Exception as e:
+#                         return render(request, 'update_employee.html', 
+#                                       {'employee': employee, 'departments': department_list, 
+#                                        'error': f'Error processing photo: {str(e)}'})
+
+#                 # Save updated employee
+#                 employee.save()
+#                 return redirect('employee_list')
+
+#             except Exception as e:
+#                 return render(request, 'update_employee.html', 
+#                               {'employee': employee, 'departments': department_list, 
+#                                'error': f'Error updating employee: {str(e)}'})
+
+#         return render(request, 'update_employee.html', 
+#                       {'employee': employee, 'departments': department_list})
+
+#     return redirect('login')
 
 def delete_employee(request, employee_id):
     if 'username' in request.session:

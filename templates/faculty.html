@@ -6,25 +6,21 @@
   <div>
     <p class="description">{{ description }}</p>
   </div>
-  <!-- <div class="container banner">
-    <div class="heading">Faculty</div>
-  </div> -->
-  <!-- <div class="sec-container grid"> -->
   <div class="sec-container">
     <h3 class="sub-heading">Faculty Members</h2> <!-- New heading above the list -->
     <div class="faculty-grid">
       {% for employee in employees %}
-        <a href="#" class="news-box facbox">
+        <a href="{% url 'staff_detail' employee.id %}" class="news-box facbox">
           <div class="imgcon">
-            <img
-              src="{{ employee.photo.url }}"
-              alt="{{ employee.name }}"
-              class="news-img"
-            />
+        {% if employee.photo %}
+              <img src="{{ employee.photo.url }}" alt="{{ employee.name }}" class="news-img" />
+            {% else %}
+              <img src="{% static 'assets/dummy_employee.jpeg' %}" alt="{{ employee.name }}" class="news-img" />
+            {% endif %}
           </div>
           <div class="date-box">{{ employee.name }}</div>
-          <div class="bold-head">{{ employee.position }}</div>
-          <div class="flex-just-c-sb">
+          <div class="bold-head" style="padding-left: 10px;">{{ employee.position }}</div>
+          <div class="flex-just-c-sb " style="padding-left: 10px;">
             <pre>{{ employee.qualification }}</pre>
           </div>
         </a>

@@ -1,51 +1,80 @@
 {% extends "admin_header.html" %} {% block content %} {% load static %}
-<body>
+
     <body class="edit-body">
         <div class="edit-formcon">
-        <h2>Update Employee</h2>
-        <form method="POST" enctype="multipart/form-data">
+          <h2>Update Employee</h2>
+          <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="name">Name:</label>
             <input class="inp" type="text" id="name" name="name" value="{{ employee.name }}" required />
-
+      
             <label for="position">Position:</label>
             <select class="inp" id="position" name="position">
-                <option value="Principal" {% if employee.position == "Principal" %}selected{% endif %}>Principal</option>
-                <option value="Head Of Department & Professor" {% if employee.position == "Head Of Department & Professor" %}selected{% endif %}>Head Of Department & Professor</option>
-                <option value="Head of the Department & Associate Professor" {% if employee.position == "Head of the Department & Associate Professor" %}selected{% endif %}>Head of the Department & Associate Professor</option>
-                <option value="Professor" {% if employee.position == "Professor" %}selected{% endif %}>Professor</option>
-                <option value="Associate Professor" {% if employee.position == "Associate Professor" %}selected{% endif %}>Associate Professor</option>
-                <option value="Assistant Professor" {% if employee.position == "Assistant Professor" %}selected{% endif %}>Assistant Professor</option>
-                <option value="Guest Lecturer" {% if employee.position == "Guest Lecturer" %}selected{% endif %}>Guest Lecturer</option>
-                <option value="Office Staff" {% if employee.position == "Office Staff" %}selected{% endif %}>Office Staff</option>
-                <!-- <option value="Head Of Department" {% if employee.position == "Head Of Department" %}selected{% endif %}>Head Of Department</option>
-                <option value="Professor" {% if employee.position == "Professor" %}selected{% endif %}>Professor</option>
-                <option value="Associate Professor" {% if employee.position == "Associate Professor" %}selected{% endif %}>Associate Professor</option>
-                <option value="Assistant Professor" {% if employee.position == "Assistant Professor" %}selected{% endif %}>Assistant Professor</option>
-                <option value="Visiting Faculty" {% if employee.position == "Visiting Faculty" %}selected{% endif %}>Visiting Faculty</option>
-                <option value="Office Staff" {% if employee.position == "Office Staff" %}selected{% endif %}>Office Staff</option> -->
+              <option value="Principal" {% if employee.position == "Principal" %}selected{% endif %}>Principal</option>
+              <option value="Head Of Department & Professor" {% if employee.position == "Head Of Department & Professor" %}selected{% endif %}>Head Of Department & Professor</option>
+              <option value="Head of the Department & Associate Professor" {% if employee.position == "Head of the Department & Associate Professor" %}selected{% endif %}>Head of the Department & Associate Professor</option>
+              <option value="Professor" {% if employee.position == "Professor" %}selected{% endif %}>Professor</option>
+              <option value="Associate Professor" {% if employee.position == "Associate Professor" %}selected{% endif %}>Associate Professor</option>
+              <option value="Assistant Professor" {% if employee.position == "Assistant Professor" %}selected{% endif %}>Assistant Professor</option>
+              <option value="Guest Lecturer" {% if employee.position == "Guest Lecturer" %}selected{% endif %}>Guest Lecturer</option>
+              <option value="Office Staff" {% if employee.position == "Office Staff" %}selected{% endif %}>Office Staff</option>
             </select>
+      
             <label for="department">Department:</label>
             <select class="inp" id="department" name="department">
-                {% for dept in departments %}
-                    <option value="{{ dept.id }}">{{ dept.name }}</option>
-                {% empty %}
-                    <option value="">No Departments Available</option>
-                {% endfor %}
+              <option value=""></option>
+              {% for dept in departments %}
+                <option value="{{ dept.id }}" {% if employee.department and employee.department.id == dept.id %}selected{% endif %}>
+                  {{ dept.name }}
+                </option>
+              {% empty %}
+                <option value="">No Departments Available</option>
+              {% endfor %}
             </select>
-
-
+      
             <label for="photo">Photo:</label>
-            <img class="imgpreview" src="{{ employee.photo.url }}" alt="{{ employee.name }} Photo" width="100">
+            {% if employee.photo %}
+              <img class="imgpreview" src="{{ employee.photo.url }}" alt="{{ employee.name }} Photo" width="100">
+            {% else %}
+              <img class="imgpreview" src="{% static 'assets/dummy_employee.jpeg' %}" alt="Default Photo" width="100">
+            {% endif %}
             <input class="inp" type="file" id="photo" name="photo" accept="image/*" />
-
-
+      
             <label for="qualification">Qualification:</label>
-            <textarea  class="tarea inp" id="qualification" name="qualification" rows="4" required>{{ employee.qualification }}</textarea>
-
+            <textarea class="tarea inp" id="qualification" name="qualification" rows="4" required>{{ employee.qualification }}</textarea>
+      
+            <label for="total_work_experience">Total Work Experience:</label>
+            <input class="inp" type="text" id="total_work_experience" name="total_work_experience" value="{{ employee.total_work_experience }}" />
+      
+            <label for="seminars_conferences_organised">Seminars/Conferences Organised:</label>
+            <input class="inp" type="text" id="seminars_conferences_organised" name="seminars_conferences_organised" value="{{ employee.seminars_conferences_organised }}" />
+      
+            <label for="publications">List of Publications:</label>
+            <input class="inp" type="text" id="publications" name="publications" value="{{ employee.publications }}" />
+      
+            <label for="books_published">Books Published:</label>
+            <input class="inp" type="text" id="books_published" name="books_published" value="{{ employee.books_published }}" />
+      
+            <label for="papers_presented">Papers Presented in Conference/Seminars:</label>
+            <input class="inp" type="text" id="papers_presented" name="papers_presented" value="{{ employee.papers_presented }}" />
+      
+            <label for="awards_honours">Awards/Honours:</label>
+            <input class="inp" type="text" id="awards_honours" name="awards_honours" value="{{ employee.awards_honours }}" />
+      
+            <label for="personal_webpage">Personal Webpage:</label>
+            <input class="inp" type="url" id="personal_webpage" name="personal_webpage" value="{{ employee.personal_webpage|default_if_none:'' }}">
+      
+            <label for="additional_responsibilities">Additional Responsibilities:</label>
+            <input class="inp" type="text" id="additional_responsibilities" name="additional_responsibilities" value="{{ employee.additional_responsibilities }}" />
+      
+            <label for="phd_mphil_projects_guided">No of PhD/MPhil/Projects Guided:</label>
+            <input class="inp" type="text" id="phd_mphil_projects_guided" name="phd_mphil_projects_guided" value="{{ employee.phd_mphil_projects_guided }}" />
+      
+            <label for="major_minor_projects">Major and Minor Projects Undertaken:</label>
+            <input class="inp" type="text" id="major_minor_projects" name="major_minor_projects" value="{{ employee.major_minor_projects }}" />
+      
             <button type="Submit" value="Submit">Update</button>
-        </form>
-        <a href="{% url 'employee_list' %}" class="btn-edit btn">Back to Employee List</a>
-
-    </div>
-    {% endblock %}
+          </form>
+          <a href="{% url 'employee_list' %}" class="btn-edit btn">Back to Employee List</a>
+        </div>
+{% endblock %}

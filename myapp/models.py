@@ -8,23 +8,60 @@ class Department(models.Model):
     def __str__(self):
         return self.name
     
+# class Employee(models.Model):
+#     POSITION_CHOICES = [
+#         ("Principal","Principal"),
+#         ("Head Of Department & Professor", "Head Of Department & Professor"),
+#         ("Head of the Department & Associate Professor","Head of the Department & Associate Professor"),
+#         ("Professor", "Professor"),
+#         ("Associate Professor", "Associate Professor"),
+#         ("Assistant Professor", "Assistant Professor"),
+#         ("Guest Lecturer", "Guest Lecturer"),
+#         ("Office Staff", "Office Staff"),
+#     ]
+
+#     name = models.CharField(max_length=255)
+#     photo = models.ImageField(upload_to='photos/')
+#     position = models.CharField(max_length=255)
+#     qualification = models.TextField()
+#     department = models.ForeignKey('Department', on_delete=models.CASCADE, null=True, blank=True)
+#     def __str__(self):
+#         return self.name
+from django.db import models
+
 class Employee(models.Model):
     POSITION_CHOICES = [
-        ("Head Of Department", "Head Of Department"),
+        ("Principal", "Principal"),
+        ("Head Of Department & Professor", "Head Of Department & Professor"),
+        ("Head of the Department & Associate Professor", "Head of the Department & Associate Professor"),
         ("Professor", "Professor"),
         ("Associate Professor", "Associate Professor"),
         ("Assistant Professor", "Assistant Professor"),
-        ("Visiting Faculty", "Visiting Faculty"),
+        ("Guest Lecturer", "Guest Lecturer"),
         ("Office Staff", "Office Staff"),
     ]
 
     name = models.CharField(max_length=255)
-    photo = models.ImageField(upload_to='photos/')
-    position = models.CharField(max_length=255)
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
+    position = models.CharField(max_length=255, choices=POSITION_CHOICES)
     qualification = models.TextField()
-    department = models.ForeignKey('Department', on_delete=models.CASCADE)
+    department = models.ForeignKey('Department', on_delete=models.CASCADE, null=True, blank=True)
+
+    # New optional fields
+    total_work_experience = models.CharField(max_length=255, null=True, blank=True)
+    seminars_conferences_organised = models.TextField(null=True, blank=True)
+    publications = models.TextField(null=True, blank=True)
+    books_published = models.TextField(null=True, blank=True)
+    papers_presented = models.TextField(null=True, blank=True)
+    awards_honours = models.TextField(null=True, blank=True)
+    personal_webpage = models.URLField(null=True, blank=True)
+    additional_responsibilities = models.TextField(null=True, blank=True)
+    phd_mphil_projects_guided = models.TextField(null=True, blank=True)
+    major_minor_projects = models.TextField(null=True, blank=True)
+
     def __str__(self):
         return self.name
+
 
 class Activity(models.Model):
     name = models.TextField()

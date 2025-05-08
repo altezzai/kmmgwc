@@ -38,9 +38,13 @@
     <div id="office-staff-section" style="display: none;">
         <div class="grid">
             {% for employee in employees %}
-            <a href="#" class="news-box facbox">
+            <a href="{% url 'staff_detail' employee.id %}" class="news-box facbox">
                 <div class="imgcon">
-                    <img src="{{ employee.photo.url }}" alt="{{ employee.name }}" class="news-img" />
+                    {% if employee.photo %}
+              <img src="{{ employee.photo.url }}" alt="{{ employee.name }}" class="news-img" />
+            {% else %}
+              <img src="{% static 'assets/dummy_employee.jpeg' %}" alt="{{ employee.name }}" class="news-img" />
+            {% endif %}
                 </div>
                 <div class="date-box">{{ employee.name }}</div>
                 <div class="bold-head">{{ employee.position }}</div>

@@ -101,6 +101,8 @@ urlpatterns = [
     path('student_satisfaction', views.student_satisfaction, name="student_satisfaction"),
     path('institutional_distinctiveness', views.institutional_distinctiveness, name="institutional_distinctiveness"),
     
+    path('staff/<int:employee_id>/', views.staff_detail, name='staff_detail'),
+
     path('create_employee', views.create_employee, name='create_employee'),
     path('employee_list', views.employee_list, name='employee_list'),
     path('delete_employee/<int:employee_id>/', views.delete_employee, name='delete_employee'),

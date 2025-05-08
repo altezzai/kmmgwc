@@ -1,4 +1,5 @@
 {% extends "admin_header.html" %} {% block content %} {% load static %}
+
 <body class="edit-body">
   <div class="edit-formcon">
     <h2>Employee Form</h2>
@@ -11,44 +12,63 @@
       <select class="inp" id="position" name="position">
         <option value="Principal">Principal</option>
         <option value="Head Of Department & Professor">Head Of Department & Professor</option>
-        <option value="Head of the Department & Associate Professor">Head of the Department & Associate Professor</option>
+        <option value="Head of the Department & Associate Professor">Head of the Department & Associate Professor
+        </option>
         <option value="Professor">Professor</option>
         <option value="Associate Professor">Associate Professor</option>
         <option value="Assistant Professor">Assistant Professor</option>
-        <option value="Visiting Faculty">Guest Lecturer</option>
+        <option value="Guest Lecturer">Guest Lecturer</option>
         <option value="Office Staff">Office Staff</option>
         {% comment %}
         <option value="Library">Library</option>
         {% endcomment %}
       </select>
-      <label for="department">Department:</label> 
+      <label for="department">Department:</label>
       <select class="inp" id="department" name="department">
+        <option value=""></option>
         {% for dept in departments %}
-          <option value="{{ dept.id }}">{{ dept.name }}</option>
+        <option value="{{ dept.id }}">{{ dept.name }}</option>
         {% empty %}
-          <option value="">No Departments Available</option>
+        <option value="">No Departments Available</option>
         {% endfor %}
       </select>
 
 
       <label for="photo">Photo:</label>
-      <input
-        class="inp"
-        type="file"
-        id="photo"
-        name="photo"
-        accept="image/*"
-        required
-      />
+      <input class="inp" type="file" id="photo" name="photo" accept="image/*"/>
 
       <label for="qualification">Qualification:</label>
-      <textarea
-        id="qualification"
-        name="qualification"
-        rows="4"
-        required
-        class="inp tarea"
-      ></textarea>
+      <textarea id="qualification" name="qualification" rows="4" required class="inp tarea"></textarea>
+      <label for="total_work_experience">Total Work Experience:</label>
+      <input class="inp" type="text" id="total_work_experience" name="total_work_experience" />
+
+      <label for="seminars_conferences_organised">Seminars/Conferences Organised:</label>
+      <input class="inp" type="text" id="seminars_conferences_organised" name="seminars_conferences_organised" />
+
+      <label for="publications">List of Publications:</label>
+      <input class="inp" type="text" id="publications" name="publications" />
+
+      <label for="books_published">Books Published:</label>
+      <input class="inp" type="text" id="books_published" name="books_published" />
+
+      <label for="papers_presented">Papers Presented in Conference/Seminars:</label>
+      <input class="inp" type="text" id="papers_presented" name="papers_presented" />
+
+      <label for="awards_honours">Awards/Honours:</label>
+      <input class="inp" type="text" id="awards_honours" name="awards_honours" />
+
+      <label for="personal_webpage">Personal Webpage:</label>
+      <input class="inp" type="url" id="personal_webpage" name="personal_webpage" />
+
+      <label for="additional_responsibilities">Additional Responsibilities:</label>
+      <input class="inp" type="text" id="additional_responsibilities" name="additional_responsibilities" />
+
+      <label for="phd_mphil_projects_guided">No of PhD/MPhil/Projects Guided:</label>
+      <input class="inp" type="text" id="phd_mphil_projects_guided" name="phd_mphil_projects_guided" />
+
+      <label for="major_minor_projects">Major and Minor Projects Undertaken:</label>
+      <input class="inp" type="text" id="major_minor_projects" name="major_minor_projects" />
+
       <button type="Submit" value="Submit">Create</button>
     </form>
     <a href="{% url 'employee_list' %}" class="btn-edit btn">Back to List</a>
