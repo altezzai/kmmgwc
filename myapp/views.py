@@ -234,6 +234,9 @@ def feedback(request):
 def code_of_conduct(request):
     return render(request, 'code_of_conduct.html')
 
+def jeevani(request):
+    return render(request, 'jeevani.html')
+
 
 def applicatonforms(request):
     # employees = Employee.objects.all()

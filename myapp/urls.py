@@ -62,6 +62,7 @@ urlpatterns = [
     path('endowments/', views.endowments, name='endowments'),
     path('feedback/', views.feedback, name='feedback'),
     path('code-of-conduct/', views.code_of_conduct, name='code_of_conduct'),
+    path('jeevani/', views.jeevani, name='jeevani'),
 
     #Feedback admin
     path('feedback_admin/', views.feedback_list, name='feedback_list'),  # Admin list
