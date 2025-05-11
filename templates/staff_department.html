@@ -40,51 +40,55 @@
 
         <tbody>
           {% if employee.qualification and employee.qualification != "None" %}
-          <tr><td>Qualification</td><td>{{ employee.qualification }}</td></tr>
-        {% endif %}
-      
-        {% if employee.total_work_experience and employee.total_work_experience != "None" %}
-          <tr><td>Total Work Experience</td><td>{{ employee.total_work_experience }}</td></tr>
-        {% endif %}
-      
-        {% if employee.seminars_conferences_organised and employee.seminars_conferences_organised != "None" %}
-          <tr><td>Seminars/Conferences Organised</td><td>{{ employee.seminars_conferences_organised|linebreaks }}</td></tr>
-        {% endif %}
-      
-        {% if employee.publications and employee.publications != "None" %}
-          <tr><td>Publications</td><td>{{ employee.publications|linebreaks }}</td></tr>
-        {% endif %}
-      
-        {% if employee.books_published and employee.books_published != "None" %}
-          <tr><td>Books Published</td><td>{{ employee.books_published|linebreaks }}</td></tr>
-        {% endif %}
-      
-        {% if employee.papers_presented and employee.papers_presented != "None" %}
-          <tr><td>Papers Presented</td><td>{{ employee.papers_presented|linebreaks }}</td></tr>
-        {% endif %}
-      
-        {% if employee.awards_honours and employee.awards_honours != "None" %}
-          <tr><td>Awards / Honours</td><td>{{ employee.awards_honours|linebreaks }}</td></tr>
-        {% endif %}
-      
-        {% if employee.personal_webpage and employee.personal_webpage != "None" %}
-          <tr>
-            <td>Personal Webpage</td>
-            <td><a target="_blank" href="{{ employee.personal_webpage }}">{{ employee.personal_webpage }}</a></td>
-          </tr>
-        {% endif %}
-      
-        {% if employee.additional_responsibilities and employee.additional_responsibilities != "None" %}
-          <tr><td>Additional Responsibilities</td><td>{{ employee.additional_responsibilities|linebreaks }}</td></tr>
-        {% endif %}
-      
-        {% if employee.phd_mphil_projects_guided and employee.phd_mphil_projects_guided != "None" %}
-          <tr><td>PhD / MPhil / Projects Guided</td><td>{{ employee.phd_mphil_projects_guided|linebreaks }}</td></tr>
-        {% endif %}
-      
-        {% if employee.major_minor_projects and employee.major_minor_projects != "None" %}
-          <tr><td>Major / Minor Projects</td><td>{{ employee.major_minor_projects|linebreaks }}</td></tr>
-        {% endif %}
+            <tr><td>Qualification</td><td>{{ employee.qualification }}</td></tr>
+          {% endif %}
+
+          {% if employee.seniority and employee.seniority != "None" %}
+            <tr><td>Date of Joining</td><td>{{ employee.seniority }}</td></tr>
+          {% endif %}
+            
+          {% if employee.total_work_experience and employee.total_work_experience != "None" %}
+            <tr><td>Total Work Experience</td><td>{{ employee.total_work_experience }}</td></tr>
+          {% endif %}
+        
+          {% if employee.seminars_conferences_organised and employee.seminars_conferences_organised != "None" %}
+            <tr><td>Seminars/Conferences Organised</td><td>{{ employee.seminars_conferences_organised|linebreaks }}</td></tr>
+          {% endif %}
+        
+          {% if employee.publications and employee.publications != "None" %}
+            <tr><td>Publications</td><td>{{ employee.publications|linebreaks }}</td></tr>
+          {% endif %}
+        
+          {% if employee.books_published and employee.books_published != "None" %}
+            <tr><td>Books Published</td><td>{{ employee.books_published|linebreaks }}</td></tr>
+          {% endif %}
+        
+          {% if employee.papers_presented and employee.papers_presented != "None" %}
+            <tr><td>Papers Presented</td><td>{{ employee.papers_presented|linebreaks }}</td></tr>
+          {% endif %}
+        
+          {% if employee.awards_honours and employee.awards_honours != "None" %}
+            <tr><td>Awards / Honours</td><td>{{ employee.awards_honours|linebreaks }}</td></tr>
+          {% endif %}
+        
+          {% if employee.personal_webpage and employee.personal_webpage != "None" %}
+            <tr>
+              <td>Personal Webpage</td>
+              <td><a target="_blank" href="{{ employee.personal_webpage }}">{{ employee.personal_webpage }}</a></td>
+            </tr>
+          {% endif %}
+        
+          {% if employee.additional_responsibilities and employee.additional_responsibilities != "None" %}
+            <tr><td>Additional Responsibilities</td><td>{{ employee.additional_responsibilities|linebreaks }}</td></tr>
+          {% endif %}
+        
+          {% if employee.phd_mphil_projects_guided and employee.phd_mphil_projects_guided != "None" %}
+            <tr><td>PhD / MPhil / Projects Guided</td><td>{{ employee.phd_mphil_projects_guided|linebreaks }}</td></tr>
+          {% endif %}
+        
+          {% if employee.major_minor_projects and employee.major_minor_projects != "None" %}
+            <tr><td>Major / Minor Projects</td><td>{{ employee.major_minor_projects|linebreaks }}</td></tr>
+          {% endif %}
         </tbody>
       </table>
     </div>

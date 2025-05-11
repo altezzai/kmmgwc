@@ -17,6 +17,10 @@
               <option value="Associate Professor" {% if employee.position == "Associate Professor" %}selected{% endif %}>Associate Professor</option>
               <option value="Assistant Professor" {% if employee.position == "Assistant Professor" %}selected{% endif %}>Assistant Professor</option>
               <option value="Guest Lecturer" {% if employee.position == "Guest Lecturer" %}selected{% endif %}>Guest Lecturer</option>
+              <option value="Senior Superintendent" {% if employee.position == "Senior Superintendent" %}selected{% endif %}>Senior Superintendent</option>
+              <option value="Head Accountant" {% if employee.position == "Head Accountant" %}selected{% endif %}>Head Accountant</option>
+              <option value="Clerk" {% if employee.position == "Clerk" %}selected{% endif %}>Clerk</option>
+              <option value="Librarian" {% if employee.position == "Librarian" %}selected{% endif %}>Librarian</option>
               <option value="Office Staff" {% if employee.position == "Office Staff" %}selected{% endif %}>Office Staff</option>
             </select>
       
@@ -41,15 +45,18 @@
             <input class="inp" type="file" id="photo" name="photo" accept="image/*" />
       
             <label for="qualification">Qualification:</label>
-            <textarea class="tarea inp" id="qualification" name="qualification" rows="4" required>{{ employee.qualification }}</textarea>
-      
+            <textarea class="tarea inp" id="qualification" name="qualification" rows="4">{{ employee.qualification }}</textarea>
+            
+            <label for="seniority">Seniority Date:</label>
+            <input class="inp" type="date" id="seniority" name="seniority" value="{{ employee.seniority|date:'Y-m-d' }}" />
+
             <label for="total_work_experience">Total Work Experience:</label>
             <input class="inp" type="text" id="total_work_experience" name="total_work_experience" value="{{ employee.total_work_experience }}" />
       
             <label for="seminars_conferences_organised">Seminars/Conferences Organised:</label>
             <input class="inp" type="text" id="seminars_conferences_organised" name="seminars_conferences_organised" value="{{ employee.seminars_conferences_organised }}" />
       
-            <label for="publications">List of Publications:</label>
+            <label for="publications">Number of Publications:</label>
             <input class="inp" type="text" id="publications" name="publications" value="{{ employee.publications }}" />
       
             <label for="books_published">Books Published:</label>

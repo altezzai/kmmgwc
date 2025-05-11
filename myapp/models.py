@@ -38,16 +38,21 @@ class Employee(models.Model):
         ("Associate Professor", "Associate Professor"),
         ("Assistant Professor", "Assistant Professor"),
         ("Guest Lecturer", "Guest Lecturer"),
+        ("Senior Superintendent","Senior Superintendent"),
+        ("Head Accountant","Head Accountant"),
+        ("Clerk ","Clerk "),
+        ("Librarian","Librarian"),
         ("Office Staff", "Office Staff"),
     ]
 
     name = models.CharField(max_length=255)
     photo = models.ImageField(upload_to='photos/', null=True, blank=True)
     position = models.CharField(max_length=255, choices=POSITION_CHOICES)
-    qualification = models.TextField()
+    qualification = models.TextField(null=True, blank=True)
     department = models.ForeignKey('Department', on_delete=models.CASCADE, null=True, blank=True)
 
     # New optional fields
+    seniority = models.DateField(null=True, blank=True)
     total_work_experience = models.CharField(max_length=255, null=True, blank=True)
     seminars_conferences_organised = models.TextField(null=True, blank=True)
     publications = models.TextField(null=True, blank=True)

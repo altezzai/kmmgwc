@@ -18,10 +18,11 @@
         <option value="Associate Professor">Associate Professor</option>
         <option value="Assistant Professor">Assistant Professor</option>
         <option value="Guest Lecturer">Guest Lecturer</option>
+        <option value="Senior Superintendent">Senior Superintendent</option>
+        <option value="Head Accountant">Head Accountant</option>
+        <option value="Clerk">Clerk</option>
+        <option value="Librarian">Librarian</option>
         <option value="Office Staff">Office Staff</option>
-        {% comment %}
-        <option value="Library">Library</option>
-        {% endcomment %}
       </select>
       <label for="department">Department:</label>
       <select class="inp" id="department" name="department">
@@ -38,14 +39,18 @@
       <input class="inp" type="file" id="photo" name="photo" accept="image/*"/>
 
       <label for="qualification">Qualification:</label>
-      <textarea id="qualification" name="qualification" rows="4" required class="inp tarea"></textarea>
+      <textarea id="qualification" name="qualification" rows="4" class="inp tarea"></textarea>
+      
+      <label for="seniority">Date of Joining:</label>
+      <input class="inp" type="date" id="seniority" name="seniority" /> 
+      
       <label for="total_work_experience">Total Work Experience:</label>
       <input class="inp" type="text" id="total_work_experience" name="total_work_experience" />
 
       <label for="seminars_conferences_organised">Seminars/Conferences Organised:</label>
       <input class="inp" type="text" id="seminars_conferences_organised" name="seminars_conferences_organised" />
 
-      <label for="publications">List of Publications:</label>
+      <label for="publications">Number of Publications:</label>
       <input class="inp" type="text" id="publications" name="publications" />
 
       <label for="books_published">Books Published:</label>
@@ -69,9 +74,12 @@
       <label for="major_minor_projects">Major and Minor Projects Undertaken:</label>
       <input class="inp" type="text" id="major_minor_projects" name="major_minor_projects" />
 
-      <button type="Submit" value="Submit">Create</button>
+      <button type="submit" value="Submit">Create</button>
     </form>
     <a href="{% url 'employee_list' %}" class="btn-edit btn">Back to List</a>
+    {% if error %}
+<div class="error-message">{{ error }}</div>
+{% endif %}
   </div>
   {% endblock %}
 </body>

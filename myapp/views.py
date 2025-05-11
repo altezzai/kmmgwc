@@ -15,6 +15,7 @@ from .models import BestPractice
 from .models import StudentSatisfaction
 from .models import AcademicCalendar
 from .models import Feedback
+from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from datetime import date
@@ -66,20 +67,8 @@ def allevents(request):
 def faculty(request, dept):
     department = get_object_or_404(Department, pk=dept)
 
-    # Define custom order for positions
-    position_order = {
-        "Head Of Department & Professor": 1,
-        "Head of the Department & Associate Professor":2,
-        "Professor": 3,
-        "Associate Professor": 4,
-        "Assistant Professor": 5,
-        "Guest Lecturer": 6,
-        "Office Staff": 7,
-    }
-
-    # Get all employees and sort based on custom order
-    employees = list(Employee.objects.filter(department=department))
-    employees.sort(key=lambda emp: position_order.get(emp.position, 999))  # default 999 if unmatched
+    # Sort employees by seniority date (oldest first), fallback to nulls last
+    employees = Employee.objects.filter(department=department).order_by('seniority', 'name')
 
     activities = Activity.objects.filter(department=department)
 
@@ -157,8 +146,21 @@ def cdc(request):
     return render(request, 'cdc.html')
 
 def office(request):
-    office_staff = Employee.objects.filter(position="Office Staff")  # Fetch only office staff
-    # return render(request, 'office.html')
+    # Define custom sort order for office staff positions
+    position_order = {
+        "Senior Superintendent": 1,
+        "Head Accountant": 2,
+        "Clerk": 3,
+        "Librarian": 4,
+        "Office Staff": 5,  # Default position for office staff
+    }
+
+    # Get all office staff members
+    office_staff = Employee.objects.filter(position__in=position_order.keys())
+
+    # Sort the employees by the defined order
+    office_staff = sorted(office_staff, key=lambda emp: position_order.get(emp.position, 999))
+
     return render(request, 'office.html', {'employees': office_staff})
 
 #Faclilties
@@ -454,6 +456,23 @@ def create_employee(request):
                 position = request.POST.get('position', '').strip()
                 qualification = request.POST.get('qualification', '').strip()
 
+                # Check if qualification is required based on position
+                non_required_positions = [
+                    "Senior Superintendent",
+                    "Head Accountant",
+                    "Clerk",
+                    "Librarian",
+                    "Office Staff"
+                ]
+
+                # If position is not in non-required positions, qualification is required
+                if position not in non_required_positions and not qualification:
+                    department_list = Department.objects.all()
+                    return render(request, 'create_employee.html', {
+                        'departments': department_list,
+                        'error': 'Qualification is required for this position.'
+                    })
+
                 # Optional fields
                 department_id = request.POST.get('department', None)
                 total_work_experience = request.POST.get('total_work_experience', '').strip()
@@ -462,17 +481,18 @@ def create_employee(request):
                 books_published = request.POST.get('books_published', '').strip()
                 papers_presented = request.POST.get('papers_presented', '').strip()
                 awards_honours = request.POST.get('awards_honours', '').strip()
-                personal_webpage = request.POST.get('personal_webpage', '').strip()  or None
+                personal_webpage = request.POST.get('personal_webpage', '').strip() or None
                 additional_responsibilities = request.POST.get('additional_responsibilities', '').strip()
                 phd_mphil_projects_guided = request.POST.get('phd_mphil_projects_guided', '').strip()
                 major_minor_projects = request.POST.get('major_minor_projects', '').strip()
+                seniority = request.POST.get('seniority', '').strip() or None
 
                 # Validate required fields
-                if not name or not position or not qualification:
+                if not name or not position:
                     department_list = Department.objects.all()
                     return render(request, 'create_employee.html', {
                         'departments': department_list,
-                        'error': 'Name, Position, and Qualification are required.'
+                        'error': 'Name and Position are required.'
                     })
 
                 # Optional department
@@ -509,6 +529,17 @@ def create_employee(request):
                             'departments': Department.objects.all()
                         })
 
+                # Seniority date handling
+                seniority_date = None
+                if seniority:
+                    try:
+                        seniority_date = datetime.strptime(seniority, "%Y-%m-%d").date()
+                    except ValueError:
+                        return render(request, 'create_employee.html', {
+                            'error': 'Invalid seniority date format.',
+                            'departments': Department.objects.all()
+                        })
+                    
                 # Save Employee
                 employee = Employee(
                     name=name,
@@ -526,6 +557,7 @@ def create_employee(request):
                     additional_responsibilities=additional_responsibilities,
                     phd_mphil_projects_guided=phd_mphil_projects_guided,
                     major_minor_projects=major_minor_projects,
+                    seniority=seniority_date,
                 )
                 employee.save()
 
@@ -542,6 +574,7 @@ def create_employee(request):
         return render(request, 'create_employee.html', {"departments": department_list})
 
     return redirect('login')
+
 
 def employee_list(request):
     if 'username' in request.session:
@@ -566,22 +599,37 @@ def update_employee(request, employee_id):
 
         if request.method == 'POST':
             try:
-                # Basic required fields
+                # Required fields
                 name = request.POST.get('name', '').strip()
                 position = request.POST.get('position', '').strip()
                 qualification = request.POST.get('qualification', '').strip()
 
-                if not name or not position or not qualification:
+                # Conditional requirement for qualification
+                non_required_positions = [
+                    "Senior Superintendent",
+                    "Head Accountant",
+                    "Clerk",
+                    "Librarian",
+                    "Office Staff"
+                ]
+                if position not in non_required_positions and not qualification:
                     return render(request, 'update_employee.html', {
                         'employee': employee,
                         'departments': department_list,
-                        'error': 'Name, Position, and Qualification are required.'
+                        'error': 'Qualification is required for this position.'
                     })
 
-                # Update employee fields
+                if not name or not position:
+                    return render(request, 'update_employee.html', {
+                        'employee': employee,
+                        'departments': department_list,
+                        'error': 'Name and Position are required.'
+                    })
+
+                # Update core fields
                 employee.name = name
                 employee.position = position
-                employee.qualification = qualification
+                employee.qualification = qualification if qualification else None
 
                 # Department (optional)
                 department_id = request.POST.get('department')
@@ -622,7 +670,7 @@ def update_employee(request, employee_id):
                             'departments': department_list,
                             'error': f'Error processing photo: {str(e)}'
                         })
-                elif not employee.photo:  # If no photo uploaded and no photo exists
+                elif not employee.photo:
                     from django.core.files import File
                     import os
 
@@ -642,8 +690,20 @@ def update_employee(request, employee_id):
                 employee.additional_responsibilities = request.POST.get('additional_responsibilities', '').strip() or None
                 employee.phd_mphil_projects_guided = request.POST.get('phd_mphil_projects_guided', '').strip() or None
                 employee.major_minor_projects = request.POST.get('major_minor_projects', '').strip() or None
+                seniority = request.POST.get('seniority', '').strip() or None
+                if seniority:
+                    try:
+                        employee.seniority = datetime.strptime(seniority, "%Y-%m-%d").date()
+                    except ValueError:
+                        return render(request, 'update_employee.html', {
+                            'employee': employee,
+                            'departments': department_list,
+                            'error': 'Invalid seniority date format.'
+                        })
+                else:
+                    employee.seniority = None
 
-                # Save the employee record
+                # Save changes
                 employee.save()
 
                 return redirect('employee_list')

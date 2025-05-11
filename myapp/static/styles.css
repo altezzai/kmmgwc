@@ -11,12 +11,17 @@
 
 :root {
   /* --primary: #0f3c71; */
-  --primary: #e70e19;
+  /* --primary: #e70e19;
   --primary-light: #e15058;
-  --sec: #fed967;
+  --sec: #fed967; */
+--primary: #d62828;         /* Crimson Red */
+--primary-light: #ef476f;   /* Rose Pink */
+--sec: #00b4d8;             /* Bright Teal (complement) */
+--sec-light: #d0f4ff; /* A light version of --sec for row striping */
+--third: #f8f9fa;           /* Soft off-white */
 
   /* --sec: #aebbff; */
-  --third: #fffaee;
+  /* --third: #fffaee; */
   --conPad: 100px;
   --conPadSmall: 15px;
 }
@@ -717,15 +722,16 @@ navbar {
 }
 
 /*staff department*/
-.staff_tbl{
+.staff_tbl {
   width: 100%;
-  background-color: #fff0c0;
-  border:9px solid #ffeaa8;
-  border-right: 9px solid #ffeaa8;
+  background-color: var(--third);    /* Soft off-white background */
+  border: 9px solid var(--sec);      /* Bright Teal border */
+  border-right: 9px solid var(--sec);
+  border-radius: 10px;
 }
 
 .staff_tbl tbody tr:nth-child(odd) {
-  background: #fff7ddd1;
+  background: var(--sec-light);
 }
 /* news page */
 
@@ -1034,7 +1040,7 @@ navbar {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  border-bottom: 2px solid #fed967;
+  border-bottom: 2px solid var(--sec);
 }
 .tab-btn {
   padding: 12px 20px;
@@ -1051,26 +1057,36 @@ navbar {
 }
 .tab-btn.active {
   color: #000;
-  border-bottom: 3px solid #fed967;
+  border-bottom: 3px solid var(--sec);
 }
 .tab-btn:hover {
   color: #222;
 }
 .styled-table {
-   width: 100%;
+  width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
-.styled-table th, .styled-table td {
-  border: 1px solid #ddd;
+
+.styled-table th,
+.styled-table td {
+  border: 1px solid var(--sec-light);  /* Subtle border */
   padding: 10px;
   text-align: left;
 }
+
 .styled-table th {
-  background-color: #fed967;
-  color: black;
-  align-items: center;
+  background-color: var(--sec);        /* Teal background */
+  color: white;                         /* White text for contrast */
 }
+
+.styled-table tbody tr:nth-child(odd) {
+  background-color: var(--third);      /* Off-white rows */
+}
+
+/* .styled-table tbody tr:hover {
+  background-color: var(--sec-light); 
+} */
 
 .table-con td {
   text-align: center; /* Centers text and inline elements */
