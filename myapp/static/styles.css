@@ -819,6 +819,11 @@ navbar {
   font-weight: 200;
   /* max-width: 80%; */
 }
+.small-container ul{
+  margin-bottom: 2rem;
+  text-align: justify;
+  font-weight: 200;
+}
 .small-container .middle-strong {
   margin-bottom: 2rem;
   text-align: justify;
