@@ -1,160 +1,172 @@
 {% extends "header.html" %} {% block content %} {% load static %}
 <div class="container banner">
     <div class="heading">Auditorium & Seminar Hall</div>
-  </div>
-  
-  <div class="container">
+</div>
+
+<div class="container">
     <div class="sec-container column-flex">
-      <div class="flex gap full">
-        <!-- <div class="small-container flex-just-start">
+        <div class="flex gap full">
+            <!-- <div class="small-container flex-just-start">
           <div class="head-big">Auditorium & Seminar Hall</div>
         </div> -->
-      </div>  
-      <div class="small-container">
-        <p>
-            The college has two large auditoriums: old and new. The old one is quite large enough to hold more than 
-            five hundred people and is built in a more than 5000 square feet area. The new one is under construction 
-            and can hold nearly a thousand people in nearly 10000 square feet area. The auditorium is used to hold 
-            different cultural festivals, workshops and seminars both by the stakeholders and outsiders. The external 
-            people and organisations can hire the auditorium after remitting the required fee to the government. Strict 
-            directions are given to the people outside not to damage the clean and green atmosphere of the campus. The 
-            waste they produce will have to be taken back by them.
-        </p> 
-        <p> The college has two seminar halls as well, which are well equipped and fully functional. These amenities are 
-            used by different departments of the college to hold programmes like seminars, academic discussions, workshops, 
-            welcome meetings to fresh admissions, farewell meetings to outgoing students and the like. General meetings of 
-            the staff are also convened in these seminar halls. The new seminar hall has been equipped like a conference 
-            hall where a lot of governmental programmes are conducted at regular intervals. 
-        </p>     
-      </div>
-      <div class="flex gap full">
+        </div>
+        <div class="small-container">
+            <p>
+                The college has two large auditoriums: old and new. The old one is quite large enough to hold more than
+                five hundred people and is built in a more than 5000 square feet area. The new one is under construction
+                and can hold nearly a thousand people in nearly 10000 square feet area. The auditorium is used to hold
+                different cultural festivals, workshops and seminars both by the stakeholders and outsiders. The
+                external
+                people and organisations can hire the auditorium after remitting the required fee to the government.
+                Strict
+                directions are given to the people outside not to damage the clean and green atmosphere of the campus.
+                The
+                waste they produce will have to be taken back by them.
+            </p>
+            <p> The college has two seminar halls as well, which are well equipped and fully functional. These amenities
+                are
+                used by different departments of the college to hold programmes like seminars, academic discussions,
+                workshops,
+                welcome meetings to fresh admissions, farewell meetings to outgoing students and the like. General
+                meetings of
+                the staff are also convened in these seminar halls. The new seminar hall has been equipped like a
+                conference
+                hall where a lot of governmental programmes are conducted at regular intervals.
+            </p>
+        </div>
+        <!-- <div class="flex gap full">
         <div class="small-container flex-just-start">
             <div class="head-big">Photo Gallery</div>
         </div>
     </div>
     <div class="small-container imgbox">
-        <!-- <img src="{% static 'assets/library/library1.jpg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
+        <img src="{% static 'assets/library/library1.jpg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
         <img src="{% static 'assets/library/library2.jpg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
         <img src="{% static 'assets/library/library3.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
         <img src="{% static 'assets/library/library4.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
         <img src="{% static 'assets/library/library5.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
         <img src="{% static 'assets/library/library6.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
-        <img src="{% static 'assets/library/library7.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" /> -->
+        <img src="{% static 'assets/library/library7.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
+    </div> -->
     </div>
-</div>
 </div>
 
 <!-- The Modal -->
 <div id="imageModal" class="modal">
-<span class="close" onclick="closeModal()">&times;</span>
-<img class="modal-content" id="modalImg">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImg">
 </div>
 
 <style>
-/* Image Gallery Styles */
-.imgbox {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.gallery-img {
-    width: 200px;
-    height: 150px;
-    object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.gallery-img:hover {
-    transform: scale(1.05);
-}
-
-/* Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    padding-top: 50px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.9);
-}
-
-.modal-content {
-    margin: auto;
-    display: block;
-    max-width: 80%;
-    max-height: 80%;
-}
-
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-}
-
-/* Animation */
-.modal-content {
-    animation-name: zoom;
-    animation-duration: 0.6s;
-}
-
-@keyframes zoom {
-    from {transform:scale(0)}
-    to {transform:scale(1)}
-}
-
-/* Responsive adjustments */
-@media only screen and (max-width: 700px){
-    .modal-content {
-        width: 100%;
+    /* Image Gallery Styles */
+    .imgbox {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
     }
-}
+
+    .gallery-img {
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+
+    .gallery-img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        padding-top: 50px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        max-width: 80%;
+        max-height: 80%;
+    }
+
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+    }
+
+    /* Animation */
+    .modal-content {
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    /* Responsive adjustments */
+    @media only screen and (max-width: 700px) {
+        .modal-content {
+            width: 100%;
+        }
+    }
 </style>
 
 <script>
-// Function to open the modal
-function openModal(imgSrc) {
-    const modal = document.getElementById("imageModal");
-    const modalImg = document.getElementById("modalImg");
-    
-    modal.style.display = "block";
-    modalImg.src = imgSrc;
-}
+    // Function to open the modal
+    function openModal(imgSrc) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImg");
 
-// Function to close the modal
-function closeModal() {
-    document.getElementById("imageModal").style.display = "none";
-}
-
-// Close the modal when clicking outside of the image
-window.onclick = function(event) {
-    const modal = document.getElementById("imageModal");
-    if (event.target == modal) {
-        modal.style.display = "none";
+        modal.style.display = "block";
+        modalImg.src = imgSrc;
     }
-}
 
-// Allow ESC key to close the modal
-document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") {
+    // Function to close the modal
+    function closeModal() {
         document.getElementById("imageModal").style.display = "none";
     }
-});
+
+    // Close the modal when clicking outside of the image
+    window.onclick = function (event) {
+        const modal = document.getElementById("imageModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Allow ESC key to close the modal
+    document.addEventListener('keydown', function (event) {
+        if (event.key === "Escape") {
+            document.getElementById("imageModal").style.display = "none";
+        }
+    });
 </script>
 {% endblock %}
