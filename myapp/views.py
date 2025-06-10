@@ -79,9 +79,16 @@ def faculty(request, dept):
         'activities': activities
     })
 
+# def staff_detail(request, employee_id):
+#     employee = get_object_or_404(Employee, id=employee_id)
+#     return render(request, 'staff_department.html', {'employee': employee})
 def staff_detail(request, employee_id):
     employee = get_object_or_404(Employee, id=employee_id)
-    return render(request, 'staff_department.html', {'employee': employee})
+    from_faculty = request.GET.get('from_faculty') == '1'  # Reads ?from_faculty=1
+    return render(request, 'staff_department.html', {
+        'employee': employee,
+        'from_faculty': from_faculty,
+    })
 
 def club(request):
     # employees = Employee.objects.all()

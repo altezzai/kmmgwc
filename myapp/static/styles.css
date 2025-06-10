@@ -724,12 +724,30 @@ navbar {
 /*staff department*/
 .staff_tbl {
   width: 100%;
-  background-color: var(--third);    /* Soft off-white background */
-  border: 9px solid var(--sec);      /* Bright Teal border */
-  border-right: 9px solid var(--sec);
+  background-color: var(--third);
+  border: 9px solid var(--sec);
   border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0 6px;  /* Vertical gap only between body rows */
 }
-
+.staff_tbl tbody td {
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  padding: 6px 10px;
+  vertical-align: top;
+  line-height: 1.6;
+}
+.staff_tbl thead td {
+  padding: 10px;  /* Keep original tighter spacing */
+  vertical-align: middle;
+}
+.staff_tbl td p {
+  font-family: "Poppins", sans-serif !important;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
 .staff_tbl tbody tr:nth-child(odd) {
   background: var(--sec-light);
 }
