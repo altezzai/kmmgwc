@@ -4,7 +4,7 @@
 </div>
 <div class="container">
   <div>
-    <p class="description">{{ description }}</p>
+    <pre class="description">{{ description }}</pre>
   </div>
   <div class="sec-container">
     <h3 class="sub-heading">Faculty Members</h2> <!-- New heading above the list -->
@@ -20,9 +20,9 @@
           </div>
           <div class="date-box">{{ employee.name }}</div>
           <div class="bold-head" style="padding-left: 10px;">{{ employee.position }}</div>
-          <div class="flex-just-c-sb " style="padding-left: 10px;">
+          <!-- <div class="flex-just-c-sb " style="padding-left: 10px;">
             <pre>{{ employee.qualification }}</pre>
-          </div>
+          </div> -->
         </a>
       {% empty %}
         <p>No faculty members found in this department.</p>
