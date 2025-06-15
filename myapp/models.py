@@ -67,12 +67,17 @@ class Employee(models.Model):
     def __str__(self):
         return self.name
 
-
+class NSSPhoto(models.Model):
+    image = models.ImageField(upload_to='nss/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    
 class Activity(models.Model):
     name = models.TextField()
-    photo = models.ImageField(upload_to='photos/')
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)  # ForeignKey to Department
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
+class ActivityPhoto(models.Model):
+    activity = models.ForeignKey(Activity, related_name='photos', on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='photos/')
 #     def __str__(self):
 #         return f"{self.name} ({self.department.name})"  # Show department name in admin panel
 

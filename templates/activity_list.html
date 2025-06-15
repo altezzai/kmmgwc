@@ -22,18 +22,14 @@
           <td>{{ activity.name }}</td>
           <td>{{ activity.department }}</td>
           <td>
-            <img
-              src="{{ activity.photo.url }}"
-              alt="{{ activity.name }} Photo"
-              class="photo-list"
-            />
+            {% for photo in activity.photos.all %}
+              <img src="{{ photo.photo.url }}" alt="{{ activity.name }} Photo" class="photo-list" />
+            {% empty %}
+              No photos available
+            {% endfor %}
           </td>
           <td>
-            <a
-              class="btn-edit btn"
-              href="{% url 'update_activity' activity.id %}"
-              >Edit</a
-            >
+            <a class="btn-edit btn" href="{% url 'update_activity' activity.id %}">Edit</a>
             <!-- <a
               class="btn-delete btn"
               href="{% url 'delete_activity' activity.id %}"

@@ -14,15 +14,9 @@
           <option value="">No activities Available</option>
         {% endfor %}
       </select>
-      <label for="photo">Photo:</label>
-      <input
-        class="inp"
-        type="file"
-        id="photo"
-        name="photo"
-        accept="image/*"
-        required
-      />
+      <label for="photos">Photos (multiple):</label>
+      <label for="photo">Photos:</label>
+      <input class="inp" type="file" id="photos" name="photos" accept="image/*" multiple required />
       <button type="Submit" value="Submit">Create</button>
     </form>
     <a href="{% url 'activity_list' %}" class="btn-edit btn">Back to List</a>

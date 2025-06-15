@@ -1,129 +1,127 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>admin page</title>
-    <link rel="stylesheet" href="{% static 'styles.css'%}" />
 
-    <link rel="stylesheet" href="{% static 'mobile.css'%}" />
+<head>
+  <title>admin page</title>
+  <link rel="stylesheet" href="{% static 'styles.css'%}" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'mobile.css'%}" />
+  <link rel="stylesheet" href="{% static 'admin.css'%}" />
+  <script src="{% static 'script.js' %}" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
 
-    <link rel="stylesheet" href="{% static 'admin.css'%}" />
-
-    <script src="{% static 'script.js' %}" defer></script>
-
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body class="admin-body">
-    <div class="navcon">
-      <navbar class="flex n">
-        <img src="{% static 'assets/logo.png' %}" class="logo" alt="" />
-        <img
-          src="{% static 'assets/bm.svg' %}"
-          alt=""
-          class="bm"
-          onclick="opennav()"
-        />
-        <div class="l">
-          <div class="close" onclick="closenav()">
-            <img src="{% static 'assets/close.svg' %}" alt="" />
+<body class="admin-body">
+  <div class="navcon">
+    <navbar class="flex n">
+      <img src="{% static 'assets/logo.png' %}" class="logo" alt="" />
+      <img src="{% static 'assets/bm.svg' %}" alt="" class="bm" onclick="opennav()" />
+      <div class="l">
+        <div class="close" onclick="closenav()">
+          <img src="{% static 'assets/close.svg' %}" alt="" />
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'department_list' %}" class="nav">Departments</a>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'department_list' %}" class="nav">Departments</a>
-            </div>
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'activity_list' %}" class="nav">Activity</a>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'activity_list' %}" class="nav">Activity</a>
-            </div>
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'employee_list' %}" class="nav">Faculty</a>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'employee_list' %}" class="nav">Faculty</a>
-            </div>
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'event_list' %}" class="nav">Events</a>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'event_list' %}" class="nav">Events</a>
-            </div>
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'list_notifications' %}" class="nav">Notifications</a>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'list_notifications' %}" class="nav"
-                >Notifications</a
-              >
-            </div>
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'news_list' %}" class="nav">News</a>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'news_list' %}" class="nav">News</a>
-            </div>
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'feedback_list' %}" class="nav">Feedback</a>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'feedback_list' %}" class="nav">Feedback</a>
-            </div>
-          </div>         
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'list_exams' %}" class="nav">Exam</a>
-            </div>
-          </div>   
-          <!-- <div class="group flex">
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'list_exams' %}" class="nav">Exam</a>
+          </div>
+        </div>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'nss_photo_list' %}" class="nav">NSS</a>
+          </div>
+        </div>
+        <!-- <div class="group flex">
             <div class="flex">
               <a href="{% url 'academic_calendar_list' %}" class="nav">
                 <div>Academic Calendar</div>
               </a>
             </div>
           </div> -->
-          <!-- <div class="group flex">
+        <!-- <div class="group flex">
             <div class="flex dropdown">
               <a href="{% url 'iqac_member_list' %}" class="nav">IQAC Member</a>
             </div>
           </div> -->
-          <div class="group flex">
-            <div class="flex" onclick="togglelist(iqacDropdown, 'drop1')">
-              <div class="nav">IQAC</div>
-            </div>
-            <div class="dropdown" id="iqacDropdown">
-              <a href="{% url 'iqac_member_list' %}" class="option">
-                <div>IQAC Members</div>
-              </a>
-              <a href="{% url 'iqac_minutes_list' %}" class="option">
-                <div>IQAC Minutes</div>
-              </a>
-              <a href="{% url 'statement_compliance_list' %}" class="option">
-                <div>Statement Compliance</div>
-              </a>
-              <a href="{% url 'best_practice_list' %}" class="option">
-                <div>Best Practice</div>
-              </a>
-              <a href="{% url 'academic_calendar_list' %}" class="option">
-                <div>Academic Calendar</div>
-              </a>
-              <a href="{% url 'student_satisfaction_list' %}" class="option">
-                <div>Student Satisfaction</div>
-              </a>
-              <a href="{% url 'aishe_list' %}" class="option">
-                <div>AISHE</div>
-              </a>
-              <a href="{% url 'aqar_list' %}" class="option">
-                <div>AQAR</div>
-              </a>
-              <a href="{% url 'aqar_report_list' %}" class="option">
-                <div>AQAR Report</div>
-              </a>
-            </div>
+        <div class="group flex">
+          <div class="flex" onclick="togglelist(iqacDropdown, 'drop1')">
+            <div class="nav">IQAC</div>
           </div>
-          <div class="group flex">
-            <div class="flex">
-              <a href="{% url 'logout' %}" class="nav">Logout</a>
-            </div>
+          <div class="dropdown" id="iqacDropdown">
+            <a href="{% url 'iqac_member_list' %}" class="option">
+              <div>IQAC Members</div>
+            </a>
+            <a href="{% url 'iqac_minutes_list' %}" class="option">
+              <div>IQAC Minutes</div>
+            </a>
+            <a href="{% url 'statement_compliance_list' %}" class="option">
+              <div>Statement Compliance</div>
+            </a>
+            <a href="{% url 'best_practice_list' %}" class="option">
+              <div>Best Practice</div>
+            </a>
+            <a href="{% url 'academic_calendar_list' %}" class="option">
+              <div>Academic Calendar</div>
+            </a>
+            <a href="{% url 'student_satisfaction_list' %}" class="option">
+              <div>Student Satisfaction</div>
+            </a>
+            <a href="{% url 'aishe_list' %}" class="option">
+              <div>AISHE</div>
+            </a>
+            <a href="{% url 'aqar_list' %}" class="option">
+              <div>AQAR</div>
+            </a>
+            <a href="{% url 'aqar_report_list' %}" class="option">
+              <div>AQAR Report</div>
+            </a>
           </div>
         </div>
-      </navbar>
-    </div>
-    {% block content %}{% endblock %}
-  </body>
+        <div class="group flex">
+          <div class="flex">
+            <a href="{% url 'logout' %}" class="nav">Logout</a>
+          </div>
+        </div>
+      </div>
+    </navbar>
+  </div>
+  {% block content %}{% endblock %}
+</body>
+
 </html>

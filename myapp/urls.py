@@ -19,6 +19,10 @@ urlpatterns = [
     path('examfilter/<str:upg>/', views.examfilter, name='examfilter'),
     path('exam2/<int:exam_id>/', views.exam2, name='exam2'),
 
+    #NSS
+    path('nss/photos/', views.nss_photo_list, name='nss_photo_list'),
+    path('nss/photos/create/', views.nss_photo_create, name='nss_photo_create'),
+    path('nss/photos/delete/<int:photo_id>/', views.nss_photo_delete, name='nss_photo_delete'),
 
     # Admin exam
     path('exams/list/', views.list_exams, name='list_exams'),

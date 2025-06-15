@@ -1,48 +1,47 @@
 {% extends "admin_header.html" %} {% block content %} {% load static %}
 <body>
+
     <body class="edit-body">
         <div class="edit-formcon">
-        <h2>Update Activity</h2>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" value="{{ activity.name }}" required>
-            <!-- <textarea  class="tarea inp" id="name" name="name" required>{{ activity.name }}</textarea> -->
-            <label for="department">Department:</label>
-            <!-- <select class="inp" id="department" name="department">
-            <option value="PHYSICS" {% if employee.department == "PHYSICS" %}selected{% endif %}>PHYSICS</option>
-            <option value="CHEMISTRY" {% if employee.department == "CHEMISTRY" %}selected{% endif %}>CHEMISTRY</option>
-            <option value="MATHEMATICS" {% if employee.department == "MATHEMATICS" %}selected{% endif %}>MATHEMATICS</option>
-            <option value="STATISTICS" {% if employee.department == "STATISTICS" %}selected{% endif %}>STATISTICS</option>
-            <option value="COMPUTER SCIENCE" {% if employee.department == "COMPUTER SCIENCE" %}selected{% endif %}>COMPUTER SCIENCE</option>
-        
-            <option value="ENGLISH" {% if employee.department == "ENGLISH" %}selected{% endif %}>ENGLISH</option>
-            <option value="PHYSICAL EDUCATION" {% if employee.department == "PHYSICAL EDUCATION" %}selected{% endif %}>PHYSICAL EDUCATION</option>
-            <option value="MALAYALAM" {% if employee.department == "MALAYALAM" %}selected{% endif %}>MALAYALAM</option>
-            <option value="HINDI" {% if employee.department == "HINDI" %}selected{% endif %}>HINDI</option>
-            <option value="ECONOMICS" {% if employee.department == "ECONOMICS" %}selected{% endif %}>HINDI</option>
-            <option value="HISTORY" {% if employee.department == "HISTORY" %}selected{% endif %}>HISTORY</option>
-            <option value="ARABIC" {% if employee.department == "ARABIC" %}selected{% endif %}>ARABIC</option>
-            <option value="JOURNALISM" {% if employee.department == "JOURNALISM" %}selected{% endif %}>JOURNALISM</option>
-            <option value="POLITICAL SCIENCE" {% if employee.department == "POLITICAL SCIENCE" %}selected{% endif %}>POLITICAL SCIENCE</option>
-            <option value="SANSKRIT" {% if employee.department == "SANSKRIT" %}selected{% endif %}>SANSKRIT</option>
-            </select> -->
-            <select class="inp" id="department" name="department">
-                {% for dept in departments %}
+            <h2>Update Activity</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" value="{{ activity.name }}" required>
+                <label for="department">Department:</label>
+                <select class="inp" id="department" name="department">
+                    {% for dept in departments %}
                     <option value="{{ dept.id }}">{{ dept.name }}</option>
-                {% empty %}
+                    {% empty %}
                     <option value="">No Activities Available</option>
-                {% endfor %}
-            </select>
+                    {% endfor %}
+                </select>
 
 
-            <label for="photo">Photo:</label>
-            <img class="imgpreview" src="{{ activity.photo.url }}" alt="{{ activity.name }} Photo" width="100">
-            <input class="inp" type="file" id="photo" name="photo" accept="image/*" />
+                <label>Existing Photos:</label>
+                <div class="existing-photos">
+                    {% for photo in activity.photos.all %}
+                    <div class="photo-item">
+                        <img src="{{ photo.photo.url }}" width="100" alt="Photo" />
+                        <label>
+                            <input type="checkbox" name="delete_photos" value="{{ photo.id }}">
+                            <span class="custom-checkbox" aria-hidden="true">
+                                <span class="material-icons">check</span>
+                            </span>
+                            Delete
+                        </label>
+                    </div>
+                    {% empty %}
+                    <p>No photos uploaded.</p>
+                    {% endfor %}
+                </div>
 
-            <button type="Submit" value="Submit">Update</button>
-        </form>
-        <a href="{% url 'activity_list' %}" class="btn-edit btn">Back to Activity List</a>
+                <label for="photos">Add New Photos:</label>
+                <input class="inp" type="file" id="photos" name="photos" accept="image/*" multiple />
 
-    </div>
-    {% endblock %}
+                <button type="Submit" value="Submit">Update</button>
+            </form>
+            <a href="{% url 'activity_list' %}" class="btn-edit btn">Back to Activity List</a>
+
+        </div>
+        {% endblock %}

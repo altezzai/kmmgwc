@@ -1,0 +1,17 @@
+{% extends "admin_header.html" %} {% block content %} {% load static %}
+
+<body class="edit-body">
+  <div class="edit-formcon">
+    <h2>Upload NSS Photo</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="image">Select Image:</label>
+      <input class="inp" type="file" id="image" name="image" accept="image/*" required />
+
+      <button type="submit" value="Upload">Upload</button>
+    </form>
+    <a href="{% url 'nss_photo_list' %}" class="btn-edit btn">Back to List</a>
+  </div>
+</body>
+
+{% endblock %}

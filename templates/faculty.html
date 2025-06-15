@@ -1,4 +1,23 @@
 {% extends "header.html" %} {% block content %} {% load static %}
+<script src="{% static 'slides.js' %}" defer></script>
+<style>
+  [class^="mySlides-"] {
+  display: none;
+}
+
+.newsimgcon {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.newsimgcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
 <div class="container banner">
   <div class="heading">DEPARTMENT OF {{ depart|upper }}</div>
 </div>
@@ -29,24 +48,30 @@
       {% endfor %}
     </div>
 </div>
-  <div class="sec-container">
-    <h3 class="sub-heading">Activities and Achivements</h3> 
-    <div class="faculty-grid">
-      {% for activity in activities %}
-        <a href="#" class=" facbox act">
-          <div class="imgcon">
+<div class="sec-container">
+  <h3 class="sub-heading">Activities and Achievements</h3>
+  <div class="grid">
+    {% for activity in activities %}
+      <div class="news-box">
+        <div class="newsimgcon slideshow-container" id="slider-{{ activity.id }}">
+          {% for photo in activity.photos.all %}
             <img
-              src="{{ activity.photo.url }}" 
+              src="{{ photo.photo.url }}"
               alt="{{ activity.name }}"
-              class="news-img"
+              class="mySlides-{{ activity.id }} fade"
             />
-          </div>
-          <div class="des">{{ activity.name }}</div>
-        </a>
-      {% empty %}
-        <p>No activities found in this department.</p> <!-- Fixed the message -->
-      {% endfor %}
-    </div>
+          {% endfor %}
+          {% if activity.photos.all|length > 1 %}
+            <a class="prev" onclick="plusSlidesActivity(-1, '{{ activity.id }}')">&#10094;</a>
+            <a class="next" onclick="plusSlidesActivity(1, '{{ activity.id }}')">&#10095;</a>
+          {% endif %}
+        </div>
+        <div class="des">{{ activity.name }}</div>
+      </div>
+    {% empty %}
+      <p>No activities found in this department.</p>
+    {% endfor %}
+  </div>
 </div>
 </div>
 
