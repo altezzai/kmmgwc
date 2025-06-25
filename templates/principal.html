@@ -9,7 +9,9 @@
       <div class="det">
         <img class="img-pot" src="{% static 'assets/principal.webp' %}" />
         <div class="des">Principal</div>
-        <div class="nam">Dr. Chandramohanan K T</div>
+        <div class="nam"><a href="{% url 'staff_detail' principal.id %}?from_faculty=1">
+            Dr. Chandramohanan K T
+          </a></div>
         <div class="qual">0497-2746175</div>
       </div>
       <div class="flex-just-c-sb">

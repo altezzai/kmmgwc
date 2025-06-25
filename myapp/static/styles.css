@@ -426,6 +426,15 @@ navbar {
   opacity: 0.8;
 }
 
+.image .name a {
+  color: white;
+  text-decoration: none;
+}
+
+.image .name a:hover {
+  text-decoration: underline;
+}
+
 .detailsbox img {
   object-fit: cover;
   width: 100%;
@@ -1331,6 +1340,13 @@ pre {
   white-space: nowrap;
 }
 
+.det .nam a{
+  color: inherit;
+  text-decoration: none;
+}
+.det .nam a:hover{
+  text-decoration: underline;
+}
 .det .qual {
   color: #505050;
 }

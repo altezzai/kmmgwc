@@ -35,9 +35,9 @@ import os
 def index(request):
     # employees = Employee.objects.all()
     evt = Event.objects.all().order_by('-date')[:3]
-
     nws = News.objects.all().order_by('-id')[:3]
-    return render(request, 'index.html',{'events': evt,'news': nws})
+    principal = Employee.objects.filter(position="Principal").first()
+    return render(request, 'index.html', {'events': evt, 'news': nws, 'principal': principal})
 
 def news(request,nw_id):
     nw = get_object_or_404(News, pk=nw_id)
@@ -277,7 +277,8 @@ def notification2(request ,noti_id):
 def manager(request):
     return render(request, "manager.html")
 def principal(request):
-    return render(request, "principal.html")
+    principal = Employee.objects.filter(position="Principal").first()
+    return render(request, 'principal.html', {'principal': principal})
 def statement(request):
     statements = StatementCompliance.objects.all().order_by('-id')  # Fetch all statement records
     return render(request, 'statement.html', {'statements': statements})
