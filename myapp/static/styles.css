@@ -524,6 +524,7 @@ navbar {
 } */
 .facbox {
   max-width: 400px;
+  
   min-width: unset;
 }
 
@@ -1178,6 +1179,14 @@ navbar {
   display: flex;
   margin-bottom: 10px;
 }
+.imgcon-faculty {
+  width: 100%;
+  border-radius: 10px;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 10px;
+}
 
 .news-img {
   width: 100%;
@@ -1201,7 +1210,7 @@ navbar {
 
 .faculty-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   /* 4 items per row */
   gap: 20px;
   place-content: center;

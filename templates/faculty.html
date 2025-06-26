@@ -30,7 +30,7 @@
     <div class="faculty-grid">
       {% for employee in employees %}
         <a href="{% url 'staff_detail' employee.id %}?from_faculty=1" class="news-box facbox">
-          <div class="imgcon">
+          <div class="imgcon-faculty">
         {% if employee.photo %}
               <img src="{{ employee.photo.url }}" alt="{{ employee.name }}" class="news-img" />
             {% else %}
