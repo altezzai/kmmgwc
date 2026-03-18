@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('myapp', '0020_alter_employee_qualification'),
+            ('myapp', '0019_merge_20250605_1838'),
     ]
 
     operations = [
