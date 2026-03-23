@@ -1,13 +1,25 @@
 {% extends "admin_header.html" %} {% block content %} {% load static %}
 <body>
-
     <body class="edit-body">
         <div class="edit-formcon">
             <h2>Update Activity</h2>
+            {% if errors %}
+            <div style="color: red">
+                {% for field, error_list in errors.items %}
+                <p>{{ field }}: {{ error_list.0 }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <label for="name">Name:</label>
-                <input type="text" name="name" id="name" value="{{ activity.name }}" required>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value="{{ activity.name }}"
+                    required
+                />
                 <label for="department">Department:</label>
                 <select class="inp" id="department" name="department">
                     {% for dept in departments %}
@@ -17,14 +29,21 @@
                     {% endfor %}
                 </select>
 
-
                 <label>Existing Photos:</label>
                 <div class="existing-photos">
                     {% for photo in activity.photos.all %}
                     <div class="photo-item">
-                        <img src="{{ photo.photo.url }}" width="100" alt="Photo" />
+                        <img
+                            src="{{ photo.photo.url }}"
+                            width="100"
+                            alt="Photo"
+                        />
                         <label>
-                            <input type="checkbox" name="delete_photos" value="{{ photo.id }}">
+                            <input
+                                type="checkbox"
+                                name="delete_photos"
+                                value="{{ photo.id }}"
+                            />
                             <span class="custom-checkbox" aria-hidden="true">
                                 <span class="material-icons">check</span>
                             </span>
@@ -37,11 +56,21 @@
                 </div>
 
                 <label for="photos">Add New Photos:</label>
-                <input class="inp" type="file" id="photos" name="photos" accept="image/*" multiple />
+                <input
+                    class="inp"
+                    type="file"
+                    id="photos"
+                    name="photos"
+                    accept="image/*"
+                    multiple
+                />
 
                 <button type="Submit" value="Submit">Update</button>
             </form>
-            <a href="{% url 'activity_list' %}" class="btn-edit btn">Back to Activity List</a>
-
+            <a href="{% url 'activity_list' %}" class="btn-edit btn"
+                >Back to Activity List</a
+            >
         </div>
         {% endblock %}
+    </body>
+</body>

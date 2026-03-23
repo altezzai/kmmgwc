@@ -1,13 +1,22 @@
 from django.db import models
 
+from .validators import validate_extension, validate_file, validate_size
+
+
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
-    photo = models.ImageField(upload_to='department_photos/', blank=True, null=True)
-    
+    photo = models.ImageField(
+        upload_to="department_photos/",
+        blank=True,
+        null=True,
+        validators=[validate_file, validate_extension, validate_size],
+    )
+
     def __str__(self):
         return self.name
-    
+
+
 # class Employee(models.Model):
 #     POSITION_CHOICES = [
 #         ("Principal","Principal"),
@@ -29,27 +38,38 @@ class Department(models.Model):
 #         return self.name
 from django.db import models
 
+
 class Employee(models.Model):
     POSITION_CHOICES = [
         ("Principal", "Principal"),
         ("Head Of Department & Professor", "Head Of Department & Professor"),
-        ("Head of the Department & Associate Professor", "Head of the Department & Associate Professor"),
+        (
+            "Head of the Department & Associate Professor",
+            "Head of the Department & Associate Professor",
+        ),
         ("Professor", "Professor"),
         ("Associate Professor", "Associate Professor"),
         ("Assistant Professor", "Assistant Professor"),
         ("Guest Lecturer", "Guest Lecturer"),
-        ("Senior Superintendent","Senior Superintendent"),
-        ("Head Accountant","Head Accountant"),
-        ("Clerk ","Clerk "),
-        ("Librarian","Librarian"),
+        ("Senior Superintendent", "Senior Superintendent"),
+        ("Head Accountant", "Head Accountant"),
+        ("Clerk ", "Clerk "),
+        ("Librarian", "Librarian"),
         ("Office Staff", "Office Staff"),
     ]
 
     name = models.CharField(max_length=255)
-    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
+    photo = models.ImageField(
+        upload_to="photos/",
+        null=True,
+        blank=True,
+        validators=[validate_file, validate_extension, validate_size],
+    )
     position = models.CharField(max_length=255, choices=POSITION_CHOICES)
     qualification = models.TextField(null=True, blank=True)
-    department = models.ForeignKey('Department', on_delete=models.CASCADE, null=True, blank=True)
+    department = models.ForeignKey(
+        "Department", on_delete=models.CASCADE, null=True, blank=True
+    )
 
     # New optional fields
     seniority = models.DateField(null=True, blank=True)
@@ -67,19 +87,33 @@ class Employee(models.Model):
     def __str__(self):
         return self.name
 
+
 class NSSPhoto(models.Model):
-    image = models.ImageField(upload_to='nss/')
+    image = models.ImageField(
+        upload_to="nss/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    
+
+
 class Activity(models.Model):
     name = models.TextField()
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
+
 class ActivityPhoto(models.Model):
-    activity = models.ForeignKey(Activity, related_name='photos', on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='photos/')
+    activity = models.ForeignKey(
+        Activity, related_name="photos", on_delete=models.CASCADE
+    )
+    photo = models.ImageField(
+        upload_to="photos/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
+
+
 #     def __str__(self):
 #         return f"{self.name} ({self.department.name})"  # Show department name in admin panel
+
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -92,25 +126,46 @@ class Event(models.Model):
     def __str__(self):
         return self.title
 
+
 class News(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateField()
-    image = models.ImageField(upload_to='news_images/', null=True, blank=True)
+    image = models.ImageField(
+        upload_to="news_images/",
+        null=True,
+        blank=True,
+        validators=[validate_file, validate_extension, validate_size],
+    )
+
     def __str__(self):
         return self.title
+
+
 class NewsImage(models.Model):
-    news_article = models.ForeignKey(News, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='news_images/')
+    news_article = models.ForeignKey(
+        News, on_delete=models.CASCADE, related_name="images"
+    )
+    image = models.ImageField(
+        upload_to="news_images/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
+
 
 class Notification(models.Model):
     category = models.CharField(max_length=50)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    file = models.FileField(upload_to='uploads/', null=True, blank=True)
+    file = models.FileField(
+        upload_to="uploads/",
+        null=True,
+        blank=True,
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.title
+
 
 class Exam(models.Model):
     category = models.CharField(max_length=50)
@@ -118,10 +173,16 @@ class Exam(models.Model):
     description = models.TextField()
     # time = models.TimeField()
     # date = models.DateField()
-    file = models.FileField(upload_to='exams/', null=True, blank=True)
+    file = models.FileField(
+        upload_to="exams/",
+        null=True,
+        blank=True,
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.title
+
 
 class IQACMember(models.Model):
     name = models.CharField(max_length=255)
@@ -130,65 +191,101 @@ class IQACMember(models.Model):
     def __str__(self):
         return self.name
 
+
 class IQACMinute(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='iqac_minutes/')
+    pdf = models.FileField(
+        upload_to="iqac_minutes/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
-    
+
+
 class StatementCompliance(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='statement_compliance/')
+    pdf = models.FileField(
+        upload_to="statement_compliance/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
-    
+
+
 class AQAR(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='aqar/')
+    pdf = models.FileField(
+        upload_to="aqar/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
+
 
 class AQARReport(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='aqar_report/')
+    pdf = models.FileField(
+        upload_to="aqar_report/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
-    
+
+
 class AISHE(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='aishe/')
+    pdf = models.FileField(
+        upload_to="aishe/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
-    
+
+
 class BestPractice(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='best_practice/')
+    pdf = models.FileField(
+        upload_to="best_practice/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
+
 
 class StudentSatisfaction(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='student_satisfaction/')
+    pdf = models.FileField(
+        upload_to="student_satisfaction/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
+
 
 class AcademicCalendar(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='academic_calendar/')
+    pdf = models.FileField(
+        upload_to="academic_calendar/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name
 
+
 class Feedback(models.Model):
     name = models.CharField(max_length=255)
-    pdf = models.FileField(upload_to='feedback/')
+    pdf = models.FileField(
+        upload_to="feedback/",
+        validators=[validate_file, validate_extension, validate_size],
+    )
 
     def __str__(self):
         return self.name

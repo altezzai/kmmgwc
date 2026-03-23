@@ -2,10 +2,17 @@
     <body class="edit-body">
       <div class="edit-formcon">
       <h2>Update Notification</h2>
+      {% if errors %}
+        <div style="color: red; margin-bottom: 10px;">
+          {% for field, error_list in errors.items %}
+            <p>{{ field }}: {{ error_list.0 }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label for="category" class="radio-label">Category:</label>
-        
+
         <!-- <input  type="radio" name="category" value="ug" {% if notification.category == "ug" %}checked {%endif%}>    ug
         {% if notification.category == ug %} ( Current setting ) {% else %} {% endif %}</input> -->
         <div class=" inp rboutcon">
@@ -19,7 +26,7 @@
             <label for="pg">PG</label>
           </div>
           <div class=" rbcon">
-            <input class="rb" type="radio" name="category" value="both" id="pg" {% if notification.category == "both" %}checked {%endif%}> </input>
+            <input class="rb" type="radio" name="category" value="both" id="both" {% if notification.category == "both" %}checked {%endif%}> </input>
             <label for="both">BOTH</label>
           </div>
           </div>

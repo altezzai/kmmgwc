@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db.models.base import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
@@ -427,44 +428,68 @@ def department_list(request):
 
 
 def create_department(request):
-    """Create a new department."""
     if "username" in request.session:
         if request.method == "POST":
             name = request.POST.get("name")
             description = request.POST.get("description", "")
-            photo = request.FILES.get("photos", None)
+            photo = request.FILES.get("photos")
 
             department = Department(name=name, description=description)
-            # Assign the photo only if it exists
+
             if photo:
                 department.photo = photo
-            department.save()
-            departments = Department.objects.all()
-            print("Departments:", departments)
-            return redirect("department_list")
+
+            try:
+                department.full_clean()
+                department.save()
+                return redirect("department_list")
+
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_department.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
+
         return render(request, "create_department.html")
+
     return redirect("login")
 
 
 def update_department(request, pk):
-    """Update an existing department."""
     if "username" in request.session:
         department = get_object_or_404(Department, pk=pk)
 
         if request.method == "POST":
-            department.name = request.POST["name"]
+            department.name = request.POST.get("name")
             department.description = request.POST.get("description", "")
 
-            # If a new photo is uploaded, delete the old one and update
-            if "photo" in request.FILES:
-                if department.photo:
-                    default_storage.delete(department.photo.path)  # Delete old photo
-                department.photo = request.FILES["photo"]
+            new_photo = request.FILES.get("photo")
 
-            department.save()
-            return redirect("department_list")
+            if new_photo:
+                department.photo = new_photo
+
+            try:
+                department.full_clean()
+
+                if new_photo and department.photo:
+                    try:
+                        default_storage.delete(department.photo.path)
+                    except Exception:
+                        pass
+
+                department.save()
+                return redirect("department_list")
+
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_department.html",
+                    {"department": department, "errors": e.message_dict},
+                )
 
         return render(request, "update_department.html", {"department": department})
+
     return redirect("login")
 
 
@@ -662,34 +687,21 @@ def create_employee(request):
                 photo = None
                 if "photo" in request.FILES:
                     uploaded_photo = request.FILES["photo"]
-                    if not uploaded_photo.content_type.startswith("image/"):
-                        return render(
-                            request,
-                            "create_employee.html",
-                            {
-                                "error": "Please upload a valid image file",
-                                "departments": Department.objects.all(),
-                            },
-                        )
-                    if uploaded_photo.size > 5 * 1024 * 1024:
-                        return render(
-                            request,
-                            "create_employee.html",
-                            {
-                                "error": "Photo size should be less than 5MB",
-                                "departments": Department.objects.all(),
-                            },
-                        )
+
+                    temp_employee = Employee(photo=uploaded_photo)
 
                     try:
+                        temp_employee.full_clean()
                         photo = compress_image(uploaded_photo)
-                    except Exception as e:
+
+                    except ValidationError as e:
                         return render(
                             request,
                             "create_employee.html",
                             {
-                                "error": f"Error processing photo: {str(e)}",
+                                "errors": e.message_dict,
                                 "departments": Department.objects.all(),
+                                "data": request.POST,
                             },
                         )
 
@@ -705,6 +717,7 @@ def create_employee(request):
                             {
                                 "error": "Invalid seniority date format.",
                                 "departments": Department.objects.all(),
+                                "data": request.POST,
                             },
                         )
 
@@ -727,9 +740,21 @@ def create_employee(request):
                     major_minor_projects=major_minor_projects,
                     seniority=seniority_date,
                 )
-                employee.save()
+                try:
+                    employee.full_clean()
+                    employee.save()
+                    return redirect("employee_list")
 
-                return redirect("employee_list")
+                except ValidationError as e:
+                    return render(
+                        request,
+                        "create_employee.html",
+                        {
+                            "errors": e.message_dict,
+                            "departments": Department.objects.all(),
+                            "data": request.POST,
+                        },
+                    )
 
             except Exception as e:
                 return render(
@@ -738,12 +763,19 @@ def create_employee(request):
                     {
                         "error": f"Error creating employee: {str(e)}",
                         "departments": Department.objects.all(),
+                        "data": request.POST,
                     },
                 )
 
         # GET method: show form
         department_list = Department.objects.all()
-        return render(request, "create_employee.html", {"departments": department_list})
+        return render(
+            request,
+            "create_employee.html",
+            {
+                "departments": department_list,
+            },
+        )
 
     return redirect("login")
 
@@ -768,195 +800,165 @@ def delete_old_photo(employee):
 
 
 def update_employee(request, employee_id):
-    if "username" in request.session:
-        employee = get_object_or_404(Employee, pk=employee_id)
-        department_list = Department.objects.all()
+    if "username" not in request.session:
+        return redirect("login")
 
-        if request.method == "POST":
-            try:
-                # Required fields
-                name = request.POST.get("name", "").strip()
-                position = request.POST.get("position", "").strip()
-                qualification = request.POST.get("qualification", "").strip()
+    employee = get_object_or_404(Employee, pk=employee_id)
+    department_list = Department.objects.all()
 
-                # Conditional requirement for qualification
-                non_required_positions = [
-                    "Senior Superintendent",
-                    "Head Accountant",
-                    "Clerk",
-                    "Librarian",
-                    "Office Staff",
-                ]
-                if position not in non_required_positions and not qualification:
-                    return render(
-                        request,
-                        "update_employee.html",
-                        {
-                            "employee": employee,
-                            "departments": department_list,
-                            "error": "Qualification is required for this position.",
-                        },
-                    )
+    if request.method == "POST":
+        data = request.POST.copy()
 
-                if not name or not position:
-                    return render(
-                        request,
-                        "update_employee.html",
-                        {
-                            "employee": employee,
-                            "departments": department_list,
-                            "error": "Name and Position are required.",
-                        },
-                    )
+        try:
+            name = data.get("name", "").strip()
+            position = data.get("position", "").strip()
+            qualification = data.get("qualification", "").strip()
 
-                # Update core fields
-                employee.name = name
-                employee.position = position
-                employee.qualification = qualification if qualification else None
+            non_required_positions = [
+                "Senior Superintendent",
+                "Head Accountant",
+                "Clerk",
+                "Librarian",
+                "Office Staff",
+            ]
 
-                # Department (optional)
-                department_id = request.POST.get("department")
-                if department_id:
-                    try:
-                        employee.department = Department.objects.get(id=department_id)
-                    except ObjectDoesNotExist:
-                        return render(
-                            request,
-                            "update_employee.html",
-                            {
-                                "employee": employee,
-                                "departments": department_list,
-                                "error": "Invalid department selected",
-                            },
-                        )
-                else:
-                    employee.department = None
-
-                # Photo (optional)
-                if "photo" in request.FILES:
-                    photo = request.FILES["photo"]
-                    if not photo.content_type.startswith("image/"):
-                        return render(
-                            request,
-                            "update_employee.html",
-                            {
-                                "employee": employee,
-                                "departments": department_list,
-                                "error": "Please upload a valid image file",
-                            },
-                        )
-                    if photo.size > 5 * 1024 * 1024:
-                        return render(
-                            request,
-                            "update_employee.html",
-                            {
-                                "employee": employee,
-                                "departments": department_list,
-                                "error": "Photo size should be less than 5MB",
-                            },
-                        )
-                    try:
-                        delete_old_photo(employee)
-                        compressed_photo = compress_image(photo)
-                        employee.photo = compressed_photo
-                    except Exception as e:
-                        return render(
-                            request,
-                            "update_employee.html",
-                            {
-                                "employee": employee,
-                                "departments": department_list,
-                                "error": f"Error processing photo: {str(e)}",
-                            },
-                        )
-                elif not employee.photo:
-                    import os
-
-                    from django.core.files import File
-
-                    dummy_path = os.path.join(
-                        settings.BASE_DIR, "static/assets/dummy_employee.jpeg"
-                    )
-                    if os.path.exists(dummy_path):
-                        with open(dummy_path, "rb") as f:
-                            employee.photo.save(
-                                "default_photo.jpeg", File(f), save=False
-                            )
-
-                # Optional fields
-                employee.total_work_experience = (
-                    request.POST.get("total_work_experience", "").strip() or None
-                )
-                employee.seminars_conferences_organised = (
-                    request.POST.get("seminars_conferences_organised", "").strip()
-                    or None
-                )
-                employee.publications = (
-                    request.POST.get("publications", "").strip() or None
-                )
-                employee.books_published = (
-                    request.POST.get("books_published", "").strip() or None
-                )
-                employee.papers_presented = (
-                    request.POST.get("papers_presented", "").strip() or None
-                )
-                employee.awards_honours = (
-                    request.POST.get("awards_honours", "").strip() or None
-                )
-                employee.personal_webpage = (
-                    request.POST.get("personal_webpage", "").strip() or None
-                )
-                employee.additional_responsibilities = (
-                    request.POST.get("additional_responsibilities", "").strip() or None
-                )
-                employee.phd_mphil_projects_guided = (
-                    request.POST.get("phd_mphil_projects_guided", "").strip() or None
-                )
-                employee.major_minor_projects = (
-                    request.POST.get("major_minor_projects", "").strip() or None
-                )
-                seniority = request.POST.get("seniority", "").strip() or None
-                if seniority:
-                    try:
-                        employee.seniority = datetime.strptime(
-                            seniority, "%Y-%m-%d"
-                        ).date()
-                    except ValueError:
-                        return render(
-                            request,
-                            "update_employee.html",
-                            {
-                                "employee": employee,
-                                "departments": department_list,
-                                "error": "Invalid seniority date format.",
-                            },
-                        )
-                else:
-                    employee.seniority = None
-
-                # Save changes
-                employee.save()
-
-                return redirect("employee_list")
-
-            except Exception as e:
+            if position not in non_required_positions and not qualification:
                 return render(
                     request,
                     "update_employee.html",
                     {
                         "employee": employee,
                         "departments": department_list,
-                        "error": f"Error updating employee: {str(e)}",
+                        "errors": {
+                            "qualification": [
+                                "Qualification is required for this position."
+                            ]
+                        },
+                        "data": data,
                     },
                 )
 
-        return render(
-            request,
-            "update_employee.html",
-            {"employee": employee, "departments": department_list},
-        )
+            employee.name = name
+            employee.position = position
+            employee.qualification = qualification or None
 
-    return redirect("login")
+            department_id = data.get("department")
+            if department_id:
+                try:
+                    employee.department = Department.objects.get(id=department_id)
+                except ObjectDoesNotExist:
+                    return render(
+                        request,
+                        "update_employee.html",
+                        {
+                            "employee": employee,
+                            "departments": department_list,
+                            "errors": {"department": ["Invalid department selected."]},
+                            "data": data,
+                        },
+                    )
+            else:
+                employee.department = None
+
+            new_photo_uploaded = False
+            old_photo = employee.photo.name if employee.photo else None
+
+            if "photo" in request.FILES:
+                employee.photo = request.FILES["photo"]
+                new_photo_uploaded = True
+
+            elif not employee.photo:
+                dummy_path = os.path.join(
+                    settings.BASE_DIR, "static/assets/dummy_employee.jpeg"
+                )
+                if os.path.exists(dummy_path):
+                    with open(dummy_path, "rb") as f:
+                        employee.photo.save("default_photo.jpeg", File(f), save=False)
+
+            employee.total_work_experience = data.get("total_work_experience") or None
+            employee.seminars_conferences_organised = (
+                data.get("seminars_conferences_organised") or None
+            )
+            employee.publications = data.get("publications") or None
+            employee.books_published = data.get("books_published") or None
+            employee.papers_presented = data.get("papers_presented") or None
+            employee.awards_honours = data.get("awards_honours") or None
+            employee.personal_webpage = data.get("personal_webpage") or None
+            employee.additional_responsibilities = (
+                data.get("additional_responsibilities") or None
+            )
+            employee.phd_mphil_projects_guided = (
+                data.get("phd_mphil_projects_guided") or None
+            )
+            employee.major_minor_projects = data.get("major_minor_projects") or None
+
+            seniority = data.get("seniority")
+            if seniority:
+                try:
+                    employee.seniority = datetime.strptime(seniority, "%Y-%m-%d").date()
+                except ValueError:
+                    return render(
+                        request,
+                        "update_employee.html",
+                        {
+                            "employee": employee,
+                            "departments": department_list,
+                            "errors": {
+                                "seniority": ["Invalid date format. Use YYYY-MM-DD."]
+                            },
+                            "data": data,
+                        },
+                    )
+            else:
+                employee.seniority = None
+
+            try:
+                employee.full_clean()
+                if new_photo_uploaded:
+                    employee.photo = compress_image(request.FILES["photo"])
+                employee.save()
+                if new_photo_uploaded and old_photo:
+                    old_photo_path = os.path.join(settings.MEDIA_ROOT, old_photo)
+                    if os.path.exists(old_photo_path):
+                        os.remove(old_photo_path)
+                return redirect("employee_list")
+
+            except ValidationError as e:
+                error_dict = e.message_dict
+                general_errors = error_dict.pop("__all__", [])
+                return render(
+                    request,
+                    "update_employee.html",
+                    {
+                        "employee": employee,
+                        "departments": department_list,
+                        "errors": error_dict,
+                        "general_errors": general_errors,
+                        "error": general_errors[0] if general_errors else None,
+                        "data": data,
+                    },
+                )
+
+        except Exception as e:
+            return render(
+                request,
+                "update_employee.html",
+                {
+                    "employee": employee,
+                    "departments": department_list,
+                    "error": f"Error updating employee: {str(e)}",
+                    "data": data,
+                },
+            )
+
+    return render(
+        request,
+        "update_employee.html",
+        {
+            "employee": employee,
+            "departments": department_list,
+        },
+    )
 
 
 # def update_employee(request, employee_id):
@@ -1050,22 +1052,35 @@ def create_activity(request):
             department_id = request.POST.get("department")
             department = get_object_or_404(Department, id=department_id)
 
-            activity = Activity.objects.create(
-                name=request.POST.get("name"), department=department
-            )
+            activity = Activity(name=request.POST.get("name"), department=department)
 
-            for photo_file in request.FILES.getlist("photos"):
-                if (
-                    photo_file.content_type.startswith("image/")
-                    and photo_file.size <= 5 * 1024 * 1024
-                ):
+            try:
+                activity.full_clean()
+                activity.save()
+
+                for photo_file in request.FILES.getlist("photos"):
+                    photo = ActivityPhoto(activity=activity, photo=photo_file)
+                    photo.full_clean()
                     compressed = compress_image(photo_file)
-                    ActivityPhoto.objects.create(activity=activity, photo=compressed)
+                    photo.photo = compressed
+                    photo.save()
 
-            return redirect("activity_list")
+                return redirect("activity_list")
 
-        departments = Department.objects.all()
-        return render(request, "create_activity.html", {"departments": departments})
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_activity.html",
+                    {
+                        "errors": e.message_dict,
+                        "departments": Department.objects.all(),
+                        "data": request.POST,
+                    },
+                )
+
+        return render(
+            request, "create_activity.html", {"departments": Department.objects.all()}
+        )
 
     return redirect("login")
 
@@ -1099,22 +1114,37 @@ def update_activity(request, activity_id):
             activity.name = request.POST.get("name")
             department_id = request.POST.get("department")
             activity.department = get_object_or_404(Department, id=department_id)
-            activity.save()
 
-            # Delete selected photos
-            delete_ids = request.POST.getlist("delete_photos")
-            ActivityPhoto.objects.filter(id__in=delete_ids, activity=activity).delete()
+            try:
+                activity.full_clean()
+                activity.save()
 
-            # Add new photos
-            for photo_file in request.FILES.getlist("photos"):
-                if (
-                    photo_file.content_type.startswith("image/")
-                    and photo_file.size <= 5 * 1024 * 1024
-                ):
+                # delete selected
+                delete_ids = request.POST.getlist("delete_photos")
+                ActivityPhoto.objects.filter(
+                    id__in=delete_ids, activity=activity
+                ).delete()
+
+                # add new photos
+                for photo_file in request.FILES.getlist("photos"):
+                    photo = ActivityPhoto(activity=activity, photo=photo_file)
+                    photo.full_clean()
                     compressed = compress_image(photo_file)
-                    ActivityPhoto.objects.create(activity=activity, photo=compressed)
+                    photo.photo = compressed
+                    photo.save()
 
-            return redirect("activity_list")
+                return redirect("activity_list")
+
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_activity.html",
+                    {
+                        "activity": activity,
+                        "departments": departments,
+                        "errors": e.message_dict,
+                    },
+                )
 
         return render(
             request,
@@ -1871,18 +1901,35 @@ def nss_photo_list(request):
 def nss_photo_create(request):
     if request.method == "POST" and request.FILES.get("image"):
         image = request.FILES["image"]
-        NSSPhoto.objects.create(image=image)
-        return redirect("nss_photo_list")
+        photo = NSSPhoto(image=image)
+        try:
+            photo.full_clean()
+            photo.save()
+            return redirect("nss_photo_list")
+
+        except ValidationError as e:
+            return render(request, "nss_photo_create.html", {"errors": e.message_dict})
     return render(request, "nss_photo_create.html", {"photo": None})
 
 
 def nss_photo_update(request, photo_id):
     photo = get_object_or_404(NSSPhoto, id=photo_id)
     if request.method == "POST" and request.FILES.get("image"):
-        photo.image.delete()  # delete old file from media
-        photo.image = request.FILES["image"]
-        photo.save()
-        return redirect("nss_photo_list")
+        new_image = request.FILES["image"]
+        photo.image = new_image
+
+        try:
+            photo.full_clean()
+            photo.image.delete(save=False)
+            photo.save()
+            return redirect("nss_photo_list")
+
+        except ValidationError as e:
+            return render(
+                request,
+                "nss_photo_update.html",
+                {"photo": photo, "errors": e.message_dict},
+            )
     return render(request, "nss_photo_update.html", {"photo": photo})
 
 
@@ -1907,14 +1954,23 @@ def create_notification(request):
             notification = Notification(
                 category=category, title=title, description=description, file=file
             )
-            notification.save()
-            return redirect("list_notifications")
-            return JsonResponse({"message": "Notification created successfully"})
+
+            try:
+                notification.full_clean()
+                notification.save()
+                return redirect("list_notifications")
+
+            except ValidationError as e:
+                return render(
+                    request,
+                    "notification_create.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
         return render(request, "notification_create.html")
+
     return redirect("login")
 
 
-@csrf_exempt
 def update_notification(request, notification_id):
     if "username" in request.session:
         notification = get_object_or_404(Notification, pk=notification_id)
@@ -1925,7 +1981,6 @@ def update_notification(request, notification_id):
             description = request.POST.get("description")
             file = request.FILES.get("file")
 
-            # Update the notification attributes
             notification.category = category
             notification.title = title
             notification.description = description
@@ -1933,15 +1988,22 @@ def update_notification(request, notification_id):
             if file:
                 notification.file = file
 
-            # Save the updated notification
-            notification.save()
+            try:
+                notification.full_clean()
+                notification.save()
+                return redirect("list_notifications")
 
-            # Redirect to the list of notifications
-            return redirect("list_notifications")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "notification_update.html",
+                    {"notification": notification, "errors": e.message_dict},
+                )
 
         return render(
             request, "notification_update.html", {"notification": notification}
         )
+
     return redirect("login")
 
 

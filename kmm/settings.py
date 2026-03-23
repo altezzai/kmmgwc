@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-$-&18r!e&47enpm+)v2a-5&5#@tcnxmhv*amxh#0ii*c_o%*nx"
 DEBUG = True
 
-ALLOWED_HOSTS = ["kmmgwc.ac.in", "localhost"]
+ALLOWED_HOSTS = ["kmmgwc.ac.in", "127.0.0.1"]
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
