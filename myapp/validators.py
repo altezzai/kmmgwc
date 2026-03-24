@@ -11,7 +11,7 @@ ALLOWED_MIME_TYPES = [
     "application/msword",
 ]
 
-BLOCKED_EXTENSIONS = [".py", ".php", ".js", ".html", ".sh"]
+BLOCKED_EXTENSIONS = [".py", ".php", ".js", ".html", ".sh", ".svg"]
 
 
 def validate_file(file):
