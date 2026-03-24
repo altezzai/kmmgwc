@@ -1,50 +1,41 @@
-{% extends "admin_header.html" %} {% block content %} {% load static %}
-<body class="edit-body">
-    <div class="edit-formcon">
-        <h2>Activity Form</h2>
-        {% if errors %}
-        <div style="color: red">
-            {% for field, error_list in errors.items %}
-            <p>{{ field }}: {{ error_list.0 }}</p>
-            {% endfor %}
+{% extends "admin_header.html" %}
+{% block content %}
+    {% load static %}
+    <body class="edit-body">
+        <div class="edit-formcon">
+            <h2>Activity Form</h2>
+            {% if errors %}
+                <div style="color: red">
+                    {% for field, error_list in errors.items %}<p>{{ field }}: {{ error_list.0 }}</p>{% endfor %}
+                </div>
+            {% endif %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="name">Activity:</label>
+                <input type="text" name="name" id="name" value="{{ data.name }}" required />
+                <label for="department">Department:</label>
+                <select class="inp" id="department" name="department">
+                    {% for dept in departments %}
+                        <option value="{{ dept.id }}"
+                                {% if data.department == dept.id|stringformat:"s" %}selected{% endif %}>
+                            {{ dept.name }}
+                        </option>
+                    {% empty %}
+                        <option value="">No activities Available</option>
+                    {% endfor %}
+                </select>
+                <label for="photos">Photos (multiple):</label>
+                <label for="photo">Photos:</label>
+                <input class="inp"
+                       type="file"
+                       id="photos"
+                       name="photos"
+                       accept="image/*"
+                       multiple
+                       required />
+                <button type="Submit" value="Submit">Create</button>
+            </form>
+            <a href="{% url 'activity_list' %}" class="btn-edit btn">Back to List</a>
         </div>
-        {% endif %}
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="name">Activity:</label>
-            <input
-                type="text"
-                name="name"
-                id="name"
-                value="{{ data.name }}"
-                required
-            />
-            <label for="department">Department:</label>
-            <select class="inp" id="department" name="department">
-                {% for dept in departments %}
-                <option value="{{ dept.id }}" {% if data.department == dept.id|stringformat:"s" %}selected{% endif %}>
-                  {{ dept.name }}
-                </option>
-                {% empty %}
-                <option value="">No activities Available</option>
-                {% endfor %}
-            </select>
-            <label for="photos">Photos (multiple):</label>
-            <label for="photo">Photos:</label>
-            <input
-                class="inp"
-                type="file"
-                id="photos"
-                name="photos"
-                accept="image/*"
-                multiple
-                required
-            />
-            <button type="Submit" value="Submit">Create</button>
-        </form>
-        <a href="{% url 'activity_list' %}" class="btn-edit btn"
-            >Back to List</a
-        >
-    </div>
     {% endblock %}
 </body>

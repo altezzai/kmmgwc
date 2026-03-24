@@ -1,81 +1,83 @@
-{% extends "header.html" %} {% block content %} {% load static %}
-<div class="container banner">
-  <div class="heading">National Service Scheme(NSS)</div>
-</div>
-
-<div class="container">
-  <div class="sec-container column-flex">
-    <div class="small-container">
-      <article>
-        The college has three prestigious National Service Scheme units (NSS) –
-        No.19, 22 and 107(self-financing) spears headed by the programme
-        officers, Ms. Preeshi K., Mr. Prasad S.B and Dr Samritha A.V.
-        respectively. The National Service Scheme units organize various social
-        outreach programmes to facilitate its students with the concept and
-        practice of social responsibility and have sincerely dedicated their
-        efforts to render services to the community with the vison “’Not Me but
-        You.
-      </article>
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th>Chairman</th>
-            <th>Principal</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td rowspan="2">Programme Officers </td>
-            <td>Dr. Nidheesh. K P </td>
-          </tr>
-          <tr>
-            <td>Smt.Namratha Manoharan </td>
-          </tr>
-          <tr>
-            <td rowspan="4"></td>
-            <td>Sri. Prasad S B </td>
-          </tr>
-          <tr>
-            <td>Dr. Vinayan T </td>
-          </tr>
-          <tr>
-            <td>Dr.Vipin Chandran.K.P </td>
-          </tr>
-          <tr>
-            <td>Corporation Councilor </td>
-          </tr>
-        </tbody>
-      </table>
+{% extends "header.html" %}
+{% block content %}
+    {% load static %}
+    <div class="container banner">
+        <div class="heading">National Service Scheme(NSS)</div>
     </div>
-    <div class="flex gap full">
-      <div class="small-container flex-just-start">
-        <div class="head-big">Photo Gallery</div>
-      </div>
-    </div>
-    <div class="small-container imgbox">
-      {% for photo in photos %}
-      <img src="{{ photo.image.url }}" alt="NSS Photo" class="gallery-img" onclick="openModal(this.src)" />
-      {% empty %}
-      <p>No photos available in the gallery.</p>
-      {% endfor %}
-      <!-- <img src="{% static 'assets/nss/nss1.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
+    <div class="container">
+        <div class="sec-container column-flex">
+            <div class="small-container">
+                <article>
+                    The college has three prestigious National Service Scheme units (NSS) –
+                    No.19, 22 and 107(self-financing) spears headed by the programme
+                    officers, Ms. Preeshi K., Mr. Prasad S.B and Dr Samritha A.V.
+                    respectively. The National Service Scheme units organize various social
+                    outreach programmes to facilitate its students with the concept and
+                    practice of social responsibility and have sincerely dedicated their
+                    efforts to render services to the community with the vison “’Not Me but
+                    You.
+                </article>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Chairman</th>
+                            <th>Principal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="2">Programme Officers</td>
+                            <td>Dr. Nidheesh. K P</td>
+                        </tr>
+                        <tr>
+                            <td>Smt.Namratha Manoharan</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4"></td>
+                            <td>Sri. Prasad S B</td>
+                        </tr>
+                        <tr>
+                            <td>Dr. Vinayan T</td>
+                        </tr>
+                        <tr>
+                            <td>Dr.Vipin Chandran.K.P</td>
+                        </tr>
+                        <tr>
+                            <td>Corporation Councilor</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex gap full">
+                <div class="small-container flex-just-start">
+                    <div class="head-big">Photo Gallery</div>
+                </div>
+            </div>
+            <div class="small-container imgbox">
+                {% for photo in photos %}
+                    <img src="{{ photo.image.url }}"
+                         alt="NSS Photo"
+                         class="gallery-img"
+                         onclick="openModal(this.src)" />
+                {% empty %}
+                    <p>No photos available in the gallery.</p>
+                {% endfor %}
+                <!-- <img src="{% static 'assets/nss/nss1.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
   <img src="{% static 'assets/nss/nss2.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
   <img src="{% static 'assets/nss/nss5.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
   <img src="{% static 'assets/nss/nss4.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
   <img src="{% static 'assets/nss/nss5.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
   <img src="{% static 'assets/nss/nss6.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
   <img src="{% static 'assets/nss/nss7.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" /> -->
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
-<!-- The Modal -->
-<div id="imageModal" class="modal">
-  <span class="close" onclick="closeModal()">&times;</span>
-  <img class="modal-content" id="modalImg">
-</div>
-
-<style>
+    <!-- The Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+    <style>
   /* Image Gallery Styles */
   .imgbox {
     display: flex;
@@ -155,9 +157,8 @@
       width: 100%;
     }
   }
-</style>
-
-<script>
+    </style>
+    <script>
   // Function to open the modal
   function openModal(imgSrc) {
     const modal = document.getElementById("imageModal");
@@ -186,5 +187,5 @@
       document.getElementById("imageModal").style.display = "none";
     }
   });
-</script>
+    </script>
 {% endblock %}

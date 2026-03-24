@@ -1,3 +1,4 @@
+import io
 import os
 import sys
 from datetime import datetime
@@ -7,8 +8,8 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db import transaction
 from django.db.models.base import ValidationError
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
@@ -520,18 +521,30 @@ def delete_department(request, pk):
 # Employee
 
 
-# Function to compress image before saving
 def compress_image(image):
     try:
         img = Image.open(image)
-        img = img.convert("RGB")  # Ensure it's in RGB mode (not RGBA)
+        img = img.convert("RGB")
+
         img_io = io.BytesIO()
-        img.save(img_io, format="JPEG", quality=70)  # Adjust quality as needed
+        img.save(img_io, format="JPEG", quality=70)
+
+        img_io.seek(0)  # ✅ reset pointer
+
         return InMemoryUploadedFile(
-            img_io, None, image.name, "image/jpeg", img_io.tell, None
+            file=img_io,
+            field_name=None,
+            name=image.name,
+            content_type="image/jpeg",
+            size=img_io.getbuffer().nbytes,
+            charset=None,
         )
+
+    except Image.UnidentifiedImageError:
+        raise ValidationError("Invalid image file")
+
     except Exception as e:
-        raise Exception(f"Compression error: {str(e)}")
+        raise ValidationError(f"Compression failed: {str(e)}")
 
 
 # Employee creation view
@@ -1214,30 +1227,37 @@ def event_list(request):
 def event_create(request):
     if "username" in request.session:
         if request.method == "POST":
-            title = request.POST.get("title")
-            time = request.POST.get("time")
-            date = request.POST.get("date")
-            description = request.POST.get("description")
-            venue = request.POST.get("venue")
-            url = request.POST.get("url")
+            data = {
+                "title": request.POST.get("title"),
+                "time": request.POST.get("time"),
+                "date": request.POST.get("date"),
+                "description": request.POST.get("description"),
+                "venue": request.POST.get("venue"),
+                "url": request.POST.get("url"),
+            }
 
-            event = Event(
-                title=title,
-                time=time,
-                date=date,
-                description=description,
-                venue=venue,
-                url=url,
-            )
-            event.save()
-            return redirect("event_list")
+            event = Event(**data)
+
+            try:
+                event.full_clean()
+                event.save()
+                return redirect("event_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "event_create.html",
+                    {"errors": e.message_dict, "data": data},
+                )
+
         return render(request, "event_create.html")
+
     return redirect("login")
 
 
 def event_update(request, event_id):
     if "username" in request.session:
         event = get_object_or_404(Event, pk=event_id)
+
         if request.method == "POST":
             event.title = request.POST.get("title")
             event.time = request.POST.get("time")
@@ -1245,9 +1265,20 @@ def event_update(request, event_id):
             event.description = request.POST.get("description")
             event.venue = request.POST.get("venue")
             event.url = request.POST.get("url")
-            event.save()
-            return redirect("event_list")
+
+            try:
+                event.full_clean()
+                event.save()
+                return redirect("event_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "event_update.html",
+                    {"event": event, "errors": e.message_dict},
+                )
+
         return render(request, "event_update.html", {"event": event})
+
     return redirect("login")
 
 
@@ -1268,68 +1299,97 @@ def news_list(request):
 
 
 def create_news(request):
-    if "username" in request.session:
-        if request.method == "POST":
-            title = request.POST["title"]
-            description = request.POST["description"]
-            d = request.POST["date"]
+    if "username" not in request.session:
+        return redirect("login")
 
-            # Create the news article first
-            news_article = News.objects.create(
-                title=title, description=description, date=d
+    if request.method == "POST":
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        d = request.POST.get("date")
+
+        errors = {}
+
+        try:
+            with transaction.atomic():
+                news_article = News(title=title, description=description, date=d)
+
+                news_article.full_clean()
+                news_article.save()
+
+                for image_file in request.FILES.getlist("photos"):
+                    obj = NewsImage(
+                        news_article=news_article,
+                        image=image_file,
+                    )
+
+                    obj.full_clean()
+                    compressed_image = compress_image(image_file)
+                    if hasattr(compressed_image, "seek"):
+                        compressed_image.seek(0)
+
+                    obj.image = compressed_image
+                    obj.save()
+
+        except ValidationError as e:
+            errors = e.message_dict
+
+        if errors:
+            return render(
+                request, "create_news.html", {"errors": errors, "data": request.POST}
             )
 
-            # Process and save each uploaded image
-            for image_file in request.FILES.getlist("photos"):
-                # Compress the image
-                compressed_image = compress_image(image_file)
+        return redirect("news_list")
 
-                # Create NewsImage object with compressed image
-                NewsImage.objects.create(
-                    news_article=news_article, image=compressed_image
-                )
-
-            return redirect("news_list")
-
-        return render(request, "create_news.html")
-    return redirect("login")
+    return render(request, "create_news.html")
 
 
 def update_news(request, pk):
-    if "username" in request.session:
-        article = get_object_or_404(News, pk=pk)
+    if "username" not in request.session:
+        return redirect("login")
 
-        if request.method == "POST":
-            # Update the text fields
-            article.title = request.POST["title"]
-            article.description = request.POST["description"]
+    article = get_object_or_404(News, pk=pk)
 
-            # Delete selected photos
-            delete_ids = request.POST.getlist("delete_photos")
-            if delete_ids:
-                NewsImage.objects.filter(
-                    id__in=delete_ids, news_article=article
-                ).delete()
+    if request.method == "POST":
+        errors = {}
 
-            # Handle new images
-            for image_file in request.FILES.getlist("photos"):
-                if (
-                    image_file.content_type.startswith("image/")
-                    and image_file.size <= 5 * 1024 * 1024
-                ):
+        try:
+            with transaction.atomic():
+                article.title = request.POST.get("title")
+                article.description = request.POST.get("description")
+
+                article.full_clean()
+                article.save()
+
+                delete_ids = request.POST.getlist("delete_photos")
+                if delete_ids:
+                    NewsImage.objects.filter(
+                        id__in=delete_ids, news_article=article
+                    ).delete()
+
+                for image_file in request.FILES.getlist("photos"):
+                    obj = NewsImage(news_article=article, image=image_file)
+
+                    obj.full_clean()
+
                     compressed_image = compress_image(image_file)
-                    NewsImage.objects.create(
-                        news_article=article, image=compressed_image
-                    )
 
-            article.save()
-            return redirect("news_list")
+                    if hasattr(compressed_image, "seek"):
+                        compressed_image.seek(0)
 
-        return render(request, "update_news.html", {"article": article})
-    return redirect("login")
+                    obj.image = compressed_image
+                    obj.save()
 
+        except ValidationError as e:
+            errors = e.message_dict
 
-# news/views.py
+        if errors:
+            return render(
+                request, "update_news.html", {"article": article, "errors": errors}
+            )
+
+        return redirect("news_list")
+
+    return render(request, "update_news.html", {"article": article})
 
 
 def delete_news(request, pk):
@@ -1796,24 +1856,50 @@ def feedback_list(request):
 def create_feedback(request):
     if "username" in request.session:
         if request.method == "POST":
-            name = request.POST["name"]
-            pdf = request.FILES["pdf"]
-            Feedback.objects.create(name=name, pdf=pdf)
-            return redirect("feedback_list")
+            name = request.POST.get("name")
+            pdf = request.FILES.get("pdf")
+
+            feedback = Feedback(name=name, pdf=pdf)
+
+            try:
+                feedback.full_clean()
+                feedback.save()
+                return redirect("feedback_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_feedback.html",
+                    {"error": e.message_dict, "name": name},
+                )
+
         return render(request, "create_feedback.html")
+
     return redirect("login")
 
 
 def update_feedback(request, pk):
     if "username" in request.session:
         feedback = get_object_or_404(Feedback, pk=pk)
+
         if request.method == "POST":
-            feedback.name = request.POST["name"]
+            feedback.name = request.POST.get("name")
+
             if "pdf" in request.FILES:
                 feedback.pdf = request.FILES["pdf"]
-            feedback.save()
-            return redirect("feedback_list")
+
+            try:
+                feedback.full_clean()
+                feedback.save()
+                return redirect("feedback_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_feedback.html",
+                    {"feedback": feedback, "error": e.message_dict},
+                )
+
         return render(request, "update_feedback.html", {"feedback": feedback})
+
     return redirect("login")
 
 
@@ -1831,15 +1917,22 @@ def create_exam(request):
         if request.method == "POST":
             category = request.POST.get("category")
             title = request.POST.get("title")
-            # time = request.POST.get('time')
-            # date = request.POST.get('date')
             description = request.POST.get("description")
             file = request.FILES.get("file")
 
-            Exam.objects.create(
+            exam = Exam(
                 category=category, title=title, description=description, file=file
             )
-            return redirect("list_exams")
+            try:
+                exam.full_clean()
+                exam.save()
+                return redirect("list_exams")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "exam_create.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
         return render(request, "exam_create.html")
     return redirect("login")
 
@@ -1847,16 +1940,25 @@ def create_exam(request):
 def update_exam(request, exam_id):
     if "username" in request.session:
         exam = get_object_or_404(Exam, pk=exam_id)
+
         if request.method == "POST":
             exam.category = request.POST.get("category")
             exam.title = request.POST.get("title")
-            # exam.time = request.POST.get('time')
-            # exam.date = request.POST.get('date')
             exam.description = request.POST.get("description")
+
             if "file" in request.FILES:
                 exam.file = request.FILES["file"]
-            exam.save()
-            return redirect("list_exams")
+
+            try:
+                exam.full_clean()
+                exam.save()
+                return redirect("list_exams")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "exam_update.html",
+                    {"exam": exam, "errors": e.message_dict},
+                )
         return render(request, "exam_update.html", {"exam": exam})
     return redirect("login")
 

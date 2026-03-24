@@ -1,5 +1,7 @@
-{% extends "header.html" %} {% block content %} {% load static %}
-<!-- <div class="container banner">
+{% extends "header.html" %}
+{% block content %}
+    {% load static %}
+    <!-- <div class="container banner">
   <div class="heading">IQAC (Internal Quality Assurance Cell)</div>
 </div>
 
@@ -89,22 +91,20 @@
     </div>
   </div>
 </div> -->
-<div class="container banner">
-  <div class="heading">IQAC (Internal Quality Assurance Cell)</div>
-</div>
-
-<div class="container">
-  <div class="sec-container">
-    {% for member in iqac_members %}
-    <div class="small-container flex-just-start flex-c list">
-      <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
-      <div class="c">{{ member.name }}</div>
-      <div class="light">{{ member.position }}</div>
+    <div class="container banner">
+        <div class="heading">IQAC (Internal Quality Assurance Cell)</div>
     </div>
-    {% empty %}
-    <p>No IQAC members found.</p>
-    {% endfor %}
-  </div>
-</div>
-
+    <div class="container">
+        <div class="sec-container">
+            {% for member in iqac_members %}
+                <div class="small-container flex-just-start flex-c list">
+                    <img class="img-small" src="{% static 'assets/user.png' %}" alt="" />
+                    <div class="c">{{ member.name }}</div>
+                    <div class="light">{{ member.position }}</div>
+                </div>
+            {% empty %}
+                <p>No IQAC members found.</p>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

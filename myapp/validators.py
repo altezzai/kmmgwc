@@ -7,6 +7,8 @@ ALLOWED_MIME_TYPES = [
     "image/jpeg",
     "image/png",
     "image/webp",
+    "application/pdf",
+    "application/msword",
 ]
 
 BLOCKED_EXTENSIONS = [".py", ".php", ".js", ".html", ".sh"]

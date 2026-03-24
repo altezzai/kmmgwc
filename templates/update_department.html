@@ -1,49 +1,36 @@
-{% extends "admin_header.html" %} {% block content %} {% load static %}
-
-<body class="edit-body">
-    <div class="edit-formcon">
-        <h2>Update Department</h2>
-
-        {% if errors %}
-        <div style="color: red">
-            {% for field, error_list in errors.items %}
-            <p>{{ field }}: {{ error_list.0 }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <label>Department Name:</label>
-            <input
-                type="text"
-                name="name"
-                class="inp"
-                value="{{ department.name }}"
-                required
-            />
-
-            <label>Description:</label>
-            <textarea name="description" class="tarea inp">
-{{ department.description }}</textarea
-            >
-
-            <label>Current Photo:</label>
-            {% if department.photo %}
-            <img src="{{ department.photo.url }}" width="150" />
-            {% else %}
-            <p>No Image</p>
+{% extends "admin_header.html" %}
+{% block content %}
+    {% load static %}
+    <body class="edit-body">
+        <div class="edit-formcon">
+            <h2>Update Department</h2>
+            {% if errors %}
+                <div style="color: red">
+                    {% for field, error_list in errors.items %}<p>{{ field }}: {{ error_list.0 }}</p>{% endfor %}
+                </div>
             {% endif %}
-
-            <label>Upload New Photo:</label>
-            <input type="file" name="photo" class="inp" />
-
-            <button type="submit" class="btn">Update</button>
-        </form>
-
-        <a href="{% url 'department_list' %}" class="btn-edit btn">Back</a>
-    </div>
-</body>
-
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label>Department Name:</label>
+                <input type="text"
+                       name="name"
+                       class="inp"
+                       value="{{ department.name }}"
+                       required />
+                <label>Description:</label>
+                <textarea name="description" class="tarea inp">
+{{ department.description }}</textarea>
+                <label>Current Photo:</label>
+                {% if department.photo %}
+                    <img src="{{ department.photo.url }}" width="150" />
+                {% else %}
+                    <p>No Image</p>
+                {% endif %}
+                <label>Upload New Photo:</label>
+                <input type="file" name="photo" class="inp" />
+                <button type="submit" class="btn">Update</button>
+            </form>
+            <a href="{% url 'department_list' %}" class="btn-edit btn">Back</a>
+        </div>
+    </body>
 {% endblock %}

@@ -1,27 +1,29 @@
-{% extends "header.html" %} {% block content %} {% load static %}
-<div class="container banner">
-    <div class="heading">AMENITY CENTRE</div>
-</div>
-
-<div class="container">
-    <div class="sec-container column-flex">
-        <div class="flex gap full">
-            <!-- <div class="small-container flex-just-start">
+{% extends "header.html" %}
+{% block content %}
+    {% load static %}
+    <div class="container banner">
+        <div class="heading">AMENITY CENTRE</div>
+    </div>
+    <div class="container">
+        <div class="sec-container column-flex">
+            <div class="flex gap full">
+                <!-- <div class="small-container flex-just-start">
           <div class="head-big">AMENITY CENTRE</div>
         </div> -->
-        </div>
-        <div class="small-container">
-            <p>
-                The college has a well equipped student amenity centre to cater to the various requirements of its
-                student community. It is quite adjacent to the main block of the institution in 1500 square feet area,
-                where the students can get refreshed before and during intervals. The amenity centre is set in a single
-                storey building which has many bathrooms, beds, wash basins and lots of chairs to relax during intervals
-                and recess. This will provide all necessary first aids and students with any physical difficulty till
-                the service of a medical practitioner is made available. Tutors of different classes will take care of
-                the sick students along with their assigned classmates. <br>
-            </p>
-        </div>
-        <!-- <div class="flex gap full">
+            </div>
+            <div class="small-container">
+                <p>
+                    The college has a well equipped student amenity centre to cater to the various requirements of its
+                    student community. It is quite adjacent to the main block of the institution in 1500 square feet area,
+                    where the students can get refreshed before and during intervals. The amenity centre is set in a single
+                    storey building which has many bathrooms, beds, wash basins and lots of chairs to relax during intervals
+                    and recess. This will provide all necessary first aids and students with any physical difficulty till
+                    the service of a medical practitioner is made available. Tutors of different classes will take care of
+                    the sick students along with their assigned classmates.
+                    <br>
+                </p>
+            </div>
+            <!-- <div class="flex gap full">
         <div class="small-container flex-just-start">
             <div class="head-big">Photo Gallery</div>
         </div>
@@ -35,16 +37,14 @@
         <img src="{% static 'assets/library/library6.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
         <img src="{% static 'assets/library/library7.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
     </div> -->
+        </div>
     </div>
-</div>
-
-<!-- The Modal -->
-<div id="imageModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modalImg">
-</div>
-
-<style>
+    <!-- The Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+    <style>
     /* Image Gallery Styles */
     .imgbox {
         display: flex;
@@ -124,9 +124,8 @@
             width: 100%;
         }
     }
-</style>
-
-<script>
+    </style>
+    <script>
     // Function to open the modal
     function openModal(imgSrc) {
         const modal = document.getElementById("imageModal");
@@ -155,5 +154,5 @@
             document.getElementById("imageModal").style.display = "none";
         }
     });
-</script>
+    </script>
 {% endblock %}

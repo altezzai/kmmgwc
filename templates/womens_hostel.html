@@ -1,35 +1,36 @@
-{% extends "header.html" %} {% block content %} {% load static %}
-<div class="container banner">
-    <div class="heading">Women’s Hostel</div>
-</div>
-
-<div class="container">
-    <div class="sec-container column-flex">
-        <div class="flex gap full">
-            <!-- <div class="small-container flex-just-start">
+{% extends "header.html" %}
+{% block content %}
+    {% load static %}
+    <div class="container banner">
+        <div class="heading">Women’s Hostel</div>
+    </div>
+    <div class="container">
+        <div class="sec-container column-flex">
+            <div class="flex gap full">
+                <!-- <div class="small-container flex-just-start">
           <div class="head-big">Women's Hostel</div>
         </div> -->
-        </div>
-        <div class="small-container">
-            <p>
-                The Women’s Hostel is built inside the campus just behind the Heritage Block under the green cover of
-                huge
-                evergreen trees. It can accommodate a number of eighty students but due to increasing demand the number
-                is
-                now been extended to ninety. Students from other districts and those who are from the backward classes,
-                have
-                priority in admission. The hostel has its own administration with a warden as its head, and an office
-                under
-                him/her. It is a huge three storey building with amenities like separate canteen and cooks. All regular
-                dishes
-                are available in the hostel at a comparatively cheaper cost. Various indoor games are set inside the
-                hostel to
-                keep the inmates fresh and healthy. The service of a resident tutor is available to the hostellers round
-                the
-                clock.
-            </p>
-        </div>
-        <!-- <div class="flex gap full">
+            </div>
+            <div class="small-container">
+                <p>
+                    The Women’s Hostel is built inside the campus just behind the Heritage Block under the green cover of
+                    huge
+                    evergreen trees. It can accommodate a number of eighty students but due to increasing demand the number
+                    is
+                    now been extended to ninety. Students from other districts and those who are from the backward classes,
+                    have
+                    priority in admission. The hostel has its own administration with a warden as its head, and an office
+                    under
+                    him/her. It is a huge three storey building with amenities like separate canteen and cooks. All regular
+                    dishes
+                    are available in the hostel at a comparatively cheaper cost. Various indoor games are set inside the
+                    hostel to
+                    keep the inmates fresh and healthy. The service of a resident tutor is available to the hostellers round
+                    the
+                    clock.
+                </p>
+            </div>
+            <!-- <div class="flex gap full">
         <div class="small-container flex-just-start">
             <div class="head-big">Photo Gallery</div>
         </div>
@@ -43,16 +44,14 @@
         <img src="{% static 'assets/library/library6.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
         <img src="{% static 'assets/library/library7.jpeg' %}" alt="Lib Img" class="gallery-img" onclick="openModal(this.src)" />
     </div> -->
+        </div>
     </div>
-</div>
-
-<!-- The Modal -->
-<div id="imageModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modalImg">
-</div>
-
-<style>
+    <!-- The Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+    <style>
     /* Image Gallery Styles */
     .imgbox {
         display: flex;
@@ -132,9 +131,8 @@
             width: 100%;
         }
     }
-</style>
-
-<script>
+    </style>
+    <script>
     // Function to open the modal
     function openModal(imgSrc) {
         const modal = document.getElementById("imageModal");
@@ -163,5 +161,5 @@
             document.getElementById("imageModal").style.display = "none";
         }
     });
-</script>
+    </script>
 {% endblock %}
