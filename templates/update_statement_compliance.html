@@ -1,31 +1,55 @@
-{% extends "admin_header.html" %}
-{% block content %}
-    {% load static %}
-    <body class="edit-body">
-        <div class="edit-formcon">
-            <h2>Edit Statement Compliance</h2>
-            <form id="statementForm" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <label for="name">Name:</label>
-                <input class="inp"
-                       type="text"
-                       id="name"
-                       name="name"
-                       value="{{ statement.name }}"
-                       required />
-                <label for="pdf">Current PDF:</label>
-                {% if statement.pdf %}
-                    <div class="current-file">
-                        <a href="{{ statement.pdf.url }}" target="_blank" class="btn outline">View Current PDF</a>
-                    </div>
-                {% else %}
-                    <p class="no-file">No PDF uploaded</p>
-                {% endif %}
-                <label for="pdf">Upload New PDF (Optional):</label>
-                <input class="inp" type="file" id="pdf" name="pdf" accept="application/pdf" />
-                <button type="submit">Update</button>
-            </form>
-            <a href="{% url 'statement_compliance_list' %}" class="btn-edit btn">Back to List</a>
+{% extends "admin_header.html" %} {% block content %} {% load static %}
+
+<body class="edit-body">
+    <div class="edit-formcon">
+        <h2>Edit Statement Compliance</h2>
+
+        {% if errors %}
+        <div style="color: red">
+            {% for field, error_list in errors.items %}
+            <p>{{ field }}: {{ error_list.0 }}</p>
+            {% endfor %}
         </div>
-    </body>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Name:</label>
+            <input
+                class="inp"
+                type="text"
+                name="name"
+                value="{{ statement.name }}"
+                required
+            />
+
+            <label>Current PDF:</label>
+            {% if statement.pdf %}
+            <div>
+                <a href="{{ statement.pdf.url }}" target="_blank"
+                    >View Current PDF</a
+                >
+            </div>
+            {% else %}
+            <p>No PDF uploaded</p>
+            {% endif %}
+
+            <label>Upload New PDF (Optional):</label>
+            <input
+                class="inp"
+                type="file"
+                name="pdf"
+                accept="application/pdf"
+            />
+
+            <button type="submit">Update</button>
+        </form>
+
+        <a href="{% url 'statement_compliance_list' %}" class="btn-edit btn"
+            >Back to List</a
+        >
+    </div>
+</body>
+
 {% endblock %}

@@ -1441,9 +1441,18 @@ def create_academic_calendar(request):
         name = request.POST.get("name")
         pdf = request.FILES.get("pdf")
 
-        if name and pdf:
-            AcademicCalendar.objects.create(name=name, pdf=pdf)
-            return redirect("academic_calendar_list")  # Redirect to the list page
+        calendar = AcademicCalendar(name=name, pdf=pdf)
+
+        try:
+            calendar.full_clean()
+            calendar.save()
+            return redirect("academic_calendar_list")
+        except ValidationError as e:
+            return render(
+                request,
+                "create_academic_calendar.html",
+                {"errors": e.message_dict, "data": request.POST},
+            )
 
     return render(request, "create_academic_calendar.html")
 
@@ -1453,10 +1462,20 @@ def update_academic_calendar(request, id):
 
     if request.method == "POST":
         calendar.name = request.POST.get("name")
+
         if "pdf" in request.FILES:
             calendar.pdf = request.FILES["pdf"]
-        calendar.save()
-        return redirect("academic_calendar_list")
+
+        try:
+            calendar.full_clean()
+            calendar.save()
+            return redirect("academic_calendar_list")
+        except ValidationError as e:
+            return render(
+                request,
+                "update_academic_calendar.html",
+                {"calendar": calendar, "errors": e.message_dict},
+            )
 
     return render(request, "update_academic_calendar.html", {"calendar": calendar})
 
@@ -1541,10 +1560,19 @@ def iqac_minutes_list(request):
 def create_iqac_minute(request):
     if "username" in request.session:
         if request.method == "POST":
-            name = request.POST["name"]
-            pdf = request.FILES["pdf"]
-            IQACMinute.objects.create(name=name, pdf=pdf)
-            return redirect("iqac_minutes_list")
+            name = request.POST.get("name")
+            pdf = request.FILES.get("pdf")
+            minute = IQACMinute(name=name, pdf=pdf)
+            try:
+                minute.full_clean()
+                minute.save()
+                return redirect("iqac_minutes_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_iqac_minute.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
         return render(request, "create_iqac_minute.html")
     return redirect("login")
 
@@ -1553,11 +1581,19 @@ def update_iqac_minute(request, id):
     if "username" in request.session:
         minute = get_object_or_404(IQACMinute, id=id)
         if request.method == "POST":
-            minute.name = request.POST["name"]
+            minute.name = request.POST.get("name")
             if "pdf" in request.FILES:
                 minute.pdf = request.FILES["pdf"]
-            minute.save()
-            return redirect("iqac_minutes_list")
+            try:
+                minute.full_clean()
+                minute.save()
+                return redirect("iqac_minutes_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_iqac_minute.html",
+                    {"minute": minute, "errors": e.message_dict},
+                )
         return render(request, "update_iqac_minute.html", {"minute": minute})
     return redirect("login")
 
@@ -1588,26 +1624,52 @@ def statement_compliance_list(request):
 def create_statement_compliance(request):
     if "username" in request.session:
         if request.method == "POST":
-            name = request.POST["name"]
-            pdf = request.FILES["pdf"]
-            StatementCompliance.objects.create(name=name, pdf=pdf)
-            return redirect("statement_compliance_list")
+            name = request.POST.get("name")
+            pdf = request.FILES.get("pdf")
+
+            statement = StatementCompliance(name=name, pdf=pdf)
+
+            try:
+                statement.full_clean()
+                statement.save()
+                return redirect("statement_compliance_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_statement_compliance.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
+
         return render(request, "create_statement_compliance.html")
+
     return redirect("login")
 
 
 def update_statement_compliance(request, id):
     if "username" in request.session:
         statement = get_object_or_404(StatementCompliance, id=id)
+
         if request.method == "POST":
-            statement.name = request.POST["name"]
+            statement.name = request.POST.get("name")
+
             if "pdf" in request.FILES:
-                statement.file = request.FILES["pdf"]
-            statement.save()
-            return redirect("statement_compliance_list")
+                statement.pdf = request.FILES["pdf"]
+
+            try:
+                statement.full_clean()
+                statement.save()
+                return redirect("statement_compliance_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_statement_compliance.html",
+                    {"statement": statement, "errors": e.message_dict},
+                )
+
         return render(
             request, "update_statement_compliance.html", {"statement": statement}
         )
+
     return redirect("login")
 
 
@@ -1636,29 +1698,52 @@ def aqar_list(request):
 
 
 def create_aqar(request):
-    if "username" in request.session:  # Ensure user is logged in
+    if "username" in request.session:
         if request.method == "POST":
-            name = request.POST["name"]
-            pdf = request.FILES.get("pdf")  # Ensure PDF is uploaded
+            name = request.POST.get("name")
+            pdf = request.FILES.get("pdf")
 
-            if name and pdf:  # Ensure fields are not empty
-                AQAR.objects.create(name=name, pdf=pdf)
-                return redirect("aqar_list")  # Redirect to list after saving
+            aqar = AQAR(name=name, pdf=pdf)
 
-        return render(request, "create_aqar.html")  # Show form if GET request
+            try:
+                aqar.full_clean()
+                aqar.save()
+                return redirect("aqar_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_aqar.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
+
+        return render(request, "create_aqar.html")
+
     return redirect("login")
 
 
 def update_aqar(request, id):
     if "username" in request.session:
         aqar = get_object_or_404(AQAR, id=id)
+
         if request.method == "POST":
-            aqar.name = request.POST["name"]
+            aqar.name = request.POST.get("name")
+
             if "pdf" in request.FILES:
                 aqar.pdf = request.FILES["pdf"]
-            aqar.save()
-            return redirect("aqar_list")
+
+            try:
+                aqar.full_clean()
+                aqar.save()
+                return redirect("aqar_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_aqar.html",
+                    {"aqar": aqar, "errors": e.message_dict},
+                )
+
         return render(request, "update_aqar.html", {"aqar": aqar})
+
     return redirect("login")
 
 
@@ -1681,24 +1766,50 @@ def aqar_report_list(request):
 def create_aqar_report(request):
     if "username" in request.session:
         if request.method == "POST":
-            name = request.POST["name"]
-            pdf = request.FILES["pdf"]
-            AQARReport.objects.create(name=name, pdf=pdf)
-            return redirect("aqar_report_list")
+            name = request.POST.get("name")
+            pdf = request.FILES.get("pdf")
+
+            aqar_report = AQARReport(name=name, pdf=pdf)
+
+            try:
+                aqar_report.full_clean()
+                aqar_report.save()
+                return redirect("aqar_report_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_aqar_report.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
+
         return render(request, "create_aqar_report.html")
+
     return redirect("login")
 
 
 def update_aqar_report(request, id):
     if "username" in request.session:
         aqar_report = get_object_or_404(AQARReport, id=id)
+
         if request.method == "POST":
-            aqar_report.name = request.POST["name"]
+            aqar_report.name = request.POST.get("name")
+
             if "pdf" in request.FILES:
                 aqar_report.pdf = request.FILES["pdf"]
-            aqar_report.save()
-            return redirect("aqar_report_list")
+
+            try:
+                aqar_report.full_clean()
+                aqar_report.save()
+                return redirect("aqar_report_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_aqar_report.html",
+                    {"aqar_report": aqar_report, "errors": e.message_dict},
+                )
+
         return render(request, "update_aqar_report.html", {"aqar_report": aqar_report})
+
     return redirect("login")
 
 
@@ -1721,24 +1832,50 @@ def aishe_list(request):
 def create_aishe(request):
     if "username" in request.session:
         if request.method == "POST":
-            name = request.POST["name"]
-            pdf = request.FILES["pdf"]
-            AISHE.objects.create(name=name, pdf=pdf)
-            return redirect("aishe_list")
+            name = request.POST.get("name")
+            pdf = request.FILES.get("pdf")
+
+            aishe = AISHE(name=name, pdf=pdf)
+
+            try:
+                aishe.full_clean()
+                aishe.save()
+                return redirect("aishe_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_aishe.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
+
         return render(request, "create_aishe.html")
+
     return redirect("login")
 
 
 def update_aishe(request, id):
     if "username" in request.session:
         aishe_record = get_object_or_404(AISHE, id=id)
+
         if request.method == "POST":
-            aishe_record.name = request.POST["name"]
+            aishe_record.name = request.POST.get("name")
+
             if "pdf" in request.FILES:
                 aishe_record.pdf = request.FILES["pdf"]
-            aishe_record.save()
-            return redirect("aishe_list")
+
+            try:
+                aishe_record.full_clean()
+                aishe_record.save()
+                return redirect("aishe_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_aishe.html",
+                    {"aishe_record": aishe_record, "errors": e.message_dict},
+                )
+
         return render(request, "update_aishe.html", {"aishe_record": aishe_record})
+
     return redirect("login")
 
 
@@ -1765,11 +1902,24 @@ def best_practice_list(request):
 def create_best_practice(request):
     if "username" in request.session:
         if request.method == "POST":
-            name = request.POST["name"]
-            pdf = request.FILES["pdf"]
-            BestPractice.objects.create(name=name, pdf=pdf)
-            return redirect("best_practice_list")
+            name = request.POST.get("name")
+            pdf = request.FILES.get("pdf")
+
+            best_practice = BestPractice(name=name, pdf=pdf)
+
+            try:
+                best_practice.full_clean()
+                best_practice.save()
+                return redirect("best_practice_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "create_best_practice.html",
+                    {"errors": e.message_dict, "data": request.POST},
+                )
+
         return render(request, "create_best_practice.html")
+
     return redirect("login")
 
 
@@ -1777,15 +1927,30 @@ def create_best_practice(request):
 def update_best_practice(request, id):
     if "username" in request.session:
         best_practice = get_object_or_404(BestPractice, id=id)
+
         if request.method == "POST":
-            best_practice.name = request.POST["name"]
+            best_practice.name = request.POST.get("name")
+
             if "pdf" in request.FILES:
                 best_practice.pdf = request.FILES["pdf"]
-            best_practice.save()
-            return redirect("best_practice_list")
+
+            try:
+                best_practice.full_clean()
+                best_practice.save()
+                return redirect("best_practice_list")
+            except ValidationError as e:
+                return render(
+                    request,
+                    "update_best_practice.html",
+                    {"best_practice": best_practice, "errors": e.message_dict},
+                )
+
         return render(
-            request, "update_best_practice.html", {"best_practice": best_practice}
+            request,
+            "update_best_practice.html",
+            {"best_practice": best_practice},
         )
+
     return redirect("login")
 
 
@@ -1813,9 +1978,18 @@ def create_student_satisfaction(request):
         name = request.POST.get("name")
         pdf = request.FILES.get("pdf")
 
-        if name and pdf:
-            StudentSatisfaction.objects.create(name=name, pdf=pdf)
+        student = StudentSatisfaction(name=name, pdf=pdf)
+
+        try:
+            student.full_clean()
+            student.save()
             return redirect("student_satisfaction_list")
+        except ValidationError as e:
+            return render(
+                request,
+                "create_student_satisfaction.html",
+                {"errors": e.message_dict, "data": request.POST},
+            )
 
     return render(request, "create_student_satisfaction.html")
 
@@ -1825,14 +1999,27 @@ def update_student_satisfaction(request, id):
 
     if request.method == "POST":
         student_satisfaction.name = request.POST.get("name", student_satisfaction.name)
+
         if request.FILES.get("pdf"):
             student_satisfaction.pdf = request.FILES.get("pdf")
-        student_satisfaction.save()
-        return redirect("student_satisfaction_list")
+
+        try:
+            student_satisfaction.full_clean()
+            student_satisfaction.save()
+            return redirect("student_satisfaction_list")
+        except ValidationError as e:
+            return render(
+                request,
+                "update_student_satisfaction.html",
+                {
+                    "student_satisfaction": student_satisfaction,
+                    "errors": e.message_dict,
+                },
+            )
 
     return render(
         request,
-        "edit_student_satisfaction.html",
+        "update_student_satisfaction.html",
         {"student_satisfaction": student_satisfaction},
     )
 
