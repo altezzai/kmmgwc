@@ -28,9 +28,9 @@
                             <!-- Display '-' if position is empty -->
                             <td>
                                 <a class="btn-edit btn" href="{% url 'update_iqac_member' member.id %}">Edit</a>
-                                <a class="btn-delete btn"
+                                <a class="btn-delete btn confirm-delete"
                                    href="{% url 'delete_iqac_member' member.id %}"
-                                   onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                                   data-confirm="Are you sure you want to delete this item?">Delete</a>
                             </td>
                         </tr>
                     {% empty %}

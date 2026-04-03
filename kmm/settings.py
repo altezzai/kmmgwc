@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+from csp.constants import NONCE, NONE, SELF
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,6 +36,23 @@ AXES_IPWARE_META_PRECEDENCE_ORDER = [
     "REMOTE_ADDR",
 ]
 
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": [SELF],
+        "style-src": [SELF, NONCE, "https://fonts.googleapis.com"],
+        "script-src": [
+            SELF,
+            NONCE,
+        ],
+        "img-src": [SELF, "data:"],
+        "font-src": [SELF, "https://fonts.gstatic.com"],
+        "frame-src": [SELF, "https://www.google.com"],
+        "object-src": [NONE],
+        "frame-ancestors": [SELF],
+    }
+}
+CSP_INCLUDE_NONCE_IN = ["script-src", "style-src"]
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -48,6 +67,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "csp.middleware.CSPMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",

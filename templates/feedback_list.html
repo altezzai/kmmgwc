@@ -29,9 +29,9 @@
                             </td>
                             <td>
                                 <a class="btn-edit btn" href="{% url 'update_feedback' feedback.id %}">Edit</a>
-                                <a class="btn-delete btn"
+                                <a class="btn-delete btn confirm-delete"
                                    href="{% url 'delete_feedback' feedback.id %}"
-                                   onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                                   data-confirm="Are you sure you want to delete this item?">Delete</a>
                             </td>
                         </tr>
                     {% empty %}

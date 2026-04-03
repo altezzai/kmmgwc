@@ -2,7 +2,11 @@
 {% block content %}
     {% load static %}
     <script src="{% static 'slides.js' %}" defer></script>
-    <style>
+    <style nonce="{{ request.csp_nonce }}">
+  .faculty-position {
+    padding-left: 10px;
+  }
+
   [class^="mySlides-"] {
   display: none;
 }
@@ -48,7 +52,7 @@
                             {% endif %}
                         </div>
                         <div class="date-box">{{ employee.name }}</div>
-                        <div class="bold-head" style="padding-left: 10px;">{{ employee.position }}</div>
+                        <div class="bold-head faculty-position">{{ employee.position }}</div>
                         <!-- <div class="flex-just-c-sb " style="padding-left: 10px;">
             <pre>{{ employee.qualification }}</pre>
                                                           </div> -->
@@ -70,9 +74,10 @@
                                      class="mySlides-{{ activity.id }} fade" />
                             {% endfor %}
                             {% if activity.photos.all|length > 1 %}
-                                <a class="prev" onclick="plusSlidesActivity(-1, '{{ activity.id }}')">&#10094;</a>
-                                <a class="next" onclick="plusSlidesActivity(1, '{{ activity.id }}')">&#10095;</a>
+                                <a class="prev activity-slider-btn" data-activity-id="{{ activity.id }}" data-dir="-1">&#10094;</a>
+                                <a class="next activity-slider-btn" data-activity-id="{{ activity.id }}" data-dir="1">&#10095;</a>
                             {% endif %}
+
                         </div>
                         <div class="des">{{ activity.name }}</div>
                     </div>
@@ -82,4 +87,17 @@
             </div>
         </div>
     </div>
+    <script nonce="{{ request.csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.activity-slider-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const activityId = this.getAttribute('data-activity-id');
+                    const dir = parseInt(this.getAttribute('data-dir'));
+                    if (typeof plusSlidesActivity === 'function') {
+                        plusSlidesActivity(dir, activityId);
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

@@ -36,9 +36,11 @@
                                 <!-- <a class="btn-delete btn" href="{% url 'delete_news' article.id %}">Delete</a> -->
                                 <form action="{% url 'delete_news' article.id %}"
                                       method="POST"
-                                      onsubmit="return confirm('Are you sure you want to delete? This action cannot be undone.')">
+                                      class="confirm-delete"
+                                      data-confirm="Are you sure you want to delete? This action cannot be undone.">
                                     {% csrf_token %}
                                     <button type="submit" class="btn-delete btn">Delete</button>
+                                </form>
                                 </td>
                             </tr>
                         {% empty %}

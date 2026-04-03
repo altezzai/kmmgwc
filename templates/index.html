@@ -35,8 +35,8 @@
             <img class="mySlides fade"
                  src="{% static 'assets/clg/slide_three.webp' %}"
                  alt="" />
-            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            <a class="prev index-slider-btn" data-dir="-1">&#10094;</a>
+            <a class="next index-slider-btn" data-dir="1">&#10095;</a>
         </section>
         <section>
             <div class="detailsbox aboutbox">
@@ -141,5 +141,17 @@
             </div>
         </div>
     </div>
+    <script nonce="{{ request.csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.index-slider-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const dir = parseInt(this.getAttribute('data-dir'));
+                    if (typeof plusSlides === 'function') {
+                        plusSlides(dir);
+                    }
+                });
+            });
+        });
+    </script>
     <script src="{% static 'slides.js' %}" defer></script>
 {% endblock %}

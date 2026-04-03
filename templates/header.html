@@ -11,6 +11,26 @@
         <title>Krishna Menon Memorial Govt.Women's College</title>
         <link rel="stylesheet" href="{% static 'styles.css' %}" />
         <link rel="stylesheet" href="{% static 'mobile.css' %}" />
+        <script nonce="{{ request.csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', function () {
+
+          var burgerBtn = document.getElementById('burger-btn');
+          if (burgerBtn) burgerBtn.addEventListener('click', opennav);
+
+          var closeBtn = document.getElementById('close-btn');
+          if (closeBtn) closeBtn.addEventListener('click', closenav);
+
+          document.querySelectorAll('[data-toggle]').forEach(function (el) {
+            el.addEventListener('click', function () {
+              var targetId = el.getAttribute('data-toggle');
+              var dropType = el.getAttribute('data-droptype') || 'drop1';
+              var targetEl = document.getElementById(targetId);
+              if (targetEl) togglelist(targetEl, dropType);
+            });
+          });
+
+        });
+        </script>
     </head>
     <body>
         <div>
@@ -30,8 +50,7 @@
                         <div>Pallikkunnu, Kannur, Kerala</div>
                     </a>
                     <img src="{% static 'assets\kmm50.png' %}"
-                         class="logo"
-                         style="width: 70px"
+                         class="extra-logo"
                          id="kmm50"
                          alt="" />
                 </div>
@@ -42,9 +61,9 @@
                 <img src="{% static 'assets/bm.svg' %}"
                      alt=""
                      class="bm"
-                     onclick="opennav()" />
+                     id="burger-btn" />
                 <div class="l">
-                    <div class="close" onclick="closenav()">
+                    <div class="close" id="close-btn">
                         <img src="{% static 'assets/close.svg' %}" alt="" />
                     </div>
                     <div class="group flex">
@@ -53,7 +72,7 @@
                         </div>
                     </div>
                     <div class="group flex">
-                        <div class="flex" onclick="togglelist(aboutMenu, 'drop1')">
+                        <div class="flex" data-toggle="aboutMenu" data-droptype="drop1">
                             <div class="nav">About Us</div>
                         </div>
                         <div class="dropdown" id="aboutMenu">
@@ -72,12 +91,12 @@
                         </div>
                     </div>
                     <div class="group flex">
-                        <div class="flex" onclick="togglelist(aca,'drop1')">
+                        <div class="flex" data-toggle="aca" data-droptype="drop1">
                             <div class="nav">Academics</div>
                         </div>
                         <div class="dropdown" id="aca">
                             {% comment %}
-                <div class="option" onclick="togglelist(cour,'drop2')">
+                <div class="option" data-toggle="cour" data-droptype="drop2">
                   <div>FYUGP Syllabus</div>
                   <img class="arrow" src="{% static 'assets/rightarrow.svg' %}" alt="" />
                   <div class="sec-dropdown dropdown-hope" id="cour">
@@ -112,7 +131,7 @@
                         </div>
                     </div>
                     <div class="group flex">
-                        <div class="flex" onclick="togglelist(departfacilties,'drop1')">
+                        <div class="flex" data-toggle="departfacilties" data-droptype="drop1">
                             <div class="nav">Departments</div>
                         </div>
                         <div class="dropdown" id="departfacilties">
@@ -126,7 +145,7 @@
                         </div>
                     </div>
                     <div class="group flex">
-                        <div class="flex" onclick="togglelist(facilities, 'drop1')">
+                        <div class="flex" data-toggle="facilities" data-droptype="drop1">
                             <div class="nav">Facilities</div>
                         </div>
                         <div class="dropdown" id="facilities">
@@ -163,7 +182,7 @@
                         </div>
                     </div>
                     <div class="group flex">
-                        <div class="flex" onclick="togglelist(researchMenu, 'drop1')">
+                        <div class="flex" data-toggle="researchMenu" data-droptype="drop1">
                             <div class="nav">Research</div>
                         </div>
                         <div class="dropdown" id="researchMenu">
@@ -185,7 +204,7 @@
                         </div>
                     </div>
                     <div class="group flex">
-                        <div class="flex" onclick="togglelist(student_support, 'drop1')">
+                        <div class="flex" data-toggle="student_support" data-droptype="drop1">
                             <div class="nav">Student Support</div>
                         </div>
                         <div class="dropdown" id="student_support">
@@ -218,7 +237,7 @@
                             </div>
                         </div>
                         <div class="group flex">
-                            <div class="flex" onclick="togglelist(forums,'drop1')">
+                            <div class="flex" data-toggle="forums" data-droptype="drop1">
                                 <div class="nav">Forums</div>
                             </div>
                             <div class="dropdown" id="forums">
@@ -253,7 +272,7 @@
                             </div>
                         </div>
                         <div class="group flex">
-                            <div class="flex" onclick="togglelist(stcr,'drop1')">
+                            <div class="flex" data-toggle="stcr" data-droptype="drop1">
                                 <div class="nav">IQAC</div>
                                 <!-- <img src="{% static 'assets/downarrow.svg" alt=""> -->
                             </div>
@@ -296,7 +315,7 @@
                             </div>
                         </div>
                         <div class="group flex">
-                            <div class="flex" onclick="togglelist(nirf,'drop1')">
+                            <div class="flex" data-toggle="nirf" data-droptype="drop1">
                                 <div class="nav">NIRF</div>
                             </div>
                             <div class="dropdown" id="nirf">
@@ -365,7 +384,7 @@
                         <div class="shead">Reach Us</div>
                         <div class="data">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62462.263214890816!2d75.35984870627966!3d11.912642094906655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba43d141cf0eae3%3A0x6cc82d477ff8a7fd!2sKrishna%20Menon%20Memorial%20Govt.%20Women&#39;s%20College!5e0!3m2!1sen!2sin!4v1736941723211!5m2!1sen!2sin"
-                                    style="border: 0"
+                                    class="map-iframe"
                                     allowfullscreen=""
                                     loading="lazy"
                                     referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -412,4 +431,5 @@
                 </div>
             </div>
         </body>
+
     </html>

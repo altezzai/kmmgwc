@@ -19,9 +19,10 @@
             <img src="{% static 'assets/bm.svg' %}"
                  alt=""
                  class="bm"
-                 onclick="opennav()" />
+                 id="admin-burger-btn" />
+
             <div class="l">
-                <div class="close" onclick="closenav()">
+                <div class="close" id="admin-close-btn">
                     <img src="{% static 'assets/close.svg' %}" alt="" />
                 </div>
                 <div class="group flex">
@@ -82,7 +83,7 @@
             </div>
           </div> -->
                 <div class="group flex">
-                    <div class="flex" onclick="togglelist(iqacDropdown, 'drop1')">
+                    <div class="flex" id="iqac-toggle-btn">
                         <div class="nav">IQAC</div>
                     </div>
                     <div class="dropdown" id="iqacDropdown">
@@ -120,8 +121,40 @@
                         <a href="{% url 'logout' %}" class="nav">Logout</a>
                     </div>
                 </div>
+                <script nonce="{{ request.csp_nonce }}">
+                document.addEventListener('DOMContentLoaded', function () {
+                    var burgerBtn = document.getElementById('admin-burger-btn');
+                    if (burgerBtn) burgerBtn.addEventListener('click', opennav);
+
+                    var closeBtn = document.getElementById('admin-close-btn');
+                    if (closeBtn) closeBtn.addEventListener('click', closenav);
+
+                    var iqacToggleBtn = document.getElementById('iqac-toggle-btn');
+                    var iqacDropdown = document.getElementById('iqacDropdown');
+                    if (iqacToggleBtn && iqacDropdown) {
+                        iqacToggleBtn.addEventListener('click', function() {
+                            if (typeof togglelist === 'function') {
+                                togglelist(iqacDropdown, 'drop1');
+                            }
+                        });
+                    }
+
+                    // Global confirm listener for CSP compliance
+                    document.body.addEventListener('click', function (e) {
+                        const target = e.target.closest('.confirm-delete');
+                        if (target) {
+                            const message = target.getAttribute('data-confirm') || 'Are you sure you want to delete this item?';
+                            if (!confirm(message)) {
+                                e.preventDefault();
+                            }
+                        }
+                    });
+                });
+                </script>
+
             </div>
             </navbar>
+
         </div>
         {% block content %}{% endblock %}
     </body>
