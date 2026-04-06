@@ -5,7 +5,7 @@
         <h2>Edit Statement Compliance</h2>
 
         {% if errors %}
-        <div style="color: red">
+        <div class="error-msg">
             {% for field, error_list in errors.items %}
             <p>{{ field }}: {{ error_list.0 }}</p>
             {% endfor %}

@@ -36,6 +36,7 @@ from .models import (
     StatementCompliance,
     StudentSatisfaction,
 )
+from .forms import NotificationForm
 
 
 # home
@@ -2235,28 +2236,17 @@ def nss_photo_delete(request, photo_id):
 def create_notification(request):
     if "username" in request.session:
         if request.method == "POST":
-            category = request.POST.get("category")
-            title = request.POST.get("title")
-            description = request.POST.get("description")
-            file = request.FILES.get("file")
-
-            notification = Notification(
-                category=category, title=title, description=description, file=file
-            )
-
-            try:
-                notification.full_clean()
-                notification.save()
+            form = NotificationForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
                 return redirect("list_notifications")
-
-            except ValidationError as e:
+            else:
                 return render(
                     request,
                     "notification_create.html",
-                    {"errors": e.message_dict, "data": request.POST},
+                    {"errors": form.errors, "data": request.POST},
                 )
         return render(request, "notification_create.html")
-
     return redirect("login")
 
 
@@ -2265,28 +2255,15 @@ def update_notification(request, notification_id):
         notification = get_object_or_404(Notification, pk=notification_id)
 
         if request.method == "POST":
-            category = request.POST.get("category")
-            title = request.POST.get("title")
-            description = request.POST.get("description")
-            file = request.FILES.get("file")
-
-            notification.category = category
-            notification.title = title
-            notification.description = description
-
-            if file:
-                notification.file = file
-
-            try:
-                notification.full_clean()
-                notification.save()
+            form = NotificationForm(request.POST, request.FILES, instance=notification)
+            if form.is_valid():
+                form.save()
                 return redirect("list_notifications")
-
-            except ValidationError as e:
+            else:
                 return render(
                     request,
                     "notification_update.html",
-                    {"notification": notification, "errors": e.message_dict},
+                    {"notification": notification, "errors": form.errors},
                 )
 
         return render(

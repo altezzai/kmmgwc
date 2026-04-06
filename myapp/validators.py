@@ -1,4 +1,5 @@
 import os
+import re
 
 import magic
 from django.core.exceptions import ValidationError
@@ -34,3 +35,7 @@ def validate_size(file):
     print("validating size ....")
     if file.size > 5 * 1024 * 1024:
         raise ValidationError("File too large (max 5MB)")
+
+def no_html_validator(value):
+    if re.search(r'<.*?>', str(value)):
+        raise ValidationError("HTML content is not allowed.")

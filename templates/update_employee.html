@@ -5,7 +5,7 @@
         <div class="edit-formcon">
             <h2>Update Employee</h2>
             {% if errors or error %}
-                <div style="color: red">
+                <div class="error-msg">
                     {% if error %}<strong>{{ error }}</strong>{% endif %}
                     {% for field, error_list in errors.items %}<p>{{ field }}: {{ error_list.0 }}</p>{% endfor %}
                 </div>
