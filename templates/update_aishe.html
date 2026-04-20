@@ -6,7 +6,7 @@
     {% if errors %}
     <div class="error-msg">
         {% for field, error_list in errors.items %}
-        <p>{{ field }}: {{ error_list.0 }}</p>
+        <p>{{ field|capfirst }}: {{ error_list.0 }}</p>
         {% endfor %}
     </div>
     {% endif %}
@@ -20,7 +20,7 @@
             type="text"
             id="name"
             name="name"
-            value="{{ aishe_record.name }}"
+            value="{{ data.name|default:aishe_record.name }}"
             required
         />
 

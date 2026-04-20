@@ -7,7 +7,7 @@
         {% if errors %}
         <div class="error-msg">
             {% for field, error_list in errors.items %}
-            <p>{{ field }}: {{ error_list.0 }}</p>
+            <p>{{ field|capfirst }}: {{ error_list.0 }}</p>
             {% endfor %}
         </div>
         {% endif %}
@@ -20,7 +20,7 @@
                 class="inp"
                 type="text"
                 name="name"
-                value="{{ calendar.name }}"
+                value="{{ data.name|default:calendar.name }}"
                 required
             />
 

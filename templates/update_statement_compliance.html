@@ -20,7 +20,7 @@
                 class="inp"
                 type="text"
                 name="name"
-                value="{{ statement.name }}"
+                value="{{ data.name|default:statement.name }}"
                 required
             />
 

@@ -2,12 +2,12 @@
 
 <body class="edit-body">
     <div class="edit-formcon">
-        <h2>Edit IQAC Minute</h2>
+        <h2>Update IQAC Minute</h2>
 
         {% if errors %}
         <div class="error-msg">
             {% for field, error_list in errors.items %}
-            <p>{{ field }}: {{ error_list.0 }}</p>
+            <p>{{ field|capfirst }}: {{ error_list.0 }}</p>
             {% endfor %}
         </div>
         {% endif %}
@@ -21,7 +21,7 @@
                 type="text"
                 id="name"
                 name="name"
-                value="{{ minute.name }}"
+                value="{{ data.name|default:minute.name }}"
                 required
             />
 

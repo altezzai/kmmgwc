@@ -4,6 +4,15 @@
     <body class="edit-body">
         <div class="edit-formcon">
             <h2>Edit IQAC Member</h2>
+
+            {% if errors %}
+            <div class="error-msg">
+                {% for field, error_list in errors.items %}
+                <p>{{ field|capfirst }}: {{ error_list.0 }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <form method="post">
                 {% csrf_token %}
                 <label for="name">Name:</label>
@@ -11,14 +20,14 @@
                        type="text"
                        id="name"
                        name="name"
-                       value="{{ member.name }}"
+                       value="{{ data.name|default:member.name }}"
                        required />
                 <label for="position">Position:</label>
                 <input class="inp"
                        type="text"
                        id="position"
                        name="position"
-                       value="{{ member.position }}" />
+                       value="{{ data.position|default:member.position }}" />
                 <button type="submit">Update</button>
             </form>
             <a href="{% url 'iqac_member_list' %}" class="btn-edit btn">Back to List</a>

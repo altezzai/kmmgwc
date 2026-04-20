@@ -2,9 +2,9 @@
 {% block content %}
     <div class="edit-formcon">
         <h2>Update Feedback</h2>
-        {% if error %}
+        {% if errors %}
             <div class="error-msg">
-                {% for field, error_list in error.items %}<p>{{ field }}: {{ error_list.0 }}</p>{% endfor %}
+                {% for field, error_list in errors.items %}<p>{{ field|capfirst }}: {{ error_list.0 }}</p>{% endfor %}
             </div>
         {% endif %}
         <form method="POST" enctype="multipart/form-data">
@@ -13,7 +13,7 @@
             <input class="inp"
                    type="text"
                    name="name"
-                   value="{{ feedback.name }}"
+                   value="{{ data.name|default:feedback.name }}"
                    required />
             <label for="pdf">Replace PDF (optional):</label>
             <input class="inp" type="file" name="pdf" accept="application/pdf" />
