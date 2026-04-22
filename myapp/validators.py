@@ -1,5 +1,7 @@
 import os
 import re
+import urllib.parse
+import html
 
 import magic
 from django.core.exceptions import ValidationError
@@ -37,5 +39,27 @@ def validate_size(file):
         raise ValidationError("File too large (max 5MB)")
 
 def no_html_validator(value):
-    if re.search(r'<.*?>', str(value)):
-        raise ValidationError("HTML content is not allowed.")
+    # Convert to string and normalize
+    text = str(value)
+    
+    # URL Decoding and HTML Entity Decoding
+    # We unquote twice to handle potential double encoding and then unescape HTML entities
+    decoded = html.unescape(urllib.parse.unquote(urllib.parse.unquote(text)))
+    
+    # Check for HTML tags
+    if re.search(r'<.*?>', decoded):
+        raise ValidationError("HTML content or encoded HTML characters are not allowed.")
+
+    # Check for dangerous patterns frequently used in XSS injections
+    dangerous_patterns = [
+        r'javascript:',
+        r'data:text/html',
+        r'vbscript:',
+        r'on\w+\s*=',  # Event handlers like onclick, onload, etc.
+        r'<script',
+        r'expression\(', # Legacy IE
+    ]
+    
+    for pattern in dangerous_patterns:
+        if re.search(pattern, decoded, re.IGNORECASE):
+            raise ValidationError("Encoded injection patterns or script content detected.")
