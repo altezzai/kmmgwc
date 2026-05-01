@@ -46,20 +46,9 @@ def no_html_validator(value):
     # We unquote twice to handle potential double encoding and then unescape HTML entities
     decoded = html.unescape(urllib.parse.unquote(urllib.parse.unquote(text)))
     
-    # Check for HTML tags
-    if re.search(r'<.*?>', decoded):
-        raise ValidationError("HTML content or encoded HTML characters are not allowed.")
-
-    # Check for dangerous patterns frequently used in XSS injections
-    dangerous_patterns = [
-        r'javascript:',
-        r'data:text/html',
-        r'vbscript:',
-        r'on\w+\s*=',  # Event handlers like onclick, onload, etc.
-        r'<script',
-        r'expression\(', # Legacy IE
-    ]
+    # Whitelist approach: Allow only alphanumeric characters, spaces, and safe punctuation.
+    # Excludes <, >, `, \, ^, ~ to prevent any form of code or HTML injection.
+    allowed_pattern = re.compile(r'^[\w\s.,!?\'"()\-:;&/@+#%=*\[\]{}|$]*$')
     
-    for pattern in dangerous_patterns:
-        if re.search(pattern, decoded, re.IGNORECASE):
-            raise ValidationError("Encoded injection patterns or script content detected.")
+    if not allowed_pattern.match(decoded):
+        raise ValidationError("Input contains invalid characters. Only alphanumeric characters and standard punctuation are allowed.")
