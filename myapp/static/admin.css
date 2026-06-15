@@ -239,3 +239,9 @@ form .tarea {
   padding: 10px;
   width: 100%;
 }
+
+.error-msg {
+  color: red;
+  margin-bottom: 10px;
+}
+

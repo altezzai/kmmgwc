@@ -1,24 +1,45 @@
-{% extends "admin_header.html" %}
-{% block content %}
-{% load static %}
+{% extends "admin_header.html" %} {% block content %} {% load static %}
 
 <body class="edit-body">
-  <div class="edit-formcon">
-    <h2>Create Statement Compliance</h2>
-    <form id="statementForm" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
+    <div class="edit-formcon">
+        <h2>Create Statement Compliance</h2>
 
-      <label for="name">Name:</label>
-      <input class="inp" type="text" id="name" name="name" required />
+        {% if errors %}
+        <div class="error-msg">
+            {% for field, error_list in errors.items %}
+            <p>{{ field|capfirst }}: {{ error_list.0 }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-      <label for="pdf">Upload PDF:</label>
-      <input class="inp" type="file" id="pdf" name="pdf" accept="application/pdf" required />
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-      <button type="submit">Create</button>
-    </form>
+            <label>Name:</label>
+            <input
+                class="inp"
+                type="text"
+                name="name"
+                value="{{ data.name }}"
+                required
+            />
 
-    <a href="{% url 'statement_compliance_list' %}" class="btn-edit btn">Back to List</a>
-  </div>
+            <label>Upload PDF:</label>
+            <input
+                class="inp"
+                type="file"
+                name="pdf"
+                accept="application/pdf"
+                required
+            />
+
+            <button type="submit">Create</button>
+        </form>
+
+        <a href="{% url 'statement_compliance_list' %}" class="btn-edit btn"
+            >Back to List</a
+        >
+    </div>
 </body>
 
 {% endblock %}

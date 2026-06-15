@@ -1,31 +1,57 @@
-{% extends "admin_header.html" %}
-{% block content %}
-{% load static %}
+{% extends "admin_header.html" %} {% block content %} {% load static %}
 
 <div class="edit-formcon">
-  <h2>Edit AISHE Record</h2>
-  <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+    <h2>Edit AISHE Record</h2>
 
-    <label for="name">Name:</label>
-    <input class="inp" type="text" id="name" name="name" value="{{ aishe_record.name }}" required />
-
-    <label for="pdf">Current PDF:</label>
-    {% if aishe_record.pdf %}
-      <div class="current-file">
-        <a href="{{ aishe_record.pdf.url }}" target="_blank" class="btn outline">View Current PDF</a>
-      </div>
-    {% else %}
-      <p class="no-file">No PDF uploaded</p>
+    {% if errors %}
+    <div class="error-msg">
+        {% for field, error_list in errors.items %}
+        <p>{{ field|capfirst }}: {{ error_list.0 }}</p>
+        {% endfor %}
+    </div>
     {% endif %}
 
-    <label for="pdf">Upload New PDF (Optional):</label>
-    <input class="inp" type="file" id="pdf" name="pdf" accept="application/pdf" />
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <button type="submit">Update</button>
-  </form>
+        <label for="name">Name:</label>
+        <input
+            class="inp"
+            type="text"
+            id="name"
+            name="name"
+            value="{{ data.name|default:aishe_record.name }}"
+            required
+        />
 
-  <a href="{% url 'aishe_list' %}" class="btn-edit btn">Back to List</a>
+        <label>Current PDF:</label>
+        {% if aishe_record.pdf %}
+        <div class="current-file">
+            <a
+                href="{{ aishe_record.pdf.url }}"
+                target="_blank"
+                class="btn outline"
+            >
+                View Current PDF
+            </a>
+        </div>
+        {% else %}
+        <p>No PDF uploaded</p>
+        {% endif %}
+
+        <label for="pdf">Upload New PDF (Optional):</label>
+        <input
+            class="inp"
+            type="file"
+            id="pdf"
+            name="pdf"
+            accept="application/pdf"
+        />
+
+        <button type="submit">Update</button>
+    </form>
+
+    <a href="{% url 'aishe_list' %}" class="btn-edit btn">Back to List</a>
 </div>
 
 {% endblock %}

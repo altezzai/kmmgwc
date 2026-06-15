@@ -1,6 +1,12 @@
-{% extends "header.html" %} {% block content %} {% load static %}
-<script src="{% static 'slides.js' %}" defer></script>
-<style>
+{% extends "header.html" %}
+{% block content %}
+    {% load static %}
+    <script src="{% static 'slides.js' %}" defer></script>
+    <style nonce="{{ request.csp_nonce }}">
+  .faculty-position {
+    padding-left: 10px;
+  }
+
   [class^="mySlides-"] {
   display: none;
 }
@@ -17,62 +23,81 @@
   height: 100%;
   object-fit: cover;
 }
-</style>
-<div class="container banner">
-  <div class="heading">DEPARTMENT OF {{ depart|upper }}</div>
-</div>
-<div class="container">
-  <div>
-    <pre class="description">{{ description }}</pre>
-  </div>
-  <div class="sec-container">
-    <h3 class="sub-heading">Faculty Members</h2> <!-- New heading above the list -->
-    <div class="faculty-grid">
-      {% for employee in employees %}
-        <a href="{% url 'staff_detail' employee.id %}?from_faculty=1" class="news-box facbox">
-          <div class="imgcon-faculty">
-        {% if employee.photo %}
-              <img src="{{ employee.photo.url }}" alt="{{ employee.name }}" class="news-img" />
-            {% else %}
-              <img src="{% static 'assets/dummy_employee.jpeg' %}" alt="{{ employee.name }}" class="news-img" />
-            {% endif %}
-          </div>
-          <div class="date-box">{{ employee.name }}</div>
-          <div class="bold-head" style="padding-left: 10px;">{{ employee.position }}</div>
-          <!-- <div class="flex-just-c-sb " style="padding-left: 10px;">
-            <pre>{{ employee.qualification }}</pre>
-          </div> -->
-        </a>
-      {% empty %}
-        <p>No faculty members found in this department.</p>
-      {% endfor %}
+    </style>
+    <div class="container banner">
+        <div class="heading">DEPARTMENT OF {{ depart|upper }}</div>
     </div>
-</div>
-<div class="sec-container">
-  <h3 class="sub-heading">Activities and Achievements</h3>
-  <div class="grid">
-    {% for activity in activities %}
-      <div class="news-box">
-        <div class="newsimgcon slideshow-container" id="slider-{{ activity.id }}">
-          {% for photo in activity.photos.all %}
-            <img
-              src="{{ photo.photo.url }}"
-              alt="{{ activity.name }}"
-              class="mySlides-{{ activity.id }} fade"
-            />
-          {% endfor %}
-          {% if activity.photos.all|length > 1 %}
-            <a class="prev" onclick="plusSlidesActivity(-1, '{{ activity.id }}')">&#10094;</a>
-            <a class="next" onclick="plusSlidesActivity(1, '{{ activity.id }}')">&#10095;</a>
-          {% endif %}
+    <div class="container">
+        <div>
+            <pre class="description">{{ description }}</pre>
         </div>
-        <div class="des">{{ activity.name }}</div>
-      </div>
-    {% empty %}
-      <p>No activities found in this department.</p>
-    {% endfor %}
-  </div>
-</div>
-</div>
+        <div class="sec-container">
+            <h3 class="sub-heading">
+                Faculty Members
+            </h2>
+            <!-- New heading above the list -->
+            <div class="faculty-grid">
+                {% for employee in employees %}
+                    <a href="{% url 'staff_detail' employee.id %}?from_faculty=1"
+                       class="news-box facbox">
+                        <div class="imgcon-faculty">
+                            {% if employee.photo %}
+                                <img src="{{ employee.photo.url }}"
+                                     alt="{{ employee.name }}"
+                                     class="news-img" />
+                            {% else %}
+                                <img src="{% static 'assets/dummy_employee.jpeg' %}"
+                                     alt="{{ employee.name }}"
+                                     class="news-img" />
+                            {% endif %}
+                        </div>
+                        <div class="date-box">{{ employee.name }}</div>
+                        <div class="bold-head faculty-position">{{ employee.position }}</div>
+                        <!-- <div class="flex-just-c-sb " style="padding-left: 10px;">
+            <pre>{{ employee.qualification }}</pre>
+                                                          </div> -->
+                    </a>
+                {% empty %}
+                    <p>No faculty members found in this department.</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="sec-container">
+            <h3 class="sub-heading">Activities and Achievements</h3>
+            <div class="grid">
+                {% for activity in activities %}
+                    <div class="news-box">
+                        <div class="newsimgcon slideshow-container" id="slider-{{ activity.id }}">
+                            {% for photo in activity.photos.all %}
+                                <img src="{{ photo.photo.url }}"
+                                     alt="{{ activity.name }}"
+                                     class="mySlides-{{ activity.id }} fade" />
+                            {% endfor %}
+                            {% if activity.photos.all|length > 1 %}
+                                <a class="prev activity-slider-btn" data-activity-id="{{ activity.id }}" data-dir="-1">&#10094;</a>
+                                <a class="next activity-slider-btn" data-activity-id="{{ activity.id }}" data-dir="1">&#10095;</a>
+                            {% endif %}
 
+                        </div>
+                        <div class="des">{{ activity.name }}</div>
+                    </div>
+                {% empty %}
+                    <p>No activities found in this department.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script nonce="{{ request.csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.activity-slider-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const activityId = this.getAttribute('data-activity-id');
+                    const dir = parseInt(this.getAttribute('data-dir'));
+                    if (typeof plusSlidesActivity === 'function') {
+                        plusSlidesActivity(dir, activityId);
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

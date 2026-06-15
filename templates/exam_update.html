@@ -1,44 +1,81 @@
-{% extends "admin_header.html" %} 
-{% block content %} 
-{% load static %}
-
-<body class="edit-body">
-  <div class="edit-formcon">
-    <h2>Update Exam</h2>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <label for="category" class="radio-label">Category:</label>
-
-      <div class="inp rboutcon">
-        <div class="rbcon">
-          <input class="rb" type="radio" name="category" value="ug" id="ug" {% if exam.category == "ug" %}checked{% endif %}>
-          <label for="ug">UG</label>
-        </div>
-        <div class="rbcon">
-          <input class="rb" type="radio" name="category" value="pg" id="pg" {% if exam.category == "pg" %}checked{% endif %}>
-          <label for="pg">PG</label>
-        </div>
-        <div class="rbcon">
-          <input class="rb" type="radio" name="category" value="both" id="both" {% if exam.category == "both" %}checked{% endif %}>
-          <label for="both">Both</label>
-        </div>
-      </div>
-
-      <label for="title">Title:</label>
-      <input class="inp" type="text" name="title" value="{{ exam.title }}" required />
-
-      <label for="description">Description:</label>
-      <textarea class="inp tarea" name="description" rows="4" required>{{ exam.description }}</textarea>
-
-      <label for="file" class="file-label">File:</label>
-      <label for="file" class="file-input-label">Choose a file...</label>
-      <input class="inp" type="file" name="file" id="file" />
-
-      <button type="submit" class="btn">Update</button>
-    </form>
-
-    <a href="{% url 'list_exams' %}" class="btn-edit btn">Back to List</a>
-  </div>
-</body>
-
-{% endblock %}
+{% extends "admin_header.html" %}
+{% block content %}
+    {% load static %}
+    <body class="edit-body">
+        <div class="edit-formcon">
+            <h2>Update Exam</h2>
+            {% if errors %}
+                <div class="error-msg">
+                    {% for field, error_list in errors.items %}<p>{{ field }}: {{ error_list.0 }}</p>{% endfor %}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="radio-label">Category:</label>
+                <div class="inp rboutcon">
+                    <div class="rbcon">
+                        <input
+                            class="rb"
+                            type="radio"
+                            name="category"
+                            value="ug"
+                            {%
+                            if
+                            exam.category=""
+                            ="ug"
+                            %}checked{%
+                            endif
+                            %}
+                            />
+                            <label>UG</label>
+                        </div>
+                        <div class="rbcon">
+                            <input
+                                class="rb"
+                                type="radio"
+                                name="category"
+                                value="pg"
+                                {%
+                                if
+                                exam.category=""
+                                ="pg"
+                                %}checked{%
+                                endif
+                                %}
+                                />
+                                <label>PG</label>
+                            </div>
+                            <div class="rbcon">
+                                <input
+                                    class="rb"
+                                    type="radio"
+                                    name="category"
+                                    value="both"
+                                    {%
+                                    if
+                                    exam.category=""
+                                    ="both"
+                                    %}checked{%
+                                    endif
+                                    %}
+                                    />
+                                    <label>Both</label>
+                                </div>
+                            </div>
+                            <label>Title:</label>
+                            <input class="inp"
+                                   type="text"
+                                   name="title"
+                                   value="{{ exam.title }}"
+                                   required />
+                            <label>Description:</label>
+                            <textarea class="inp tarea" name="description" rows="4" required>
+{{ exam.description }}</textarea>
+                            <label class="file-label">File:</label>
+                            <input class="inp" type="file" name="file" />
+                            <button type="submit" class="btn">Update</button>
+                        </form>
+                        <a href="{% url 'list_exams' %}" class="btn-edit btn">Back to List</a>
+                    </div>
+                </body>
+            {% endblock %}

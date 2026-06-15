@@ -1,25 +1,26 @@
-{% extends "admin_header.html" %} {% block content %} {% load static %}
-
-<body class="edit-body">
-  <div class="edit-formcon">
-    <h1>Create Department</h1>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <label for="Name">Name:</label>
-      <input class="inp" type="text" id="name" name="name" required />
-      <label for="description">Description:</label>
-      <textarea
-        class="inp tarea"
-        id="description"
-        name="description"
-        required
-      ></textarea>
-      <label for="photos">Photos:</label>
-      <label for="photos">Photo</label>
-      <input type="file" id="photos" name="photos" accept="image/*" multiple />
-      <button type="Submit">Create</button>
-    </form>
-    <a href="{% url 'department_list' %}" class="btn-edit btn">Back to List</a>
-  </div>
-  {% endblock %}
-</body>
+{% extends "admin_header.html" %}
+{% block content %}
+    {% load static %}
+    <body class="edit-body">
+        <div class="edit-formcon">
+            <h1>Create Department</h1>
+            {% if errors %}
+                <div class="error-msg">
+                    {% for field, error_list in errors.items %}<p>{{ field }}: {{ error_list.0 }}</p>{% endfor %}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label>Name:</label>
+                <input class="inp" type="text" name="name" value="{{ data.name }}" required />
+                <label>Description:</label>
+                <textarea class="inp tarea" name="description" required>
+{{ data.description }}</textarea>
+                <label>Photo:</label>
+                <input type="file" name="photos" accept="image/*" />
+                <button type="submit">Create</button>
+            </form>
+            <a href="{% url 'department_list' %}" class="btn-edit btn">Back to List</a>
+        </div>
+    </body>
+{% endblock %}

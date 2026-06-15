@@ -1,24 +1,36 @@
 {% extends "admin_header.html" %}
 {% block content %}
-{% load static %}
+    {% load static %}
+    <body class="edit-body">
+        <div class="edit-formcon">
+            <h2>Create IQAC Member</h2>
 
-<body class="edit-body">
-  <div class="edit-formcon">
-    <h2>Create IQAC Member</h2>
-    <form id="iqacMemberForm" method="POST">
-      {% csrf_token %}
+            {% if errors %}
+            <div class="error-msg">
+                {% for field, error_list in errors.items %}
+                <p>{{ field|capfirst }}: {{ error_list.0 }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
 
-      <label for="name">Name:</label>
-      <input class="inp" type="text" id="name" name="name" required />
-
-      <label for="position">Position:</label>
-      <input class="inp" type="text" id="position" name="position" />
-
-      <button type="submit" value="Submit">Create</button>
-    </form>
-
-    <a href="{% url 'iqac_member_list' %}" class="btn-edit btn">Back to List</a>
-  </div>
-</body>
-
+            <form method="post">
+                {% csrf_token %}
+                <label for="name">Name:</label>
+                <input class="inp"
+                       type="text"
+                       id="name"
+                       name="name"
+                       value="{{ data.name }}"
+                       required />
+                <label for="position">Position:</label>
+                <input class="inp"
+                       type="text"
+                       id="position"
+                       name="position"
+                       value="{{ data.position }}" />
+                <button type="submit">Create</button>
+            </form>
+            <a href="{% url 'iqac_member_list' %}" class="btn-edit btn">Back to List</a>
+        </div>
+    </body>
 {% endblock %}
