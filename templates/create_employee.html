@@ -4,6 +4,11 @@
     <body class="edit-body">
         <div class="edit-formcon">
             <h2>Employee Form</h2>
+            {% if error %}
+                <div class="error-msg">
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
             {% if errors %}
                 <div class="error-msg">
                     {% for field, error_list in errors.items %}<p>{{ field }}: {{ error_list.0 }}</p>{% endfor %}

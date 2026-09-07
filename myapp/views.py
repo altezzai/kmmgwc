@@ -653,6 +653,7 @@ def create_employee(request):
                         {
                             "departments": department_list,
                             "error": "Qualification is required for this position.",
+                            "data": request.POST,
                         },
                     )
 
@@ -691,6 +692,7 @@ def create_employee(request):
                         {
                             "departments": department_list,
                             "error": "Name and Position are required.",
+                            "data": request.POST,
                         },
                     )
 
@@ -706,6 +708,7 @@ def create_employee(request):
                             {
                                 "error": "Invalid department selected",
                                 "departments": Department.objects.all(),
+                                "data": request.POST,
                             },
                         )
 
@@ -714,18 +717,14 @@ def create_employee(request):
                 if "photo" in request.FILES:
                     uploaded_photo = request.FILES["photo"]
 
-                    temp_employee = Employee(photo=uploaded_photo)
-
                     try:
-                        temp_employee.full_clean()
                         photo = compress_image(uploaded_photo)
-
                     except ValidationError as e:
                         return render(
                             request,
                             "create_employee.html",
                             {
-                                "errors": e.message_dict,
+                                "errors": {"photo": e.messages if hasattr(e, 'messages') else [str(e)]},
                                 "departments": Department.objects.all(),
                                 "data": request.POST,
                             },

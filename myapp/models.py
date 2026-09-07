@@ -53,7 +53,7 @@ class Employee(models.Model):
         ("Guest Lecturer", "Guest Lecturer"),
         ("Senior Superintendent", "Senior Superintendent"),
         ("Head Accountant", "Head Accountant"),
-        ("Clerk ", "Clerk "),
+        ("Clerk", "Clerk"),
         ("Librarian", "Librarian"),
         ("Office Staff", "Office Staff"),
     ]
