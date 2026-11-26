@@ -1723,9 +1723,75 @@ pre {
 }
 
 /* RTI and Section Headers */
-.rti-head {
-  margin: 0;
-  font-weight: bold;
+.rti-head,
+.section-head {
+  margin: 1.75rem 0 0.75rem 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--primary);
+  border-left: 4px solid var(--primary);
+  padding-left: 10px;
+}
+
+.rti-content .rti-head:first-child,
+.about-content .section-head:first-child,
+.conduct-content .section-head:first-child,
+.cdc-content .section-head:first-child {
+  margin-top: 0;
+}
+
+.rti-content p:not(.rti-head),
+.about-content p:not(.section-head),
+.cdc-content p:not(.section-head) {
+  margin-bottom: 1rem;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #242424;
+}
+
+.about-content ul {
+  margin: 0.5rem 0 1.25rem 1.5rem;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #242424;
+}
+
+.conduct-list {
+  margin: 0.75rem 0 1.5rem 1.5rem;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #242424;
+}
+
+.conduct-list li {
+  margin-bottom: 0.65rem;
+  padding-left: 0.25rem;
+}
+
+.conduct-list li::marker {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.conduct-content .conduct-note {
+  margin-bottom: 0;
+  padding: 0.9rem 1rem;
+  background-color: var(--third);
+  border-left: 4px solid var(--sec);
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #242424;
+}
+
+.rti-content p:last-of-type,
+.about-content p:last-of-type,
+.cdc-content .member-list {
+  margin-bottom: 0;
 }
 
 /* Academic Results Utility */
